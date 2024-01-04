@@ -1,0 +1,59 @@
+@import url("https://fonts.cdnfonts.com/css/poppins");
+
+body{
+  @apply bg-white;
+}
+.container {
+  @apply max-w-[1400px] mx-auto px-4 sm:px-10;
+}
+.search {
+  @apply  w-full h-10  mx-auto  border-2 rounded-md max-w-[90%] sm:max-w-full  sm:max-w-sm focus:outline-0 text-sm font-semibold bg-transparent text-slate-900 placeholder:text-white placeholder:font-semibold px-3;
+}
+.search_btn {
+  @apply absolute right-[32px]  sm:right-0 bg-black h-full w-10 sm:w-14 sm:max-w-[56px] rounded-e-md max-w-[40px] flex items-center justify-center duration-300;
+}
+
+/* Form */
+.form_input {
+  @apply py-2 border-0 border-b-[1px] bg-white border-slate-300 placeholder:font-content placeholder:font-medium placeholder:text-sm  focus:border-brand-blue focus:outline-none px-2 w-full text-sm font-content font-semibold;
+}
+
+/* Tostify */
+.Toastify__toast {
+  @apply bg-black;
+}
+.Toastify__toast-body {
+  @apply text-white;
+}
+.Toastify__close-button > svg {
+  @apply text-white;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.slick-dots li {
+  @apply bg-white rounded-full;
+}
+.post_container .slick-list {
+  @apply pb-11 sm:pb-16;
+}
+.post_container .slick-slide {
+  @apply p-3;
+}
+
+.chats_container {
+  height: calc(100vh - 75px);
+}
+.message_container {
+  height: calc(100vh - 200px);
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
