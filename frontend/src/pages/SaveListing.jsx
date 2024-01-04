@@ -14,7 +14,7 @@ const SaveListing = () => {
         <div className="container py-10 ">
           <div className="heading_cotainer  border-b-2 pb-5 border-brand-blue flex items-center justify-center sm:justify-between flex-col sm:flex-row gap-3">
             <h1 className="font-heading text-2xl text-left ">
-              Your saved Listing
+              Your saved Listing {saveListings.length} {saveListings.length === 1}
             </h1>
             <button
               className="group relative inline-flex items-center overflow-hidden rounded bg-brand-blue px-6 py-2 text-white "
