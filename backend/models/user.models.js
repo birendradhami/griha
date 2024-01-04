@@ -21,6 +21,7 @@ const userSchema = new mongoose.Schema(
       default:
         "https://thinksport.com.au/wp-content/uploads/2020/01/avatar-.jpg",
     },
+    resetToken: { type: String, required: false },
   },
   { timestamps: true }
 );

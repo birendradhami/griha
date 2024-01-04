@@ -114,7 +114,7 @@ const ListingPage = () => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    arrows:false,
+    arrows: false,
     appendDots: (dots) => (
       <div style={{ bottom: 25 }}>
         <ul style={{ margin: "0px", color: "#fff" }}> {dots} </ul>
@@ -275,12 +275,9 @@ const ListingPage = () => {
                         </div>
                       </div>
                       <div className="btn_container mt-3">
-                          <div className="contant_owner_form mt-5">
-                            <Contact
-                              listing={listings}
-                              loadingState={loading}
-                            />
-                          </div>
+                        <div className="contant_owner_form mt-5">
+                          <Contact listing={listings} loadingState={loading} />
+                        </div>
                       </div>
                     </div>
                   )}
@@ -447,7 +444,6 @@ const ListingPage = () => {
           <ToastContainer />
         </div>
       )}
-      <Footer />
     </>
   );
 };

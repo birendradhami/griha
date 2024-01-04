@@ -342,7 +342,7 @@ const Dashboard = () => {
         <ToastContainer />
 
       </section>
-      <Footer />
+      
     </>
   )
 }

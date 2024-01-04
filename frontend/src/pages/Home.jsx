@@ -145,7 +145,7 @@ const Home = () => {
                         setSearchValue(e.target.value);
                     }}
                     value={searchValue}
-                    required 
+                    required
                   />
                   <button type="submit" className="search_btn">
                     <i className="text-center text-black font-bold">
@@ -218,8 +218,6 @@ const Home = () => {
       <AboutSection />
 
       <TestimonialSection />
-
-      <Footer />
     </>
   );
 };

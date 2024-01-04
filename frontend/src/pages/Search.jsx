@@ -70,7 +70,6 @@ const Search = () => {
   useEffect(() => {
     document.body.scrollTo(0, 0);
   }, []);
-  
 
   return (
     <>
@@ -276,9 +275,7 @@ const Search = () => {
           </div>
         </div>
       </section>
-      <>
-        <Footer />
-      </>
+      <></>
     </>
   );
 };
