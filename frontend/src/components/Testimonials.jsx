@@ -83,7 +83,7 @@ const TestimonialsComponent = () => {
 `;
 
   return (
-    <section id="testimonials" className=" pt-2  sm:pt-14">
+    <section id="testimonials" className=" pt-2  sm:pt-14  ">
       <style>{styles}</style>
       <div className="testimonials text-center py-16">
         <div className="container mx-auto text-black">

@@ -6,11 +6,12 @@ import Dashboard from "./DashboardOption";
 import { FaHeart, FaHome} from "react-icons/fa";
 import { IoChatboxEllipsesSharp } from "react-icons/io5";
 import GrihaLogo from '../../assets/Griha.png'; 
-
+import { FiHeart } from "react-icons/fi";
 const Header = () => {
   const [isActiveMoblie, setisActiveMoblie] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const { notificationsDB } = useSelector((state) => state.notification);
+  const { saveListings } = useSelector((state) => state.savedListing);
 
   return (
     <>
@@ -29,13 +30,14 @@ const Header = () => {
           <div className="col-span-3 sm:col-span-5  md:col-span-4 flex items-center justify-end">
             <ul className=" sm:ml-5 sm:flex items-center justify-end  sm:pr-4 font-semibold text-black font-content ">
               <li className="hidden sm:block" >
-                <Link to={`${currentUser ? "/saved_listing" : "/login"}`} className="flex items-center gap-1 mr-4 text-lg">
+                <Link to={`${currentUser ? "/saved_listing" : "/login"}`} className="flex   items-center gap-1 mr-4 text-lg">
                 Wishlist
-                <i>
-                <FaHeart />
+                <i className="relative">
+                <FaHeart className=" text-2xl"/>
+                <span className="absolute bg-white text-black text-[10px] h-4 w-4 rounded-full shadow-md border border-black flex items-center justify-center text-xs bottom-1 top-2 left-[14px] leading-tight">{saveListings.length} {saveListings.length === 1}</span>
                 </i>
+               
                 </Link>
-                
               </li>
               <li className="hidden sm:block mr-9 capitalize text-lg text-black  ">
                     <Link to={`${currentUser ? "/message" : "/login"}`}>
