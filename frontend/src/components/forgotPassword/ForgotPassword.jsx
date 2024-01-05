@@ -27,34 +27,7 @@ function ForgotPassword() {
     }
     return (
         <>
-        {/* <div className="text-center">
-            <h1 className="text-xl font-bold p-5">Forgot Password</h1>
-            <form className="w-2/5 mx-auto p-5" onSubmit={handleSubmit}>
-                <input type="email"
-                    className="p-3 rounded-md shadow-lg w-full"
-                    placeholder="Enter your email"
-                    onChange={(e) => setEmail(e.target.value)}
-                    value={email}
-                    required
-                />
-                <button className="p-2 rounded-md shadow-md bg-indigo-700 text-white px-5 mt-10 disabled:bg-indigo-500" disabled={isLoading}>Reset</button>
-                <button className="mt-6 text-white px-5 font-bold font-headi py-[0.6rem] rounded uppercase bg-black text-sm duration-300 hover:shadow-sm"  disabled={isLoading}>Login</button>
-            </form>
-            {
-                message && <div className='mt-10 bg-green-700 mx-auto w-2/5 p-3 rounded-lg shadow-lg text-white text-lg'>
-                    <p>
-                        {message}
-                    </p>
-                </div>
-            }
-            {
-                error && <div className='mt-10 bg-red-700 mx-auto w-2/5 p-3 rounded-lg shadow-lg text-white text-lg'>
-                    <p>
-                        {error}
-                    </p>
-                </div>
-            }
-            </div> */}
+       
             
             <section className="form-section py-10 md:py-3 ">
           <div className="container ">

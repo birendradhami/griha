@@ -34,45 +34,7 @@ function ResetPassword() {
     }
     return (
       <>
-        {/* <div className="text-center">
-          <h1 className="text-xl font-bold p-5">Reset Password</h1>
-          <form className="w-2/5 mx-auto p-5" onSubmit={handleSubmit}>
-            <input
-              type="password"
-              className="p-3 rounded-md shadow-lg w-full my-4"
-              placeholder="Enter new password"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-              required
-              autoComplete="false"
-            />
-            <input
-              type="password"
-              className="p-3 rounded-md shadow-lg w-full my-4"
-              placeholder="Confirm new password"
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              value={confirmPassword}
-              required
-              autoComplete={false}
-            />
-            <button
-              className="p-2 rounded-md shadow-md bg-indigo-700 text-white px-5 mt-10 disabled:bg-indigo-400"
-              disabled={isLoading}
-            >
-              Reset
-            </button>
-          </form>
-          {message && (
-            <div className="mt-10 bg-green-700 mx-auto w-2/5 p-3 rounded-lg shadow-lg text-white text-lg">
-              <p>{message}</p>
-            </div>
-          )}
-          {error && (
-            <div className="mt-10 bg-red-700 mx-auto w-2/5 p-3 rounded-lg shadow-lg text-white text-lg">
-              <p>{error}</p>
-            </div>
-          )}
-        </div> */}
+       
         <section className="form-section py-10 md:py-3 ">
           <div className="container ">
             <div className="form-container px-4 sm:px-8 bg-white py-6 pb-8 sm:py-9 sm:pb-12 max-w-lg mx-auto rounded-sm border-[1px] border-brand-black/50 shadow-brand shadow-black/40">
