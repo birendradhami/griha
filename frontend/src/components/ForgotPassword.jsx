@@ -45,12 +45,7 @@ function ForgotPassword() {
                     value={email}
           required
         />
-        {/* <input
-          type="password"
-          placeholder="Password"
-          className="form_input mt-5"
-          required
-        /> */}
+       
         <button
           type="submit"
            disabled={isLoading}

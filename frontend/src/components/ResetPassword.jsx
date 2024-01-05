@@ -55,7 +55,6 @@ const navigate = useNavigate();
                   onChange={(e) => setPassword(e.target.value)}
                   value={password}
                   required
-                  autoComplete="false"
                 />
                 <input
                   type="password"
@@ -64,7 +63,6 @@ const navigate = useNavigate();
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   value={confirmPassword}
                   required
-                  autoComplete={false}
                 />
                 <button
                   type="submit"
