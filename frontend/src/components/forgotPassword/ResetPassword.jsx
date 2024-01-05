@@ -106,12 +106,12 @@ function ResetPassword() {
                   Reset
                 </button>
                 {message && (
-                  <div className="mt-10 bg-green-700 mx-auto w-2/5 p-3 rounded-lg shadow-lg text-white text-lg">
+                  <div className="mt-10 bg-green-700 mx-auto w-full p-3 rounded-lg shadow-lg text-white text-base">
                     <p>{message}</p>
                   </div>
                 )}
                 {error && (
-                  <div className="mt-10 bg-red-700 mx-auto w-2/5 p-3 rounded-lg shadow-lg text-white text-lg">
+                  <div className="mt-10 bg-red-700 mx-auto w-full p-3 rounded-lg shadow-lg text-white text-base">
                     <p>{error}</p>
                   </div>
                 )}
