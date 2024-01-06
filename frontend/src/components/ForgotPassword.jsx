@@ -13,7 +13,10 @@ function ForgotPassword() {
             setIsLoading(true)
             setMessage("");
             setError("");
-            const res = await axios.post("http://localhost:5000/api/forgotPassword/forgotPassword", {email})
+            const res = await axios.post(
+              `/api/forgotPassword/forgotPassword`,
+              { email }
+            );
             console.log(res);
             setMessage(res.data.message);
             console.log(res.data.message);

@@ -24,7 +24,7 @@ const navigate = useNavigate();
             try {
               const token = searchParams.get("token");
               const res = await axios.post(
-                "http://localhost:5000/api/forgotPassword/resetPassword",
+                `/api/forgotPassword/resetPassword`,
                 { token, password }
               );
               setMessage(res.data.message);

@@ -19,6 +19,7 @@ import Message from "./pages/Message";
 import SocketConnection from "./components/SocketConnection";
 import Dashboard from "./pages/Dashboard";
 import ScrollToTop from "./components/ScrollToTop"; // Import the ScrollToTop component
+import EmailVerify from "./components/EmailVerify";
 
 function App() {
   return (
@@ -35,13 +36,14 @@ function App() {
           <Route path="/resetPassword" element={<ResetPassword />} />
           <Route path="/listing/:id" element={<ListingPage />} />
           <Route path="/search?" element={<Search />} />
+          <Route path="/message" element={<Message />} />
+          <Route path="/users/:id/verify/:token" element={<EmailVerify />} />
 
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/create_post" element={<CreatePost />} />
             <Route path="/update_post/:id" element={<UpdatePost />} />
             <Route path="/saved_listing" element={<SaveListing />} />
-            <Route path="/message" element={<Message />} />
           </Route>
         </Routes>
         <Footer />

@@ -2,6 +2,12 @@
 
 body{
   @apply bg-white;
+ 
+}
+#root{
+ flex-direction: column;
+  min-height: 100vh;
+  display: flex;
 }
 .container {
   @apply max-w-[1400px] mx-auto px-4 sm:px-10;
@@ -52,6 +58,9 @@ body{
 }
 .message_container {
   height: calc(100vh - 200px);
+}
+footer{
+  margin-top: auto
 }
 
 @tailwind base;
