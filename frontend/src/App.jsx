@@ -15,6 +15,7 @@ import UpdatePost from "./pages/UpdatePost";
 import ListingPage from "./pages/ListingPage";
 import SaveListing from "./pages/SaveListing";
 import Search from "./pages/Search";
+import PageNotFound from "./pages/404";
 import Message from "./pages/Message";
 import SocketConnection from "./components/SocketConnection";
 import Dashboard from "./pages/Dashboard";
@@ -38,7 +39,7 @@ function App() {
           <Route path="/search?" element={<Search />} />
           <Route path="/message" element={<Message />} />
           <Route path="/users/:id/verify/:token" element={<EmailVerify />} />
-
+          <Route path="*" element={<PageNotFound />} />
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/create_post" element={<CreatePost />} />
