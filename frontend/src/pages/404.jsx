@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import BgImg from "../../assets/8.svg"
 
 const pageNotFound = () => {
   // Your component logic goes here
