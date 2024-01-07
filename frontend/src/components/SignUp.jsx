@@ -82,15 +82,9 @@ const handleTogglePasswordVisibility = () => {
             className="absolute inset-y-0 right-0 pr-3 flex items-center  cursor-pointer"
             onClick={handleTogglePasswordVisibility}
           >
-            {showPassword ? <VscEye size={23} /> : <VscEyeClosed size={23} />}
+            {showPassword ? <VscEye size={21} /> : <VscEyeClosed size={21} />}
           </div>
         </div>
-
-        {errors.userPassword && (
-          <span className="text-red-700 font-semibold text-sm mb-2 mt-1">
-            This field is required
-          </span>
-        )}
         {errors.password && (
           <span className="text-red-700 font-semibold text-sm mb-2 mt-1">
             This field is required

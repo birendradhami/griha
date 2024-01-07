@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { VscEyeClosed } from "react-icons/vsc";
+import { VscEye } from "react-icons/vsc";
 
 function ResetPassword() {
     const [password, setPassword] = useState("");
@@ -10,7 +12,11 @@ function ResetPassword() {
     const [searchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false)
 const navigate = useNavigate();
-  
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -40,7 +46,6 @@ const navigate = useNavigate();
     }
     return (
       <>
-       
         <section className="form-section py-10 md:py-3 ">
           <div className="container ">
             <div className="form-container px-4 sm:px-8 bg-white py-6 pb-8 sm:py-9 sm:pb-12 max-w-lg mx-auto rounded-sm border-[1px] border-brand-black/50 shadow-brand shadow-black/40">
@@ -48,22 +53,63 @@ const navigate = useNavigate();
                 Forgot Password
               </h1>
               <form onSubmit={handleSubmit}>
-                <input
+                {/* <input
                   type="password"
                   className="form_input mt-1"
                   placeholder="Enter new password"
                   onChange={(e) => setPassword(e.target.value)}
                   value={password}
                   required
-                />
-                <input
+                /> */}
+                {/* Password input with show/hide functionality */}
+                <div className="relative mt-5">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="form_input mt-1"
+                    placeholder="Enter new password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
+                    required
+                  />
+                  <div
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center  cursor-pointer"
+                    onClick={handleTogglePasswordVisibility}
+                  >
+                    {showPassword ? (
+                      <VscEye size={21} />
+                    ) : (
+                      <VscEyeClosed size={21} />
+                    )}
+                  </div>
+                </div>
+                <div className="relative mt-5">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Confirm new password"
+                    className="form_input mt-5"
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    value={confirmPassword}
+                    required
+                  />
+                  <div
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center  cursor-pointer"
+                    onClick={handleTogglePasswordVisibility}
+                  >
+                    {showPassword ? (
+                      <VscEye size={21} />
+                    ) : (
+                      <VscEyeClosed size={21} />
+                    )}
+                  </div>
+                </div>
+                {/* <input
                   type="password"
                   placeholder="Confirm new password"
                   className="form_input mt-5"
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   value={confirmPassword}
                   required
-                />
+                /> */}
                 <button
                   type="submit"
                   disabled={isLoading}
