@@ -10,6 +10,8 @@ import {
 } from "../redux/user/userSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { VscEyeClosed } from "react-icons/vsc";
+import { VscEye } from "react-icons/vsc";
 
 const SignIn = () => {
   const {
@@ -22,7 +24,11 @@ const SignIn = () => {
 
   const { loading } = useSelector((state) => state.user);
   const [errorText, setErrorText] = useState("");
+const [showPassword, setShowPassword] = useState(false);
 
+const handleTogglePasswordVisibility = () => {
+  setShowPassword(!showPassword);
+};
   const onSubmit = async (formData) => {
     dispatch(loddingStart());
     try {
@@ -112,13 +118,29 @@ const SignIn = () => {
           </span>
         )}
 
-        <input
+        {/* <input
           {...register("userPassword", { required: true })}
           type="password"
           placeholder="Password"
           className="form_input mt-5"
           required
-        />
+        /> */}
+        {/* Password input with show/hide functionality */}
+        <div className="relative mt-5">
+          <input
+            {...register("userPassword", { required: true })}
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            className="form_input pr-10"
+            required
+          />
+          <div
+            className="absolute inset-y-0 right-0 pr-3 flex items-center  cursor-pointer"
+            onClick={handleTogglePasswordVisibility}
+          >
+            {showPassword ? <VscEye size={23} /> : <VscEyeClosed size={23} />}
+          </div>
+        </div>
         {errors.userPassword && (
           <span className="text-red-700 font-semibold text-sm mb-2 mt-1">
             This field is required
@@ -151,6 +173,7 @@ const SignIn = () => {
           {loading ? "Loading..." : "Login"}
         </button>
       </form>
+
       <ToastContainer limit={0} />
     </>
   );
