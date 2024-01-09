@@ -462,7 +462,7 @@ const UpdatePost = () => {
                   <div className="image_upload_container md:p-5 md:border-2 bg-transparent border-dashed rounded-sm lg:flex items-center justify-center gap-2">
                     <input
                       onChange={(e) => setImageFile(e.target.files)}
-                      required
+                      
                       multiple
                       accept="image/*"
                       type="file"

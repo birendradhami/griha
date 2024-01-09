@@ -137,6 +137,19 @@ const Search = () => {
     document.body.scrollTo(0, 0);
   }, []);
 
+  const styles = `
+  .rc-slider-handle{
+    height: 15px !important;
+    width: 15px !important;
+    opacity: 1;
+  }
+
+  .rc-slider-handle.rc-slider-handle-dragging {
+     box-shadow: none !important;
+}
+
+`;
+
   return (
     <>
       <style>{styles}</style>
@@ -355,7 +368,6 @@ const Search = () => {
           </div>
         </div>
       </section>
-      <></>
     </>
   );
 };

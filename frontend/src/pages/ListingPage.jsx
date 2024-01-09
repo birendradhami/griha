@@ -86,11 +86,25 @@ const ListingPage = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: false,
-    appendDots: (dots) => (
-      <div style={{ bottom: 25 }}>
-        <ul style={{ margin: "0px", color: "#fff" }}> {dots} </ul>
-      </div>
-    ),
+    beforeChange: (current, next) => setThumbnailIndex(next),
+  };
+
+  const thumbnailSliderSettings = {
+    dots: false,
+    centerMode: true,
+    focusOnSelect: true,
+    infinite:true,
+    slidesToShow: Math.min(6, listings.imgUrl ? listings.imgUrl.length : 0),
+    slidesToScroll: 1,
+    beforeChange: (current, next) => mainSliderRef.current.slickGoTo(next),
+    responsive: [
+      {
+        breakpoint: 660, 
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+    ],
   };
   
   useEffect(() => {
@@ -221,17 +235,8 @@ const ListingPage = () => {
                             alt={`thumbnail-${index}`}
                           />
                         </div>
-                      </div>
-                      <div className="btn_container mt-3">
-                          <div className="contant_owner_form mt-5">
-                            <Contact
-                              listing={listings}
-                              loadingState={loading}
-                            />
-                          </div>
-                      </div>
-                    </div>
-                  )}
+                      ))}
+                  </Slider>
                 </div>
               </>
             )}
