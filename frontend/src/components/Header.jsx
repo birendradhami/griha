@@ -5,8 +5,8 @@ import { useSelector } from "react-redux";
 import Dashboard from "./DashboardOption";
 import { FaHeart, FaHome} from "react-icons/fa";
 import { IoChatboxEllipsesSharp } from "react-icons/io5";
-import GrihaLogo from '../../assets/Griha.png'; 
-import { FiHeart } from "react-icons/fi";
+import GrihaLogo from '../../assets/Griha.png';
+ 
 const Header = () => {
   const [isActiveMoblie, setisActiveMoblie] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
@@ -15,7 +15,7 @@ const Header = () => {
 
   return (
     <>
-      <div className="navbar sm:pl-16 pr-0 pt-6 pb-6 bg-white border-b-[2px] sticky top-0 z-[1000]">
+      <div className="navbar sm:pl-16 pr-0 py-3 lg:py-6 bg-white border-b-[2px] sticky top-0 z-[1000]">
         <div className=" px-2 sm:px-5 justify-between  max-w-screen-2xl w-full !mx-auto gap-1">
           {/* Logo container  */}
           <div className="col-span-3 sm:col-span-4">

@@ -108,7 +108,7 @@ const Home = () => {
 
         <div className="relative ">
           <div className=" text-center">
-            <h1 className=" text-[36px] sm:text-6xl font-bold mx-auto pt-16 sm:pt-28  text-black">
+            <h1 className=" text-[36px] sm:text-5xl lg:text-6xl font-bold mx-auto pt-16 sm:pt-28  text-black">
               Room Finder Site
             </h1>
 

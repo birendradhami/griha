@@ -42,7 +42,7 @@ const TestimonialsComponent = () => {
     },
     infinite: true,
     speed: 500,
-    slidesToShow: 1,
+    slidesToShow: 2,
     slidesToScroll: 1,
     arrows: false,
     responsive: [
@@ -88,7 +88,7 @@ const TestimonialsComponent = () => {
       <div className="testimonials text-center py-16">
         <div className="container mx-auto text-black">
           <h3 className="text-4xl font-bold mb-11">Testimonials</h3>
-          <Slider {...settings} className="mx-auto max-w-2xl">
+          <Slider {...settings} className="mx-auto max-w-4xl">
             {testimonialsData.map((testimonial) => (
               <div key={testimonial.id} className="mx-2">
                 <div className="card border-light bg-light text-center p-4 relative">
