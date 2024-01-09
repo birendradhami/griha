@@ -9,6 +9,8 @@ import postRouter from "./routes/post.route.js";
 import messageRouter from "./routes/message.route.js";
 import conversationRoute from "./routes/conversation.route.js";
 import notificatonRoute from "./routes/notification.route.js";
+import forgotPasswordRouter from "./routes/forgotPassword.js";
+
 
 import path from "path";
 import http from "http";
@@ -56,6 +58,7 @@ app.use("/api/posts", postRouter);
 app.use("/api/message", messageRouter);
 app.use("/api/conversation", conversationRoute);
 app.use("/api/notification", notificatonRoute);
+app.use("/api/forgotPassword", forgotPasswordRouter);
 
 //============== Deployment==============//
 

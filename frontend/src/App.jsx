@@ -1,5 +1,27 @@
 // App.jsx
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+// import { useEffect } from 'react';
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import ForgotPassword from "./components/ForgotPassword";
+import ResetPassword from "./components/ResetPassword";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+// import Theme from './components/Theme';
+// import Profile from './pages/Dashboard';
+import PrivateRoute from "./components/PrivateRoute";
+import CreatePost from "./pages/CreatePost";
+import UpdatePost from "./pages/UpdatePost";
+import ListingPage from "./pages/ListingPage";
+import SaveListing from "./pages/SaveListing";
+import Search from "./pages/Search";
+import PageNotFound from "./pages/404";
+import Message from "./pages/Message";
+import SocketConnection from "./components/SocketConnection";
+import Dashboard from "./pages/Dashboard";
+import ScrollToTop from "./components/ScrollToTop"; // Import the ScrollToTop component
+import EmailVerify from "./components/EmailVerify";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useEffect } from "react";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -26,21 +48,21 @@ function App() {
         <Header />
         <ScrollToTop /> {/* Place ScrollToTop component inside BrowserRouter */}
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/listing/:id" element={<ListingPage />} />
-          <Route path="/search?" element={<Search />} />
-          <Route path="/saved_listing" element={<SaveListing />} />
-          <Route path="/create_post" element={<CreatePost />} />
-          
-          <Route element={<PrivateRoute />}>
-            <Route path="/dashboard" element={<Dashboard />} />
+          <Route path='/' element={<Home />} />
+          <Route path='/home' element={<Home />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/listing/:id' element={<ListingPage />} />
+          <Route path='/search?' element={<Search />} />
 
-            <Route path="/update_post/:id" element={<UpdatePost />} />
-            <Route path="/message" element={<Message />} />
+          <Route element={<PrivateRoute />}>
+            <Route path='/dashboard' element={<Dashboard />} />
+            <Route path='/create_post' element={<CreatePost />} />
+            <Route path='/update_post/:id' element={<UpdatePost />} />
+            <Route path='/saved_listing' element={<SaveListing />} />
+            <Route path='/message' element={<Message />} />
           </Route>
         </Routes>
+        <Footer />
       </BrowserRouter>
     </>
   );

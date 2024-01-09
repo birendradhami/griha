@@ -46,9 +46,7 @@ const SaveListing = () => {
           </div>
         </div>
       </section>
-      <>
-        <Footer />
-      </>
+      <></>
     </>
   );
 };
