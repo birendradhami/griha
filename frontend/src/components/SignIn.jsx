@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -9,7 +9,7 @@ import {
 } from "../redux/user/userSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import React, { useState } from 'react';
 const SignIn = () => {
   const {
     register,
@@ -18,10 +18,10 @@ const SignIn = () => {
   } = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const { currentUser } = useSelector(state => state.user);
   const { loading } = useSelector((state) => state.user);
   const [errorText, setErrorText] = useState("");
-
+ 
   const onSubmit = async (formData) => {
     dispatch(loddingStart());
     try {
@@ -58,6 +58,7 @@ const SignIn = () => {
         autoClose: 2000,
       });
     }
+
   };
 
   return (

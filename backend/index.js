@@ -9,14 +9,13 @@ import postRouter from "./routes/post.route.js";
 import messageRouter from "./routes/message.route.js";
 import conversationRoute from "./routes/conversation.route.js";
 import notificatonRoute from "./routes/notification.route.js";
-
 import path from "path";
 import http from "http";
 import { Server } from "socket.io";
-
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+
 
 const expressServer = http.createServer(app);
 
@@ -93,21 +92,16 @@ app.use((err, req, res, next) => {
 export const io = new Server(expressServer, {
   cors: {
     origin: [
-      "http://localhost:5173",
-      "https://property-sell.vercel.app",
-      "https://property-sell-gjz462ec1-emoncr.vercel.app/",
+      "http://localhost:5173"
     ],
     credentials: true,
   },
 });
-
-
-
-
-
-
 io.on("connection", (socket) => {
   console.log(`socket connected with ${socket.id}`);
+
+
+ 
 
   //=======Messaging Feature Here ======//
   socket.on("join_room", (chatId) => {

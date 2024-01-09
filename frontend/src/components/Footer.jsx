@@ -81,7 +81,7 @@ const Footer = () => {
 
               <li>
                 <Link
-                  to={"/saved_lisiting"}
+                  to={"/saved_listing"}
                   className="text-black duration-300  font-heading"
                 >
                   Wishlist
@@ -126,6 +126,7 @@ const Footer = () => {
         <p className=" text-sm text-center text-black font-heading">
           &copy; 2023. Griha. All rights reserved.
         </p>
+        
       </div>
     </footer>
   );

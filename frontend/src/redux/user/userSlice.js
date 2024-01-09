@@ -5,12 +5,15 @@ const initialState = {
   loading: false,
   signinError: null,
   error: null,
+  savedListing: [],
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+  
+    
     loddingStart: (state) => {
       state.loading = true;
     },

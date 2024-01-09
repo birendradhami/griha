@@ -5,6 +5,7 @@ import Conversations from '../components/Conversations';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { signoutSuccess } from '../redux/user/userSlice';
+import Footer from '../components/Footer';
 
 
 const Message = () => {
@@ -132,7 +133,9 @@ const Message = () => {
                                                                         }
                                                                     }
                                                                     key={conversation._id}
+                                                                    
                                                                 />
+                                                                
                                                             )
 
                                                         }
@@ -163,7 +166,7 @@ const Message = () => {
                 }
             </section>
 
-
+          <Footer/>
         </>
     )
 }

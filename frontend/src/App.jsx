@@ -16,13 +16,13 @@ import Message from './pages/Message';
 import SocketConnection from './components/SocketConnection';
 import Dashboard from './pages/Dashboard';
 import ScrollToTop from './components/ScrollToTop'; // Import the ScrollToTop component
-
 function App() {
   return (
     <>
       <SocketConnection />
       <BrowserRouter>
         <Header />
+      
         <ScrollToTop /> {/* Place ScrollToTop component inside BrowserRouter */}
         <Routes>
           <Route path='/' element={<Home />} />

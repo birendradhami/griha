@@ -22,7 +22,7 @@ const MobileMenu = ({ menuStatus }) => {
   const navigate = useNavigate();
   const handleLogOut = async () => {
     try {
-      const res = await fetch("api/auth/signout");
+      const res = await fetch(`api/auth/signout/${currentUser._id}`);
       const data = await res.json();
       if (data.success === false) {
         useDispatch(signoutFailed(data.message));

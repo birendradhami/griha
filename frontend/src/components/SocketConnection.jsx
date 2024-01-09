@@ -7,14 +7,16 @@ import {
 } from "../redux/notifications/notificationSlice";
 import { activeChatId } from "./Conversations";
 import { signal } from "@preact/signals-react";
-
 //production
 // const Node_Env = "local"
+
 export const socket = io("https://thunder-scarlet-wizard.glitch.me/", {
   headers: {
     "user-agent": "chrome",
   },
+  
 });
+
 
 export const notifySignal = signal({
   notifications: [],
@@ -23,7 +25,7 @@ export const notifySignal = signal({
 const SocketConnection = () => {
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
+  
   //======== Get Notification From DB =========//
   useEffect(() => {
     const loadPrevNotification = async () => {
@@ -82,6 +84,8 @@ const SocketConnection = () => {
     });
   });
 
+  
+ 
   return <></>;
 };
 

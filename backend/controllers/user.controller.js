@@ -40,6 +40,7 @@ export const updateUser = async (req, res, next) => {
           password: req.body.password,
           email: req.body.email,
           avatar: req.body.avatar,
+          is_online:req.body.is_online,
         },
       },
       { new: true }
@@ -75,3 +76,6 @@ export const userPosts = async (req, res, next) => {
     next(throwError(404, error.message));
   }
 };
+
+
+

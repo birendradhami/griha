@@ -3,12 +3,13 @@ import User from "../models/user.models.js";
 import { throwError } from "../utils/error.js";
 import jwt from "jsonwebtoken";
 import { passwordGenarator, usernameGenarator } from "../utils/helper.js";
+import Listing from "../models/listing.models.js";
 
 //======handle singup route ===========//
 export const singup = async (req, res, next) => {
-  const { username, email, password } = req.body;
+  const { username, email, password,is_online } = req.body;
   const hashedPassword = bcrypt.hashSync(password, 10);
-  const newUser = new User({ username, email, password: hashedPassword });
+  const newUser = new User({ username, email,password: hashedPassword,is_online });
   try {
     await newUser.save();
     res.status(201).json({
@@ -31,6 +32,9 @@ export const signin = async (req, res, next) => {
       validUser.password
     );
     if (!isValidPassword) return next(throwError(401, "Worng Credentials!"));
+
+    // if login is_online=1
+    await User.findByIdAndUpdate(validUser._id, { $set: { is_online: 1 } });
 
     const { password, ...rest } = validUser._doc;
     const tooken = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET, {
@@ -90,12 +94,18 @@ export const googleSignIn = async (req, res, next) => {
   }
 };
 
-//=====handle signout=====//
+
+// =====handle signout=====
 export const signOut = async (req, res, next) => {
-  try {
+try {
+     // if logout is_online=0
+   await User.findByIdAndUpdate(req.params.id, { $set: { is_online: 0 } });
+
     res.clearCookie("access_token");
     res.status(200).json("User Deleted Successfully!");
   } catch (error) {
     next(error);
   }
 };
+
+

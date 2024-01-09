@@ -137,9 +137,11 @@ const Dashboard = () => {
 
   const handleLogOut = async () => {
     try {
-      const res = await fetch('api/auth/signout');
+     
+      const res = await fetch(`api/auth/signout/${currentUser._id}`);
       const data = await res.json();
       if (data.success === false) {
+       
         dispatch(signoutFailed(data.message))
         toast.error(data.message, {
           autoClose: 2000,

@@ -1,13 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { BsFillSendFill, BsImage } from "react-icons/bs";
+import { BsFillSendFill, BsImage  ,BsX} from "react-icons/bs";
 import { useSelector } from 'react-redux';
 import { socket } from './SocketConnection';
 import { MdDelete } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-
+import Footer from './Footer';
+import Conversations from './Conversations';
+import userSlice from '../redux/user/userSlice';
+import { RiRadioButtonLine } from "react-icons/ri";
+import { MdEmojiEmotions } from "react-icons/md";
+import EmojiPicker from 'emoji-picker-react';
 
 const Chat = ({ conversationInfo }) => {
     const { currentUser } = useSelector(state => state.user)
@@ -20,8 +24,39 @@ const Chat = ({ conversationInfo }) => {
 
     const { trackConversation, setTrackConversation, conversations, setConversation, } = conversationInfo;
     const { chatCreator, chatPartner, _id } = trackConversation.conversation;
+    const fileRef = React.createRef();
+
+    //
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+    const [selectedEmoji, setSelectedEmoji] = useState(null);
+    const emojiPickerRef = useRef(null);
+    const socketRef =useRef();
+    const [file, setFile] = useState(null);
+    const [showImagePreview, setShowImagePreview] = useState(false);
+
+    const handleEmojiClick = (emojiObject) => {
+        setSelectedEmoji(emojiObject);
+        setTypedMessage((prevMessage) => prevMessage + emojiObject.emoji);
+    };
 
 
+    const handleIgnoreClick = () => {
+        setShowEmojiPicker(!showEmojiPicker);
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target)) {
+                setShowEmojiPicker(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     //----- Load User Messages
     useEffect(() => {
@@ -44,6 +79,7 @@ const Chat = ({ conversationInfo }) => {
                 console.log(error);
             }
         })()
+
     }, [trackConversation])
 
 
@@ -102,7 +138,9 @@ const Chat = ({ conversationInfo }) => {
     const handleSendMsg = async (e) => {
         e.preventDefault();
         sendMessageTOSocket();
+      
         try {
+            
             const sendMsgToDB = await fetch("/api/message/create", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -114,6 +152,7 @@ const Chat = ({ conversationInfo }) => {
                     }
                 )
             });
+        
             const response = await sendMsgToDB.json();
             //===checking Message request success or not ===//
             if (response.success === false) {
@@ -126,16 +165,17 @@ const Chat = ({ conversationInfo }) => {
             setSendingError(true)
             console.log(error);
         }
+    
+   
     }
+
+  
+      
 
 
     useEffect(() => {
         scrollRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [socketMessages, messageText])
-
-
-
-
 
 
     const handleConversationDelete = async () => {
@@ -163,12 +203,20 @@ const Chat = ({ conversationInfo }) => {
         }
     };
 
+    const handleFileChange = (e) => {
+        const selectedFile = e.target.files[0];
+        setFile(selectedFile);
+        setShowImagePreview(true);
+      };
 
-
-
-
-
-
+      const handleDiscardImage = () => {
+        setFile(null);
+        setShowImagePreview(false);
+        // Optionally, you can clear the file input value
+        if (fileRef.current) {
+          fileRef.current.value = null;
+        }
+      };
     return (
         <>
             {
@@ -188,10 +236,8 @@ const Chat = ({ conversationInfo }) => {
                                 <p className=' sm:block text-black font-semibold font-heading text-sm truncate'>
                                     {chatPartner._id === currentUser._id ? chatCreator.username : chatPartner.username}
                                 </p>
-
+                      
                             </div>
-
-
                             <div className="show_user_listing flex items-center justify-end">
                                 <button
                                     onClick={handleConversationDelete}
@@ -241,6 +287,7 @@ const Chat = ({ conversationInfo }) => {
                                                         className='text-lg font-normal bg-blue-500 px-2 text-white py-1 rounded-md'>
                                                         {msg.message}
                                                     </p>
+                                                    
                                                 </div>
                                             </div>
                                     )
@@ -281,35 +328,92 @@ const Chat = ({ conversationInfo }) => {
                                                                 className='text-lg font-normal bg-blue-500 px-2 text-white py-1 rounded-md'>
                                                                 {msg.message}
                                                             </p>
+                                                          
                                                         </div>
+                                                        
                                                     </div>
                                             }
+                                            
                                         </div>
                                     )
 
                                     )
                                 }
+
+                                {showImagePreview && (
+                                    <div className="relative max-w-[100px] max-h-[100px] overflow-hidden">
+                                      <img
+                                        src={URL.createObjectURL(file)}
+                                        alt="Selected"
+                                        className="w-full h-auto"
+                                      />
+                                      <BsX
+                                        onClick={handleDiscardImage}
+                                        className="absolute top-0 right-0 cursor-pointer text-red-500"
+                                      />
+                                    </div>
+                                  )}
+
+
                                 {
                                     IsSendingError && <p className='text-red-700 font-content font-semibold'>Message sending failed!</p>
                                 }
+                                
                             </div>
 
 
 
                             <form onSubmit={handleSendMsg}>
-                                <div className="textbar_container  w-full px-5 py-3 flex items-center gap-2">
+                                <div className="textbar_container  w-full px-5 py-3 flex items-center gap-2 relative">
                                     <div className="attachment_container">
-                                        <BsImage />
+                                    
+                                        <input
+                                            onChange={handleFileChange}
+                                            hidden accept='image/*'
+                                            type="file" name="profile"
+                                            id="profile_image"
+                                            ref={fileRef}
+                                        />
+                                        <BsImage onClick={() => fileRef.current.click()} className='cursor-pointer'/>
+                                      
                                     </div>
                                     <div className="input_container w-full">
+                                    
+                                
                                         <input
+                                        
                                             onChange={(e) => setTypedMessage(e.target.value)}
                                             value={typedMessage}
                                             type="text"
                                             placeholder="Aa"
                                             className="w-full px-4 py-1 rounded-full border  placeholder:font-content placeholder:text-sm caret-h-2  bg-[#F0F2F5] caret-brand-blue border-brand-blue focus:outline-none"
+                                          
                                         />
+                                      
+
                                     </div>
+                                    <div>
+                                        <MdEmojiEmotions onClick={() => setShowEmojiPicker((prev) => !prev)} className="cursor-pointer transition-colors duration-300 hover:text-blue-500 " />
+                                    </div>
+
+
+                                    {showEmojiPicker && (
+                                        <div ref={emojiPickerRef} className="absolute sm:bottom-5 md:bottom-6 lg:bottom-15 xl:bottom-[51px] 2xl:bottom-12 right-2 lg:left-50rem xl:left-50rem">
+
+                                            <div className="relative ">
+
+                                                <EmojiPicker
+                                                    onEmojiClick={handleEmojiClick}
+                                                    height={350}
+                                                    width={300}
+                                                   
+                                                />
+
+                                            </div>
+
+                                        </div>
+                                    )}
+
                                     <div className="send_btn ">
                                         <button
                                             type='submit'
@@ -322,8 +426,10 @@ const Chat = ({ conversationInfo }) => {
                             </form>
                         </div>
                         <ToastContainer />
+
                     </div >
             }
+
         </>
     )
 }

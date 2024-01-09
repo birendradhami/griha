@@ -3,6 +3,7 @@
 import { themeColor } from "./src/components/themeColor";
 
 export default {
+  darkMode: 'media',
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
