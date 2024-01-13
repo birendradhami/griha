@@ -23,6 +23,12 @@ const userSchema = new mongoose.Schema(
     },
     resetToken: { type: String, required: false },
     verified: { type: Boolean, default: false },
+    role: {
+      type: 'String',
+      default: 'basic',
+      enum: ['basic', 'admin'],
+    },
+    active: { type: Boolean, default: true },
   },
   { timestamps: true }
 );

@@ -69,7 +69,7 @@ const ListingCard = ({ listing }) => {
   }, []);
 
   return (
-    <div className="listing_card bg-white shadow-lg shadow-black/10  hover:shadow-black/20 rounded-sm w-full hover:shadow-lg group sm:mr-auto sm:ml-0 mx-auto">
+    <div className="listing_card bg-white mb-5 shadow-lg shadow-black/10  hover:shadow-black/20 rounded-sm w-full hover:shadow-lg group sm:mr-auto sm:ml-0 mx-auto">
       <div className="card-container">
         <div
           className="image_container relative overflow-hidden cursor-pointer"

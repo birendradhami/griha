@@ -6,6 +6,10 @@ import Slider from "react-slick";
 import { BsArrowRight, BsArrowLeft } from "react-icons/bs";
 import SkletonLoading from "./SkletonLoading";
 import { useNavigate } from "react-router-dom";
+import { GrFormNext, GrFormPrevious  } from "react-icons/gr";
+
+
+
 
 const RentListing = () => {
   const [loading, setLoading] = useState(true);
@@ -32,7 +36,7 @@ const RentListing = () => {
   }, []);
 
   const settings = {
-    dots: true,
+    dots: false,
     customPaging: function (i) {
       return (
         <div className="custom-dot" key={i}>
@@ -45,7 +49,9 @@ const RentListing = () => {
     speed: 400,
     slidesToShow: 4,
     slidesToScroll: 1,
-    arrows: false,
+    arrows: true,
+    nextArrow: <SampleNextArrow to="next" />,
+    prevArrow: <SamplePrevArrow to="prev" />,
     responsive: [
       {
         breakpoint: 1024,
@@ -69,27 +75,30 @@ const RentListing = () => {
     ],
   };
 
-  const styles = `
-  .slick-dots {
-    display: flex !important;
-    justify-content: center;
-    align-items: center;
-    bottom: 15px;
+  function SamplePrevArrow({ onClick }) {
+    return (
+      <div
+        className="absolute bottom-0 left-[6rem] sm:left-[17.5rem] lg:left-[33.5rem] z-10 p-[10px] p-[0.4rem] sm:p-[0.50rem] bg-black flex items-center justify-center border-2 border-transparent cursor-pointer shadow-lg hover:bg-white/90 
+            hover:border-2 hover:border-black rounded-full duration-300 group "
+        onClick={onClick}
+      >
+        <GrFormPrevious className="text-white text-2xl sm:text-3xl group-hover:text-black " />
+      </div>
+    );
+  }
+  function SampleNextArrow({ onClick }) {
+    return (
+      <div
+        className="absolute bottom-0 right-[6rem] sm:right-[17.5rem] lg:right-[33.5rem] p-[0.4rem] rounded-full sm:p-[0.50rem] z-10 p-[10px] sm:p-7 bg-black flex items-center justify-center border-2 border-transparent cursor-pointer shadow-lg hover:bg-white/90 duration-300 group hover:border-black"
+        onClick={onClick}
+      >
+        <GrFormNext  className="text-white text-2xl sm:text-3xl group-hover:text-black " />
+      </div>
+    );
   }
 
-  .slick-dots .custom-dot {
-    font-size: 24px;
-    color: #999999; // Gray for inactive dots
-    margin: 0 5px;
-  }
-
-  .slick-dots .slick-active .custom-dot {
-    color: #000000; // Black for the active dot
-  }
-`;
   return (
     <section>
-      <style>{styles}</style>
       <div className="mx-auto max-w-screen-xl  space-y-8 px-4 py-9 sm:px-6 lg:space-y-16 lg:px-8">
         <div className="content text-center ">
           <h2 className="text-3xl font-bold text-black mb-5">
@@ -119,10 +128,10 @@ const RentListing = () => {
 
         <div className="btn_container flex items-center justify-center">
           <button
-            className="group relative inline-flex items-center overflow-hidden rounded bg-black px-8 py-3 text-white "
+            className="group relative inline-flex items-center overflow-hidden rounded bg-black px-7 sm:px-8 py-[10px] sm:py-3 text-white "
             onClick={() => navigate("/search")}
           >
-            <span className="text-sm font-medium transition-all">
+            <span className="text-[1rem] font-medium transition-all">
               Explore More
             </span>
           </button>
