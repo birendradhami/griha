@@ -66,9 +66,9 @@ const Header = () => {
                   </li>
                   {currentUser ? (
                   
-                  <Link to={"/dashboard"} className="hidden sm:block">
+                  <div>
                     <Dashboard user={currentUser} />
-                  </Link>
+                  </div>
                 
               ) : (
                 <li className="mr-6">
@@ -81,27 +81,9 @@ const Header = () => {
                 </li>
               )}
             </ul>
-
-            <div className={`nav_mobile flex items-center justify-center sm:hidden gap-1 ${!currentUser ? 'hidden' : ''}`}>
-              {/* User Profile Image  */}
-              {/* {currentUser && <Profile user={currentUser} />} */}
-              <button
-                className="btn btn-ghost p-1 hover:bg-transparent text-lg"
-                onClick={() => setisActiveMoblie(!isActiveMoblie)}
-              >
-                {isActiveMoblie ? (
-                  <Dashboard user={currentUser} className="text-red-600 font-bold" />
-                ) : (
-                  <Dashboard user={currentUser} className="text-brand-blue" />
-                )}
-              </button>
-            </div>
           </div>
         </div>
       </div>
-      {isActiveMoblie && (
-        <MobileMenu menuStatus={{ isActiveMoblie, setisActiveMoblie }} />
-      )}
     </>
   );
 };

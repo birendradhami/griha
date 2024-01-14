@@ -53,8 +53,8 @@ const MobileMenu = ({ menuStatus }) => {
               }}
               className="p-2 cursor-pointer rounded-sm mb-3  font-heading hover:bg-brand-blue/40 duration-300"
             >
-              <p to="/profile" className="flex items-center gap-2">
-                <FaUser className="text-black" /> Profile
+              <p to="/dashboard" className="flex items-center gap-2">
+                <FaUser className="text-black" /> Dashboard
               </p>
             </li>
             <li

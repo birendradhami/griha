@@ -1,4 +1,5 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import React from "react";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import ForgotPassword from "./components/ForgotPassword";
@@ -14,17 +15,17 @@ import Search from "./pages/Search";
 import PageNotFound from "./pages/404";
 import Message from "./pages/Message";
 import SocketConnection from "./components/SocketConnection";
-import Dashboard from "./pages/Dashboard";
+// import Dashboard from "./pages/Dashboard";
 import ScrollToTop from "./components/ScrollToTop";
 import EmailVerify from "./components/EmailVerify";
+import Dashboard from "./dashboard/Dashboard";
 
 function App() {
   return (
-    <>
+    <BrowserRouter>
       <SocketConnection />
       <BrowserRouter>
         <Header />
-      
         <ScrollToTop /> {/* Place ScrollToTop component inside BrowserRouter */}
         <Routes>
           <Route path="/" element={<Home />} />

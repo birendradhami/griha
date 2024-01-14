@@ -11,7 +11,7 @@ const AddRent = () => {
       <div className=" p-8 rounded w-full my-9 max-w-screen-lg">
         <div className="flex flex-col md:flex-row items-center">
           <div className="flex-shrink-0 flex justify-center mb-4 md:mb-0 md:mr-4">
-              <i className='text-6xl text-black sm:pr-[6rem]'>
+              <i className='text-[5.75rem] text-black sm:pr-[6rem]'>
               <MdRealEstateAgent />
               </i>
           </div>
