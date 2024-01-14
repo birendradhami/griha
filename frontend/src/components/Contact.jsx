@@ -87,22 +87,22 @@ const Contact = ({ listing }) => {
   return (
     <>
       {loading ? (
-        "Loading..."
+        "Loading"
       ) : (
         <div className="contact_component">
           <div className="property_owner mt-10">
             <div className="image_container flex items-center justify-start gap-2">
               <img
                 src={ownerInfo.avatar}
-                alt="Property Owner"
-                className="h-16 w-16 rounded-full border-[1px] shadow-lg border-brand-blue"
+                alt="Room Owner"
+                className="h-16 w-16 rounded-full border-[1px] shadow-lg border-black"
               />
               <div className="title">
-                <h3 className="text-lg font-heading capitalize truncate">
+                <h3 className="text-lg text-black font-bold capitalize truncate">
                   {ownerInfo.username}
                 </h3>
                 <p className="font-content font-bold ,text-sm text-gray-500">
-                  Property Owner
+                  Room Owner
                 </p>
               </div>
             </div>
@@ -111,7 +111,7 @@ const Contact = ({ listing }) => {
             <div>
               <p className="text-black font-heading text-left flex items-center justify-start mt-5">
                 <BsSend className="mr-2" />
-                Sending...
+                Sending
               </p>
             </div>
           ) : (
@@ -122,7 +122,7 @@ const Contact = ({ listing }) => {
                     {responseMsg}
                   </p>
                   <Link to={"/message"}>
-                    <button className="text-sm font-heading mt-2 px-5 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 duration-300">
+                    <button className="text-sm font-heading mt-2 px-5 py-2 bg-black text-white rounded-md hover:bg-green-700 duration-300">
                       Go to Messenger
                     </button>
                   </Link>
@@ -132,7 +132,7 @@ const Contact = ({ listing }) => {
                   <textarea
                     id="message"
                     type="text"
-                    placeholder="Write your message..."
+                    placeholder="Write your message"
                     name="message"
                     className="form_input border-[1px] border-gray-400  focus:border-brand-blue h-44 rounded-md placeholder:text-sm mt-3"
                     onChange={handleChange}
@@ -141,7 +141,7 @@ const Contact = ({ listing }) => {
                     <button
                       disabled={!message}
                       onClick={handleSendMsg}
-                      className="w-full px-2 py-3 text-lg font-heading text-white bg-brand-blue disabled:bg-brand-blue/60"
+                      className="w-full px-2 py-3 text-lg font-heading text-white bg-black disabled:bg-black/60"
                     >
                       Send Messages
                     </button>

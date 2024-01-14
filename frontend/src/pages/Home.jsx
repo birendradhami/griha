@@ -107,7 +107,7 @@ const Home = () => {
 
         <div className="relative ">
           <div className=" text-center">
-            <h1 className=" text-[36px] sm:text-6xl font-bold mx-auto pt-16 sm:pt-28  text-black">
+            <h1 className=" text-[36px] sm:text-5xl lg:text-6xl font-bold mx-auto pt-16 sm:pt-28  text-black">
               Room Finder Site
             </h1>
 
@@ -144,7 +144,7 @@ const Home = () => {
                         setSearchValue(e.target.value);
                     }}
                     value={searchValue}
-                    required 
+                    required
                   />
                   <button type="submit" className="search_btn">
                     <i className="text-center text-black font-bold">
@@ -217,8 +217,6 @@ const Home = () => {
       <AboutSection />
 
       <TestimonialSection />
-
-      <Footer />
     </>
   );
 };

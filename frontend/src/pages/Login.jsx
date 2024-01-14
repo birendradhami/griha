@@ -48,8 +48,7 @@ const Login = () => {
         <section className="form-section py-10 md:py-3 ">
           <div className="container ">
             <div className="form-container px-4 sm:px-8 bg-white py-6 pb-8 sm:py-9 sm:pb-12 max-w-lg mx-auto rounded-sm border-[1px] border-brand-black/50 shadow-brand shadow-black/40">
-              
-            <OAuth />
+              <OAuth />
               <h1 className="text-center font-bold text-black mb-3 font-heading text-md sm:text-[20px]">
                 {isNewUser ? "Login" : "Create an account"}
               </h1>
@@ -71,15 +70,12 @@ const Login = () => {
                 </u>
               </p>
 
-              
               <ToastContainer limit={0} />
             </div>
           </div>
         </section>
       )}
-      <>
-        <Footer />
-      </>
+      <></>
     </>
   );
 };

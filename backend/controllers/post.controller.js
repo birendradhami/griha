@@ -60,14 +60,21 @@ export const singlePost = async (req, res, next) => {
 
 //====GET LISTING Post ====//
 
+//====GET LISTING Post ====//
+
 export const getListingPost = async (req, res, next) => {
   try {
-    const searchTerm = req.query.searchTerm || "";
-    const type = req.query.type || "";
-    const offer = req.query.offer || "";
-    const parking = req.query.parking || "";
-    const furnished = req.query.furnished || "";
-    const page = req.query.page || 1;
+    const {
+      searchTerm = "",
+      type = "all",
+      offer = false,
+      parking = false,
+      furnished = false,
+      minPrice = 0,
+      maxPrice = Infinity,
+      page = 1,
+      sort,
+    } = req.query;
 
     const query = {
       $or: [
@@ -90,15 +97,30 @@ export const getListingPost = async (req, res, next) => {
       query.furnished = true;
     }
 
+    // Add a condition for the price range
+    if (minPrice || maxPrice !== Infinity) {
+      query.price = { $gte: parseInt(minPrice), $lte: parseInt(maxPrice) };
+    }
+
     const limit = 12;
     const pageNumber = parseInt(page);
-
     const skip = (pageNumber - 1) * limit;
 
-    const listings = await Listing.find(query).skip(skip).limit(limit);
+    let listings;
+
+    if (sort && (sort === "latest" || sort === "oldest")) {
+      const sortOption = sort === "latest" ? -1 : 1;
+      listings = await Listing.find(query)
+        .sort({ createdAt: sortOption })
+        .skip(skip)
+        .limit(limit);
+    } else {
+      listings = await Listing.find(query).skip(skip).limit(limit);
+    }
 
     res.status(200).json(listings);
   } catch (error) {
+    console.error("Error:", error);
     next(error);
   }
 };

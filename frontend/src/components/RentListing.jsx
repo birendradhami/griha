@@ -12,7 +12,6 @@ const RentListing = () => {
   const [rentListings, setRentlisting] = useState([]);
   const navigate = useNavigate();
 
-  //===Load Data ===//
   useEffect(() => {
     (async () => {
       try {
@@ -35,12 +34,12 @@ const RentListing = () => {
   const settings = {
     dots: true,
     customPaging: function (i) {
-        return (
-          <div className="custom-dot" key={i}>
-            ●
-          </div>
-        );
-      },
+      return (
+        <div className="custom-dot" key={i}>
+          ●
+        </div>
+      );
+    },
     infinite: true,
     lazyLoad: false,
     speed: 400,

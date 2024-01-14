@@ -21,14 +21,17 @@ const userSchema = new mongoose.Schema(
       default:
         "https://thinksport.com.au/wp-content/uploads/2020/01/avatar-.jpg",
     },
-    is_online: {
-      type: String,
-      default: 0,
-    }
+    resetToken: { type: String, required: false },
+    verified: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
-
+userSchema.methods.generateAuthToken = function () {
+  const token = jwt.sign({ _id: this._id }, process.env.JWTPRIVATEKEY, {
+    expiresIn: "7d",
+  });
+  return token;
+};
 const User = mongoose.model("User", userSchema);
 
 export default User;

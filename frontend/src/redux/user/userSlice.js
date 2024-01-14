@@ -17,6 +17,9 @@ const userSlice = createSlice({
     loddingStart: (state) => {
       state.loading = true;
     },
+    loadingStop: (state) => {
+      state.loading = false;
+    },
     signinSuccess: (state, action) => {
       state.currentUser = action.payload;
       state.loading = false;
@@ -71,6 +74,7 @@ const userSlice = createSlice({
 
 export const {
   loddingStart,
+  loadingStop,
   signinSuccess,
   signinFailed,
   userUpdateFailed,
