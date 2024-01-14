@@ -166,9 +166,6 @@ export const googleSignIn = async (req, res, next) => {
 // =====handle signout=====
 export const signOut = async (req, res, next) => {
 try {
-     // if logout is_online=0
-   await User.findByIdAndUpdate(req.params.id, { $set: { is_online: 0 } });
-
     res.clearCookie("access_token");
     res.status(200).json("User Deleted Successfully!");
   } catch (error) {

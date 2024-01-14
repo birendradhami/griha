@@ -33,6 +33,7 @@ const Chat = ({ conversationInfo }) => {
     const socketRef =useRef();
     const [file, setFile] = useState(null);
     const [showImagePreview, setShowImagePreview] = useState(false);
+    const [base64Image, setBase64Image] = useState(null);
 
     const handleEmojiClick = (emojiObject) => {
         setSelectedEmoji(emojiObject);
@@ -97,7 +98,8 @@ const Chat = ({ conversationInfo }) => {
             {
                 message: socketMsg.message,
                 type: "received",
-                chatId: socketMsg.chatId
+                chatId: socketMsg.chatId,
+                image: base64Image,
             }
             ])
         })
@@ -148,7 +150,7 @@ const Chat = ({ conversationInfo }) => {
                     {
                         sender: currentUser._id,
                         receiver: trackConversation.conversationActive,
-                        message: typedMessage,
+                        message: typedMessage
                     }
                 )
             });
@@ -168,9 +170,7 @@ const Chat = ({ conversationInfo }) => {
     
    
     }
-
   
-      
 
 
     useEffect(() => {
@@ -206,8 +206,26 @@ const Chat = ({ conversationInfo }) => {
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
         setFile(selectedFile);
-        setShowImagePreview(true);
-      };
+    
+        if (selectedFile) {
+            const reader = new FileReader();
+    
+            reader.onloadend = () => {
+                // The result attribute contains the base64-encoded string
+                const base64String = reader.result;
+                // Do something with the base64String (e.g., set it in state)
+                setBase64Image(base64String);
+                console.log(base64String)
+            };
+    
+            // Read the selectedFile as a Data URL (base64)
+            reader.readAsDataURL(selectedFile);
+    
+            setShowImagePreview(true);
+            console.log(selectedFile);
+        }
+    };
+    
 
       const handleDiscardImage = () => {
         setFile(null);

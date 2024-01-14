@@ -18,10 +18,7 @@ import { Server } from "socket.io";
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
-
-
 const expressServer = http.createServer(app);
-
 //Handling CORS origin
 if (process.env.NODE_ENV === "local") {
   app.use(
@@ -105,7 +102,12 @@ io.on("connection", (socket) => {
   console.log(`socket connected with ${socket.id}`);
 
 
- 
+  socket.on('image', (data) => {
+    // Handle image data here or save it to a database
+    console.log('Received image:', data);
+    // You can broadcast the image to other users if needed
+    io.emit('image', data);
+});
 
   //=======Messaging Feature Here ======//
   socket.on("join_room", (chatId) => {
@@ -121,3 +123,4 @@ io.on("connection", (socket) => {
     console.log(`user disconnected successfully ${socket.id}`);
   });
 });
+

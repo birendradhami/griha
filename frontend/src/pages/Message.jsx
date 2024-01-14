@@ -166,7 +166,7 @@ const Message = () => {
                 }
             </section>
 
-          <Footer/>
+        
         </>
     )
 }
