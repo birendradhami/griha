@@ -10,7 +10,8 @@ import messageRouter from "./routes/message.route.js";
 import conversationRoute from "./routes/conversation.route.js";
 import notificatonRoute from "./routes/notification.route.js";
 import forgotPasswordRouter from "./routes/forgotPassword.js";
-
+import jwt from "jsonwebtoken";
+import User from "./models/user.models.js";
 
 import path from "path";
 import http from "http";
@@ -71,14 +72,12 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.join(staticFilesPath, "index.html"));
   });
 } else {
- 
 }
 
 //============== Deployment==============//
- app.get("/", (req, res) => {
-    res.send("api listing...");
-    
-  });
+app.get("/", (req, res) => {
+  res.send("api listing...");
+});
 // Handle middleware
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
@@ -92,7 +91,7 @@ app.use((err, req, res, next) => {
 
 //----------------------------Handling Socket.io ------------------------------//
 
-//Handling CORS origin
+// Handling CORS origin
 export const io = new Server(expressServer, {
   cors: {
     origin: [
@@ -103,14 +102,51 @@ export const io = new Server(expressServer, {
     credentials: true,
   },
 });
+console.log("tilak joshi");
 
-
-
-
-
-
-io.on("connection", (socket) => {
+io.on("connection", async (socket) => {
   console.log(`socket connected with ${socket.id}`);
+  const token = socket.handshake.auth.token;
+  // console.log(token);
+  
+  
+  async function getUserDataFromRequest(token) {
+    try {
+      if (token) {
+        const userData = await jwt.verify(token, process.env.JWT_SECRET);
+        // console.log("Decoded Token:", userData);
+        return userData;
+      } else {
+        // throw new Error("No token");
+        console.log("Not found token");
+      }
+    } catch (error) {
+      console.error("Token Verification Error:", error);
+      // throw error;
+    }
+  }
+
+  (async () => {
+    try {
+      const user_id = await getUserDataFromRequest(token);
+      console.log(user_id.id);
+      await User.findByIdAndUpdate(user_id.id, {
+        $set: { onlineOffline: "1" },
+      });
+      //  user broadcast online status
+      socket.broadcast.emit("getOnlineUser", {
+        userID: user_id.id,
+        status: "Online",
+        onOff: "1",
+        colorA: "text-green-500",
+        colorR: "text-gray-500",
+        colorAB: "border-green-500",
+        colorRB: "border-gray-500",
+      });
+    } catch (error) {
+      console.error("Error getting user data:", error);
+    }
+  })();
 
   //=======Messaging Feature Here ======//
   socket.on("join_room", (chatId) => {
@@ -124,5 +160,28 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", (data) => {
     console.log(`user disconnected successfully ${socket.id}`);
+    (async () => {
+      try {
+        const user_id = await getUserDataFromRequest(token);
+        console.log(user_id.id);
+        await User.findByIdAndUpdate(user_id.id, {
+          $set: { onlineOffline: "0" },
+        });
+        //  user broadcast offline status
+      socket.broadcast.emit("getOfflineUser", {
+        userID: user_id.id,
+        status: "Offline",
+        onOff: "1",
+        colorA: "text-gray-500",
+        colorR: "text-green-500",
+        colorAB: "border-gray-500",
+        colorRB: "border-green-500",
+      });
+
+      } catch (error) {
+        // Handle the error if needed
+        console.error("Error getting user data:", error);
+      }
+    })();
   });
 });
