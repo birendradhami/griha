@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -19,8 +19,8 @@ import SocketConnection from "./components/SocketConnection";
 import ScrollToTop from "./components/ScrollToTop";
 import EmailVerify from "./components/EmailVerify";
 import Dashboard from "./dashboard/Dashboard";
-
 function App() {
+   
   return (
     <BrowserRouter>
       <SocketConnection />

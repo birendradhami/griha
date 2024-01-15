@@ -6,6 +6,7 @@ import {
   userPosts,
   getUsers,
   updateStatus
+  getOnlineStatus,
 } from "../controllers/user.controller.js";
 import { verifyToken } from "../utils/varifyUser.js";
 import userPermissions from "../middleware/permissions/userPermissions.js";
@@ -20,4 +21,6 @@ router.get("/posts/:id", verifyToken, userPosts);
 router.get("/", getUsers);
 router.patch("/updateStatus/:id", updateStatus);
 
+router.get("/getOnlineStatus/:id", getOnlineStatus);
+ 
 export default router;

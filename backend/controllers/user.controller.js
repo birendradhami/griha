@@ -2,6 +2,7 @@ import Listing from "../models/listing.models.js";
 import User from "../models/user.models.js";
 import { throwError } from "../utils/error.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export const getUser = async (req, res, next) => {
   try {
@@ -78,28 +79,22 @@ export const userPosts = async (req, res, next) => {
   }
 };
 
-// Get Users
-export const getUsers = async (req, res, next) => {
+// get online offline user status
+export const getOnlineStatus = async (req, res, next) => {
   try {
-    if (req.user && req.user.role !== 'admin') {
-      return next(throwError(401, 'Unauthorized: Only admin can access user list'));
+    const userID = req.params.id;
+    console.log(userID);
+    // Fetch user from the database based on userID
+    const user = await User.findById(userID);
+
+    if (!user) {
+      // Handle the case where the user is not found
+      return res.json({ success: false, error: "User not found" });
     }
-
-    const users = await User.find().sort({ _id: -1 });
-    res.status(200).json({ success: true, result: users });
+    res.json({ success: true, user });
   } catch (error) {
-    next(throwError(500, error.message));
+    console.error("Error fetching online status:", error);
+    res.json({ success: false, error: "Failed to fetch online status" });
+    next(error);
   }
-};
-
-// Update User Status
-export const updateStatus = (req, res) => {
-  const { role, active } = req.body;
-  User.findByIdAndUpdate(req.params.id, { role, active })
-    .then(() => {
-      res.status(200).json({ success: true, result: { _id: req.params.id } });
-    })
-    .catch((error) => {
-      res.status(500).json({ success: false, error: error.message });
-    });
 };

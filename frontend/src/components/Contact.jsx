@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BsSend } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { useSocket } from "./SocketContext";
 
 const Contact = ({ listing }) => {
   const { currentUser } = useSelector((state) => state.user);
@@ -11,6 +12,8 @@ const Contact = ({ listing }) => {
   const [responseMsg, setResponseMsg] = useState("");
   const [sending, setSending] = useState(false);
   const [messageSendSuccess, setMessageSendSuccess] = useState(false);
+  const { colorAB, colorRB, colorA, colorR, uid, onOff, onlineStatus, socket } =
+    useSocket();
 
   const navigate = useNavigate();
 
@@ -83,6 +86,23 @@ const Contact = ({ listing }) => {
       setSending(false);
     }
   };
+// online offline status
+  useEffect(() => {
+    if (uid === ownerInfo._id) {
+      const element1 = document.getElementById(uid + "status");
+      const element2 = document.getElementById(uid + "border");
+
+      if (element1) {
+        element1.innerHTML = onlineStatus;
+        element1.classList.remove(colorR);
+        element1.classList.add(colorA);
+      }
+      if (element2) {
+        element2.classList.remove(colorRB);
+        element2.classList.add(colorAB);
+      }
+    }
+  }, [uid, colorAB, colorRB, colorR, colorA, onlineStatus]);
 
   return (
     <>
@@ -92,12 +112,40 @@ const Contact = ({ listing }) => {
         <div className="contact_component">
           <div className="property_owner mt-10">
             <div className="image_container flex items-center justify-start gap-2">
-              <img
-                src={ownerInfo.avatar}
-                alt="Room Owner"
-                className="h-16 w-16 rounded-full border-[1px] shadow-lg border-black"
-              />
+              {ownerInfo.onlineOffline == 1 ? (
+                <div
+                  className={`h-16 w-16 rounded-full border-[3px] shadow-lg border-green-500`}
+                  id={`${ownerInfo._id}border`}
+                >
+                  <img
+                    src={ownerInfo.avatar}
+                    alt="Room Owner"
+                    className="h-full w-full rounded-full"
+                  />
+                </div>
+              ) : (
+                <div
+                  className={`h-16 w-16 rounded-full border-[3px] shadow-lg border-gray-500`}
+                  id={`${ownerInfo._id}border`}
+                >
+                  <img
+                    src={ownerInfo.avatar}
+                    alt="Room Owner"
+                    className="h-full w-full rounded-full"
+                  />
+                </div>
+              )}
               <div className="title">
+                {ownerInfo.onlineOffline == 1 ? (
+                  <div className="text-green-500" id={`${ownerInfo._id}status`}>
+                    Online
+                  </div>
+                ) : (
+                  <div className="text-gray-500" id={`${ownerInfo._id}status`}>
+                    Offline
+                  </div>
+                )}
+               
                 <h3 className="text-lg text-black font-bold capitalize truncate">
                   {ownerInfo.username}
                 </h3>
@@ -166,3 +214,4 @@ const Contact = ({ listing }) => {
 };
 
 export default Contact;
+// export { ownerInfo };
