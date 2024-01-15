@@ -264,11 +264,6 @@ const Profile = () => {
             >
               {loading ? 'Loading...' : 'Save Changes'}
             </Button>
-         
-         
-            <Button onClick={handleLogOut} variant="contained" color="primary" fullWidth sx={{ mt: { xs: 2, xl: 0 }, mr: { xs: 0, xl: 2 } }}>
-              Log Out
-            </Button>
             <Button onClick={handleDelete} variant="contained" color="primary" fullWidth sx={{ mt: { xs: 2, xl: 0 } }}>
               Delete
             </Button>
