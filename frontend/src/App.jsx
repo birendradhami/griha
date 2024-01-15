@@ -24,30 +24,39 @@ function App() {
   return (
     <BrowserRouter>
       <SocketConnection />
-      <BrowserRouter>
-        <Header />
-        <ScrollToTop /> {/* Place ScrollToTop component inside BrowserRouter */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/forgotPassword" element={<ForgotPassword />} />
-          <Route path="/resetPassword" element={<ResetPassword />} />
-          <Route path="/listing/:id" element={<ListingPage />} />
-          <Route path="/search?" element={<Search />} />
-          <Route path="/message" element={<Message />} />
-          <Route path="/users/:id/verify/:token" element={<EmailVerify />} />
-          <Route path="/create_post" element={<CreatePost />} />
-          <Route path="*" element={<PageNotFound />} />
-          
-          <Route element={<PrivateRoute />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/update_post/:id" element={<UpdatePost />} />
-            <Route path="/saved_listing" element={<SaveListing />} />
-          </Route>
-        </Routes>
-        <Footer />
-      </BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
+  );
+}
+
+function AppContent() {
+  const { pathname } = useLocation();
+  const isDashboardRoute = pathname.startsWith("/dashboard");
+
+  return (
+    <>
+      {!isDashboardRoute && <Header />}
+      <ScrollToTop />
+      <Routes>
+        <Route path="dashboard/*" element={<Dashboard />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
+        <Route path="/resetPassword" element={<ResetPassword />} />
+        <Route path="/listing/:id" element={<ListingPage />} />
+        <Route path="/search?" element={<Search />} />
+        <Route path="/message" element={<Message />} />
+        <Route path="/users/:id/verify/:token" element={<EmailVerify />} />
+        <Route path="/create_post" element={<CreatePost />} />
+        <Route path="*" element={<PageNotFound />} />
+
+        <Route element={<PrivateRoute />}>
+          <Route path="/update_post/:id" element={<UpdatePost />} />
+          <Route path="/saved_listing" element={<SaveListing />} />
+        </Route>
+      </Routes>
+      {!isDashboardRoute && <Footer />}
     </>
   );
 }
