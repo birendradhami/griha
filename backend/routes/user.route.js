@@ -5,7 +5,7 @@ import {
   getUser,
   userPosts,
   getUsers,
-  updateStatus
+  updateStatus,
   getOnlineStatus,
 } from "../controllers/user.controller.js";
 import { verifyToken } from "../utils/varifyUser.js";
