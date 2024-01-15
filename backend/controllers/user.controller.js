@@ -17,7 +17,7 @@ export const getUser = async (req, res, next) => {
   }
 };
 
-//=======update user api=======//
+// Update User
 export const updateUser = async (req, res, next) => {
   const { email, username } = req.body;
   if (req.user.id !== req.params.id)
@@ -41,6 +41,8 @@ export const updateUser = async (req, res, next) => {
           password: req.body.password,
           email: req.body.email,
           avatar: req.body.avatar,
+          role: req.body.role,
+          active: req.body.active,
         },
       },
       { new: true }
@@ -52,7 +54,7 @@ export const updateUser = async (req, res, next) => {
   }
 };
 
-//=====Handle User Delete=====//
+// User Delete
 export const deleteUser = async (req, res, next) => {
   if (req.user.id !== req.params.id)
     return next(throwError(401, "User Invalid"));
@@ -65,7 +67,7 @@ export const deleteUser = async (req, res, next) => {
   }
 };
 
-//=====Get User Created Post=====//
+// Get User Post
 export const userPosts = async (req, res, next) => {
   if (req.user.id !== req.params.id)
     return next(throwError(401, "You can see only your posts"));
@@ -75,6 +77,32 @@ export const userPosts = async (req, res, next) => {
   } catch (error) {
     next(throwError(404, error.message));
   }
+};
+
+// Get Users
+export const getUsers = async (req, res, next) => {
+  try {
+    if (req.user && req.user.role !== 'admin') {
+      return next(throwError(401, 'Unauthorized: Only admin can access user list'));
+    }
+
+    const users = await User.find().sort({ _id: -1 });
+    res.status(200).json({ success: true, result: users });
+  } catch (error) {
+    next(throwError(500, error.message));
+  }
+};
+
+// Update User Status
+export const updateStatus = (req, res) => {
+  const { role, active } = req.body;
+  User.findByIdAndUpdate(req.params.id, { role, active })
+    .then(() => {
+      res.status(200).json({ success: true, result: { _id: req.params.id } });
+    })
+    .catch((error) => {
+      res.status(500).json({ success: false, error: error.message });
+    });
 };
 
 // get online offline user status

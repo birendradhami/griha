@@ -48,6 +48,7 @@ const handleTogglePasswordVisibility = () => {
       });
 
       const userData = await res.json();
+      
       if (userData.success === false) {
         // Handle failure cases
         if (userData.verifyEmail) {
