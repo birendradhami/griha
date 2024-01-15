@@ -158,7 +158,7 @@ io.on("connection", async (socket) => {
   });
 
   socket.on("disconnect", (data) => {
-    console.log(`user disconnected successfully ${socket.id}`);
+    // console.log(`user disconnected successfully ${socket.id}`);
     (async () => {
       try {
         const user_id = await getUserDataFromRequest(token);
