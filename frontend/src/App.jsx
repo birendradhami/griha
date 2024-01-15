@@ -38,7 +38,7 @@ function AppContent() {
       {!isDashboardRoute && <Header />}
       <ScrollToTop />
       <Routes>
-        <Route path="dashboard/*" element={<Dashboard />} />
+        
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -52,6 +52,7 @@ function AppContent() {
         <Route path="*" element={<PageNotFound />} />
 
         <Route element={<PrivateRoute />}>
+        <Route path="dashboard/*" element={<Dashboard />} />
           <Route path="/update_post/:id" element={<UpdatePost />} />
           <Route path="/saved_listing" element={<SaveListing />} />
         </Route>
