@@ -4,11 +4,11 @@ import User from "../models/user.models.js";
 import { throwError } from "../utils/error.js";
 import jwt from "jsonwebtoken";
 import { passwordGenarator, usernameGenarator } from "../utils/helper.js";
-// import User from '../models/User';
-import Token from "../models/token.js";
-import sendEmail from "../utils/sendEmail.js";
+// import User from '../models/User'; 
+import Token from "../models/token.js"; 
+import sendEmail from "../utils/sendEmail.js"; 
 
-// Handle Signup
+//======handle singup route ===========//
 
 export const signupVerify = async (req, res, next) => {
   try {
@@ -20,14 +20,14 @@ export const signupVerify = async (req, res, next) => {
       token: req.params.token,
     });
     if (!token) return res.status(400).send({ message: "Invalid link" });
-
+  
     await User.findOneAndUpdate(
-      { _id: user._id }, 
+      { _id: user._id }, // Filter to find the document
       { $set: { verified: true } } // Update the 'verified' field
-    );
-
-    await Token.deleteMany({ userId: user._id });
-
+      );
+    
+      await Token.deleteMany({ userId: user._id });
+    
     res.status(200).send({
       message: "Email verified successfully",
     });
@@ -36,7 +36,11 @@ export const signupVerify = async (req, res, next) => {
   }
 };
 
-export const singup = async (req, res, next) => {
+
+//======handle singup route ===========//
+
+
+export  const singup = async (req, res, next) => {
   const { username, email, password } = req.body;
   try {
     // Check if the user with the same email already exists
@@ -68,14 +72,18 @@ export const singup = async (req, res, next) => {
   }
 };
 
-// Handle Signin
 
+
+// ========sing in route handling here =====//
 export const signin = async (req, res, next) => {
   const { email, userPassword } = req.body;
   try {
     const validUser = await User.findOne({ email });
-
-    if (!validUser) return next(throwError(404, "Wrong Credentials!"));
+    if (!validUser) return next(throwError(404, "Worng Credentials!"));
+    const isValidPassword = bcrypt.compareSync(
+      userPassword,
+      validUser.password
+    );
 
     if (!validUser.active) {
       return res.status(400).json({
@@ -83,23 +91,15 @@ export const signin = async (req, res, next) => {
         message: "Your account has been suspended",
       });
     }
+    if (!isValidPassword) return next(throwError(401, "Worng Credentials!"));
 
-    const isValidPassword = bcrypt.compareSync(
-      userPassword,
-      validUser.password
-    );
-
-    if (!isValidPassword) return next(throwError(401, "Wrong Credentials!"));
-
-    if (!validUser.verified) {
+		if (!validUser.verified) {
       let token = await Token.findOne({ userId: validUser._id });
-
       if (!token) {
         token = await new Token({
           userId: validUser._id,
           token: crypto.randomBytes(32).toString("hex"),
         }).save();
-
         const url = `${process.env.NODE_ENV}users/${validUser.id}/verify/${token.token}`;
         await sendEmail(validUser.email, "Verify Email", url);
       }
@@ -109,13 +109,12 @@ export const signin = async (req, res, next) => {
         message: "An Email sent to your account. Please verify.",
       });
     }
-
-    const { password, role, ...rest } = validUser._doc;
-    const token = jwt.sign(
-      { id: validUser._id, role },
-      process.env.JWT_SECRET,
-      { expiresIn: "720h" }
-    );
+    const { password, ...rest } = validUser._doc;
+    const tooken = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET, {
+      expiresIn: "720h",
+    });
+    
+ 
     res
       .cookie("access_token", tooken, { httpOnly: false, secure: false })
       .status(200)
@@ -126,8 +125,7 @@ export const signin = async (req, res, next) => {
   }
 };
 
-// Handle Google Signin
-
+//=====Handle Google Singin Here ======//
 export const googleSignIn = async (req, res, next) => {
   const { email, name, photo } = req.body;
   try {
@@ -139,20 +137,22 @@ export const googleSignIn = async (req, res, next) => {
           success: false,
           message: "Your account has been suspended",
         });
-      }
+      }}
 
-      const { pass: password, role, ...rest } = savedUser._doc;
-      const token = jwt.sign(
-        { id: savedUser._id, role },
-        process.env.JWT_SECRET,
-        { expiresIn: "720h" }
-      );
+    //====IF user exist in DB====//
+    if (user) {
+      const tooken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "720h",
+      });
 
+      const { password, ...rest } = user._doc;
       res
-        .cookie("access_token", token, { httpOnly: false, secure: false })
+        .cookie("access_token", tooken, { httpOnly: false, secure: false })
         .status(200)
         .json(rest);
-    } else {
+    }
+    //====IF user not exist in DB====//
+    else {
       const hashedPassword = bcrypt.hashSync(passwordGenarator(), 10);
       const newUser = new User({
         name,
@@ -160,43 +160,28 @@ export const googleSignIn = async (req, res, next) => {
         email,
         password: hashedPassword,
         avatar: photo,
-        role: "basic",
       });
-
-      const savedUser = await newUser.save();
-
-      if (!savedUser.active) {
-        return res.status(400).json({
-          success: false,
-          message: "Your account has been suspended",
-        });
-      }
-
-      const token = jwt.sign({ id: savedUser._id }, process.env.JWT_SECRET, {
+      const user = await newUser.save();
+      const tooken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
         expiresIn: "720h",
       });
-
-      const { pass: password, ...rest } = savedUser._doc;
+      const { pass: password, ...rest } = user._doc;
       res
         .cookie("access_token", tooken, { httpOnly: false, secure: false })
         .status(200)
         .json(rest);
     }
   } catch (error) {
+    //======Handling Error Here =====//
     next(throwError(error));
   }
 };
 
-// Handle Signout
-
+//=====handle signout=====//
 export const signOut = async (req, res, next) => {
   try {
-    if (req.cookies.access_token) {
-      res.clearCookie("access_token");
-      res.status(200).json("User Signed Out Successfully!");
-    } else {
-      res.status(200).json("User Not Signed In");
-    }
+    res.clearCookie("access_token");
+    res.status(200).json("User Deleted Successfully!");
   } catch (error) {
     next(error);
   }
