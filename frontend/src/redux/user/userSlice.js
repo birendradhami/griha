@@ -5,7 +5,7 @@ const initialState = {
   loading: false,
   signinError: null,
   error: null,
-  savedListing: [],
+  users: [],
 };
 
 const userSlice = createSlice({
@@ -34,9 +34,19 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = false;
     },
+    
     userUpdateFailed: (state, action) => {
       state.loading = false;
       state.error = action.payload;
+    },
+
+    // handle users
+
+    getUsersSuccess:(state,action) =>{  
+      
+      state.error = false;
+      state.users = action.payload;
+      state.loading = false;
     },
 
     //=====Handlle User Delete State =====//
@@ -86,6 +96,7 @@ export const {
   signoutFailed,
   handleSave,
   handleLisingRemove,
+  getUsersSuccess,
 } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -129,24 +129,25 @@ const SideList = ({ open, setOpen, darkTheme, dark, setDark }) => {
 
   const list = useMemo(
     () => [
-        ...(isAdmin(currentUser)
-        ?[
+      ...(isAdmin(currentUser)
+        ? [
             {
-        title: "Overview",
-        icon: <Dashboard />,
-        link: "",
-        component: <Overview {...{ setSelectedLink, link: "" }} />,
-        onClick: () => navigate(""),
-      },{
-        title: "Users",
-        icon: <PeopleAlt />,
-        link: "users",
-        component: <Users {...{ setSelectedLink, link: "users" }} />,
-        onClick: () => navigate("users"),
-      },
-        ]
+              title: "Overview",
+              icon: <Dashboard />,
+              link: "",
+              component: <Overview {...{ setSelectedLink, link: "" }} />,
+              onClick: () => navigate(""),
+            },
+            {
+              title: "Users",
+              icon: <PeopleAlt />,
+              link: "users",
+              component: <Users {...{ setSelectedLink, link: "users" }} />,
+              onClick: () => navigate("users"),
+            },
+          ]
         : []),
-      
+
       {
         title: "Profile",
         icon: <Person />,
@@ -162,7 +163,7 @@ const SideList = ({ open, setOpen, darkTheme, dark, setDark }) => {
         component: <Rooms {...{ setSelectedLink, link: "rooms" }} />,
         onClick: () => navigate("rooms"),
       },
-      
+
       {
         title: "Messages",
         icon: <MarkChatUnread />,
@@ -203,10 +204,9 @@ const SideList = ({ open, setOpen, darkTheme, dark, setDark }) => {
                 fontSize: 25,
                 fontWeight: 700,
                 letterSpacing: -1,
-                mt: 1,
                 color: darkTheme.palette.text.primary,
                 mr: 3,
-                ml:1
+                ml: 1,
               }}
               onClick={() => navigate("/")}
             >
@@ -224,30 +224,50 @@ const SideList = ({ open, setOpen, darkTheme, dark, setDark }) => {
           </IconButton>
         </Box>
         {/* <Divider /> */}
-        <DrawerHeader sx={{ flexDirection: "column", mt: 2, mb: 1 }}>
-          <Avatar src={currentUser?.avatar} sx={{ width: 50, height: 50 }} />
+        <DrawerHeader
+          sx={{
+            flexDirection: "column",
+            mt: 1,
+            mb: 1,
+            "@media (max-width: 1024px)": {
+              mt:2,
+            },
+          }}
+        >
+          <Avatar src={currentUser?.avatar} sx={{ width: 50, height: 50,
+            "@media (max-width: 1024px)": {
+              mt:5,
+            }, 
+                     
+          }} />
           {open ? (
-            <IconButton onClick={() => setOpen(false)} sx={{ borderRadius: 0 }}>
+            <>
               <Typography
                 sx={{
                   fontSize: 18,
                   fontWeight: 500,
-                  mr: 2,
+                  mt: 3,
                   color: darkTheme.palette.text.primary,
                 }}
               >
                 [{currentUser?.username}:{currentUser?.role || "role"}]
               </Typography>
-              <Menu
-                sx={{
-                  color: darkTheme.palette.mode === "light" ? "black" : "white",
-                  fontSize: 25,
-                  "@media (min-width: 1024px)": {
-                    display: "none",
-                  },
-                }}
-              />
-            </IconButton>
+              <IconButton
+                onClick={() => setOpen(false)}
+                sx={{ borderRadius: 0 }}
+              >
+                <Menu
+                  sx={{
+                    color:
+                      darkTheme.palette.mode === "light" ? "black" : "white",
+                    fontSize: 25,
+                    "@media (min-width: 1024px)": {
+                      display: "none",
+                    },
+                  }}
+                />
+              </IconButton>
+            </>
           ) : (
             <IconButton
               color="inherit"
@@ -255,7 +275,7 @@ const SideList = ({ open, setOpen, darkTheme, dark, setDark }) => {
               onClick={handleDrawerOpen}
               edge="start"
               sx={{
-                mt: 2,
+                mt: 1,
                 ml: 1,
               }}
             >
@@ -300,7 +320,7 @@ const SideList = ({ open, setOpen, darkTheme, dark, setDark }) => {
                   primary={item.title}
                   sx={{
                     opacity: open ? 1 : 0,
-                    fontWeight:'bold',
+                    fontWeight: "bold",
                     color:
                       darkTheme.palette.mode === "light" ? "black" : "white",
                   }}
@@ -315,16 +335,26 @@ const SideList = ({ open, setOpen, darkTheme, dark, setDark }) => {
         sx={{
           flexGrow: 1,
           p: 3,
+          width: `calc(100% - ${drawerWidth}px)`,
         }}
       >
-        <DrawerHeader />
+        {/* <DrawerHeader /> */}
         <Routes>
           {list.map((item) => (
             <Route key={item.title} path={item.link} element={item.component} />
           ))}
           <Route path="logout" element={null} />
+          <Route
+            path="*"
+            element={
+              isAdmin(currentUser) ? (
+                <Overview {...{ setSelectedLink, link: "" }} />
+              ) : (
+                <Profile {...{ setSelectedLink, link: "profile" }} />
+              )
+            }
+          />
         </Routes>
-        <Routes></Routes>
       </Box>
       <ToastContainer />
     </>
