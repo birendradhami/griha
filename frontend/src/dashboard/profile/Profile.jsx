@@ -172,7 +172,7 @@ const Profile = () => {
   return (
     <>
       <Container maxWidth="xs">
-       
+        <Paper elevation={7}>
         
           <Box p={3}>
             <Box
@@ -273,7 +273,7 @@ const Profile = () => {
               Delete
             </Button>
             </Box>
-       
+        </Paper>
       </Container>
     </>
   )
