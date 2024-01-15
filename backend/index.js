@@ -102,7 +102,6 @@ export const io = new Server(expressServer, {
     credentials: true,
   },
 });
-console.log("tilak joshi");
 
 io.on("connection", async (socket) => {
   // console.log(`socket connected with ${socket.id}`);
