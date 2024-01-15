@@ -19,6 +19,7 @@ export const getUsers = async (dispatch, currentUser) => {
       }
     );
     const result = response.data;
+    console.log(result)
     dispatch(getUsersSuccess(result));
     return true;
   } catch (error) {
@@ -80,7 +81,6 @@ const UsersActions = ({ params, rowId, setRowId }) => {
   useEffect(() => {
     if (rowId === params.id && success) setSuccess(false);
   }, [rowId]);
-  
   return (
     <Box
       sx={{
