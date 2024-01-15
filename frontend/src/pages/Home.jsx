@@ -146,7 +146,10 @@ const Home = () => {
                     value={searchValue}
                     required
                   />
-                  <button type="submit" className="search_btn right-[32px] sm:right-0">
+                  <button
+                    type="submit"
+                    className="search_btn right-[32px] sm:right-0"
+                  >
                     <i className="text-center text-black font-bold">
                       <BsSearch />
                     </i>

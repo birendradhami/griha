@@ -2,6 +2,7 @@ import Listing from "../models/listing.models.js";
 import User from "../models/user.models.js";
 import { throwError } from "../utils/error.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export const getUser = async (req, res, next) => {
   try {
@@ -40,7 +41,6 @@ export const updateUser = async (req, res, next) => {
           password: req.body.password,
           email: req.body.email,
           avatar: req.body.avatar,
-          is_online:req.body.is_online,
         },
       },
       { new: true }
@@ -77,5 +77,22 @@ export const userPosts = async (req, res, next) => {
   }
 };
 
+// get online offline user status
+export const getOnlineStatus = async (req, res, next) => {
+  try {
+    const userID = req.params.id;
+    console.log(userID);
+    // Fetch user from the database based on userID
+    const user = await User.findById(userID);
 
-
+    if (!user) {
+      // Handle the case where the user is not found
+      return res.json({ success: false, error: "User not found" });
+    }
+    res.json({ success: true, user });
+  } catch (error) {
+    console.error("Error fetching online status:", error);
+    res.json({ success: false, error: "Failed to fetch online status" });
+    next(error);
+  }
+};
