@@ -105,7 +105,7 @@ export const io = new Server(expressServer, {
 console.log("tilak joshi");
 
 io.on("connection", async (socket) => {
-  console.log(`socket connected with ${socket.id}`);
+  // console.log(`socket connected with ${socket.id}`);
   const token = socket.handshake.auth.token;
   // console.log(token);
   
@@ -129,7 +129,7 @@ io.on("connection", async (socket) => {
   (async () => {
     try {
       const user_id = await getUserDataFromRequest(token);
-      console.log(user_id.id);
+      // console.log(user_id.id);
       await User.findByIdAndUpdate(user_id.id, {
         $set: { onlineOffline: "1" },
       });

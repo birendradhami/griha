@@ -40,7 +40,7 @@ export const SocketProvider = ({ children }) => {
   }, [accessToken]);
   useEffect(() => {
     const handleOnlineStatus = (data) => {
-      console.log(`User ${data.userID} is ${data.status}`);
+      // console.log(`User ${data.userID} is ${data.status}`);
       setOnlineStatus(data.status);
       setOnOff(data.onOff);
       setUid(data.userID);
