@@ -4,16 +4,20 @@ import {
   updateUser,
   getUser,
   userPosts,
+  getUsers,
+  updateStatus
 } from "../controllers/user.controller.js";
 import { verifyToken } from "../utils/varifyUser.js";
+import userPermissions from "../middleware/permissions/userPermissions.js";
+import checkAccess from "../middleware/checkAccess.js";
 
 const router = express.Router();
 
-router.get("/:id",  getUser);
+router.get("/:id", getUser);
 router.post("/update/:id", verifyToken, updateUser);
 router.delete("/delete/:id", verifyToken, deleteUser);
 router.get("/posts/:id", verifyToken, userPosts);
-
-
+router.get("/", getUsers);
+router.patch("/updateStatus/:id", updateStatus);
 
 export default router;
