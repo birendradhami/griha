@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { getUsersSuccess } from "../../redux/user/userSlice";
 
-
 export const getUsers = async (dispatch, currentUser) => {
   try {
     const response = await axios.get(
@@ -18,6 +17,7 @@ export const getUsers = async (dispatch, currentUser) => {
         },
       }
     );
+
     const result = response.data;
     dispatch(getUsersSuccess(result));
     return true;
@@ -58,7 +58,6 @@ const UsersActions = ({ params, rowId, setRowId }) => {
   const dispatch = useDispatch();
 
   const handleSubmit = async () => {
-    
     setLoading(true);
     const { role, active, _id } = params.row;
     const result = await updateStatus(
@@ -72,7 +71,7 @@ const UsersActions = ({ params, rowId, setRowId }) => {
       setSuccess(true);
       setRowId(null);
       await getUsers(dispatch);
-      setSuccess(false)
+      setSuccess(false);
     }
     setLoading(false);
   };
@@ -80,7 +79,7 @@ const UsersActions = ({ params, rowId, setRowId }) => {
   useEffect(() => {
     if (rowId === params.id && success) setSuccess(false);
   }, [rowId]);
-  
+
   return (
     <Box
       sx={{

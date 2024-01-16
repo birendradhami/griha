@@ -1,5 +1,5 @@
 import express from "express";
-import { verifyToken } from "../utils/varifyUser.js";
+import { verifyToken } from "../utils/verifyUser.js";
 import {
   createPost,
   deletePost,

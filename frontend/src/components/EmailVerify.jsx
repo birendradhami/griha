@@ -15,7 +15,6 @@ const EmailVerify = () => {
       try {
         const url = `/api/auth/${param.id}/verify/${param.token}`;
         const { data } = await axios.get(url);
-        console.log(data);
         setValidUrl(true);
         toast.success("Email verified successfully");
       } catch (error) {

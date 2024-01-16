@@ -8,8 +8,7 @@ import {
   updateStatus,
   getOnlineStatus,
 } from "../controllers/user.controller.js";
-import { verifyToken } from "../utils/varifyUser.js";
-import userPermissions from "../middleware/permissions/userPermissions.js";
+import { verifyToken } from "../utils/verifyUser.js";
 import checkAccess from "../middleware/checkAccess.js";
 
 const router = express.Router();
