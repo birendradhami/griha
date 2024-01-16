@@ -4,6 +4,8 @@ import { throwError } from "../utils/error.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+// Get User
+
 export const getUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
@@ -54,14 +56,26 @@ export const updateUser = async (req, res, next) => {
   }
 };
 
-// User Delete
+// Delete User
+
 export const deleteUser = async (req, res, next) => {
   if (req.user.id !== req.params.id)
     return next(throwError(401, "User Invalid"));
+
   try {
-    await User.findByIdAndDelete(req.params.id);
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return next(throwError(404, "User not found"));
+    }
+
+    await Listing.deleteMany({ userRef: user._id });
+
+    await user.remove();
+
     res.clearCookie("access_token");
-    res.status(200).json("User Deleted Successfully!");
+
+    res.status(200).json("User and associated rooms deleted successfully!");
   } catch (error) {
     next(error);
   }
@@ -69,6 +83,7 @@ export const deleteUser = async (req, res, next) => {
 
 // Get User Post
 export const userPosts = async (req, res, next) => {
+  console.log(req.user)
   if (req.user.id !== req.params.id)
     return next(throwError(401, "You can see only your posts"));
   try {
@@ -81,16 +96,9 @@ export const userPosts = async (req, res, next) => {
 
 // Get Users
 export const getUsers = async (req, res, next) => {
-  try {
-    if (req.user && req.user.role !== 'admin') {
-      return next(throwError(401, 'Unauthorized: Only admin can access user list'));
-    }
 
     const users = await User.find().sort({ _id: -1 });
     res.status(200).json({ success: true, result: users });
-  } catch (error) {
-    next(throwError(500, error.message));
-  }
 };
 
 // Update User Status

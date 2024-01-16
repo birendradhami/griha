@@ -76,7 +76,7 @@ export  const singup = async (req, res, next) => {
 
 // ========sing in route handling here =====//
 export const signin = async (req, res, next) => {
-  const { email, userPassword } = req.body;
+  const { email, userPassword} = req.body;
   try {
     const validUser = await User.findOne({ email });
     if (!validUser) return next(throwError(404, "Worng Credentials!"));
@@ -84,6 +84,7 @@ export const signin = async (req, res, next) => {
       userPassword,
       validUser.password
     );
+    // console.log(validUser)
 
     if (!validUser.active) {
       return res.status(400).json({
@@ -109,16 +110,25 @@ export const signin = async (req, res, next) => {
         message: "An Email sent to your account. Please verify.",
       });
     }
+
     const { password, ...rest } = validUser._doc;
-    const tooken = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET, {
+
+    const { role } = validUser;
+
+    const token = jwt.sign({ id: validUser._id, role }, process.env.JWT_SECRET, {
       expiresIn: "720h",
     });
-    
- 
+
+    const response = {
+      ...rest,
+      token,
+    };
+
+     
     res
-      .cookie("access_token", tooken, { httpOnly: false, secure: false })
+      .cookie("access_token", token, { httpOnly: false, secure: false,  })
       .status(200)
-      .json(rest);
+      .json(response);
   } catch (error) {
     console.log(error);
     next(error);
@@ -141,13 +151,13 @@ export const googleSignIn = async (req, res, next) => {
 
     //====IF user exist in DB====//
     if (user) {
-      const tooken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
         expiresIn: "720h",
       });
 
       const { password, ...rest } = user._doc;
       res
-        .cookie("access_token", tooken, { httpOnly: false, secure: false })
+        .cookie("access_token", token, { httpOnly: false, secure: false })
         .status(200)
         .json(rest);
     }
@@ -160,14 +170,15 @@ export const googleSignIn = async (req, res, next) => {
         email,
         password: hashedPassword,
         avatar: photo,
+        role:'basic'
       });
       const user = await newUser.save();
-      const tooken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      const token = jwt.sign({ id: user._id ,role: user.role}, process.env.JWT_SECRET, {
         expiresIn: "720h",
       });
       const { pass: password, ...rest } = user._doc;
       res
-        .cookie("access_token", tooken, { httpOnly: false, secure: false })
+        .cookie("access_token", token, { httpOnly: false, secure: false })
         .status(200)
         .json(rest);
     }

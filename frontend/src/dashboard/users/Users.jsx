@@ -6,7 +6,6 @@ import { grey } from "@mui/material/colors";
 import UsersActions from "./UsersActions";
 import { useSelector, useDispatch } from "react-redux";
 import { getUsers } from "./UsersActions";
-import { autoBatchEnhancer } from "@reduxjs/toolkit";
 
 const Users = ({ setSelectedLink, link }) => {
   const { currentUser, users } = useSelector((state) => state.user);
@@ -18,7 +17,7 @@ const Users = ({ setSelectedLink, link }) => {
   useEffect(() => {
     setSelectedLink(link);
     if (users) getUsers(dispatch, currentUser);
-  }, []);
+  }, [currentUser]);
 
   const processRowUpdate = (params) => {
     setRowId(params.id);
@@ -101,7 +100,7 @@ const Users = ({ setSelectedLink, link }) => {
       </Typography>
       <DataGrid
         columns={columns}
-        rows={users.result}
+        rows={users.result || []}
         getRowId={(row) => row._id}
         rowsPerPageOptions={[5, 10, 20]}
         pageSize={pageSize}
