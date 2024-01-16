@@ -69,8 +69,7 @@ const Users = ({ setSelectedLink, link }) => {
     ],
     [rowId]
   );
-  console.log(users)
-  console.log(currentUser)
+
   return (
     <Box
       sx={{
@@ -102,7 +101,7 @@ const Users = ({ setSelectedLink, link }) => {
       </Typography>
       <DataGrid
         columns={columns}
-        rows={users||[]}
+        rows={users.result}
         getRowId={(row) => row._id}
         rowsPerPageOptions={[5, 10, 20]}
         pageSize={pageSize}

@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -20,7 +20,6 @@ import ScrollToTop from "./components/ScrollToTop";
 import EmailVerify from "./components/EmailVerify";
 import Dashboard from "./dashboard/Dashboard";
 function App() {
-   
   return (
     <BrowserRouter>
       <SocketConnection />
@@ -38,7 +37,6 @@ function AppContent() {
       {!isDashboardRoute && <Header />}
       <ScrollToTop />
       <Routes>
-        
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -50,11 +48,10 @@ function AppContent() {
         <Route path="/users/:id/verify/:token" element={<EmailVerify />} />
         <Route path="/create_post" element={<CreatePost />} />
         <Route path="*" element={<PageNotFound />} />
-
+        <Route path="/saved_listing" element={<SaveListing />} />
         <Route element={<PrivateRoute />}>
-        <Route path="dashboard/*" element={<Dashboard />} />
+          <Route path="dashboard/*" element={<Dashboard />} />
           <Route path="/update_post/:id" element={<UpdatePost />} />
-          <Route path="/saved_listing" element={<SaveListing />} />
         </Route>
       </Routes>
       {!isDashboardRoute && <Footer />}

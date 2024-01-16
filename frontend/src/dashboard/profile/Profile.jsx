@@ -13,16 +13,24 @@ import Loading from '../../components/Loading.jsx';
 import { clearSavedListing } from '../../redux/saveListing/saveListingSlice.js';
 import Footer from '../../components/Footer.jsx';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import DeleteIcon from '@mui/icons-material/Delete';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 import {
-  Avatar,
-  Box,
-  Typography,
   Container,
-  Paper,
-  TextField,
-  Button,
   Grid,
+  Card,
+  CardHeader,
+  CardContent,
+  Avatar,
+  Button,
+  TextField,
+  Typography,
+  IconButton,
+  Box,
 } from '@mui/material';
+import { CenterFocusStrong } from '@mui/icons-material';
+
 
 const Profile = () => {
   const { currentUser } = useSelector(state => state.user)
@@ -171,104 +179,144 @@ const Profile = () => {
 
   return (
     <>
-      <Container maxWidth="xs">
-        <Paper elevation={7}>
-        
-          <Box p={3}>
-            <Box
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-              textAlign="center"
-              mb={3}
-              position="relative"
-            >
-              <input
-                onChange={(e) => setFile(e.target.files[0])}
-                hidden
-                accept="image/*"
-                type="file"
-                name="profile"
-                id="profile_image"
-                ref={fileRef}
-              />
-              <Avatar
-                alt="current user avatar"
-                src={formData.avatar || currentUser.avatar}
-                onClick={() => fileRef.current.click()}
-                sx={{ width: '100px', height: '100px' }}
-              />
-              <CloudUploadIcon
-                sx={{
-                  position: 'absolute',
-                  bottom: '3px',
-                  right: '0',
-                  backgroundColor: 'black',
-                  color: 'white',
-                  borderRadius: '50%',
-                  cursor: 'pointer',
-                }}
-                onClick={() => fileRef.current.click()}
-              />
-              {fileUploadError ? (
-                <Typography variant="caption" color="error" mt={1}>
-                  File upload failed
+      <Container sx={{ mt: 4 }}>
+        <Grid container spacing={4}>
+          {/* Profile picture card */}
+
+          <Grid item xs={12} md={4}>
+
+            <Card>
+              <CardHeader title="Profile Picture" sx={{ textAlign: 'center' }} />
+              <CardContent sx={{ textAlign: 'left', position: 'relative' }}>
+                <input
+                  onChange={(e) => setFile(e.target.files[0])}
+                  hidden
+                  accept="image/*"
+                  type="file"
+                  name="profile"
+                  id="profile_image"
+                  ref={fileRef}
+                />
+                {/* Profile picture image */}
+                <Avatar
+                  src={formData.avatar || currentUser.avatar}
+                  alt="avatar"
+                  sx={{ width: 120, height: 120, mx: 'auto', mb: 2 }}
+                />
+
+                <Typography variant="h5" sx={{ textAlign: 'center' }}>
+                  {currentUser.username}
                 </Typography>
-              ) : uploadingPerc > 0 && uploadingPerc < 100 ? (
-                <Typography variant="caption" color="textPrimary" mt={1}>
-                  File uploading...{uploadingPerc}%
-                </Typography>
-              ) : uploadingPerc === 100 && (
-                <Typography variant="caption" color="success" mt={1}>
-                  File uploaded!!!
-                </Typography>
-              )}
-            </Box>
-            <TextField
-              defaultValue={currentUser.username}
-              name="username"
-              type="text"
-              label="Username"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              onChange={handleChange}
-            />
-            <TextField
-              defaultValue={currentUser.email}
-              name="email"
-              type="email"
-              label="Email"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              onChange={handleChange}
-            />
-            <TextField
-              type="password"
-              name="password"
-              label="Password"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              onChange={handleChange}
-            />
-            <Button
-              disabled={loading}
-              type="submit"
-              variant="contained"
-              color="primary"
-              fullWidth
-              sx={{ mt: 4 }}
-              onClick={handleSubmit}
-            >
-              {loading ? 'Loading...' : 'Save Changes'}
-            </Button>
-            <Button onClick={handleDelete} variant="contained" color="primary" fullWidth sx={{ mt: { xs: 2, xl: 0 } }}>
-              Delete
-            </Button>
-            </Box>
-        </Paper>
+                <Typography variant="body2" sx={{ textAlign: 'center' }}>{currentUser.role}</Typography>
+                {/* Profile picture upload button */}
+
+
+                <Box
+                  sx={{
+                    cursor: 'pointer',
+                    textAlign: 'center',
+                    margin: '0'
+                  }}
+                >
+                  <EditNoteIcon
+                    onClick={() => fileRef.current.click()}
+                  />
+                  
+                </Box>
+                <Typography variant="body2"  sx={{ textAlign: 'center', fontSize: '0.8rem' }}>
+                (Image format must be JPG, PNG)
+              </Typography>
+                {fileUploadError ? (
+                  <Typography variant="caption" sx={{ color: 'red' }} mt={1} >
+                    File upload failed
+                  </Typography>
+                ) : uploadingPerc > 0 && uploadingPerc < 100 ? (
+                  <Typography variant="caption" sx={{ color: 'black' }} mt={1} >
+                    File uploading...{uploadingPerc}%
+                  </Typography>
+                ) : uploadingPerc === 100 && (
+                  <Typography variant="caption" sx={{ color: 'green' }} mt={1} >
+                    File uploaded!!!
+                  </Typography>
+                )}
+              </CardContent>
+            </Card>
+          </Grid>
+
+          {/* Account details card */}
+          <Grid item xs={12} md={8}>
+            <Card>
+              <CardHeader title="Account Details" />
+              <CardContent>
+                <form>
+                  {/* Form Group (username) */}
+
+                  <TextField
+                    fullWidth
+                    label="Username (how your name will appear to other users on the site)"
+                    defaultValue={currentUser.username}
+                    name="username"
+                    type="text"
+                    variant="outlined"
+                    margin="normal"
+                    padding="2px"
+                    onChange={handleChange}
+                  />
+
+                  {/* Form Group (email address) */}
+                  <TextField
+                    fullWidth
+                    label="Email address"
+                    variant="outlined"
+                    margin="normal"
+                    type="email"
+                    defaultValue={currentUser.email}
+                    onChange={handleChange}
+
+                  />
+                  <TextField
+                    type="password"
+                    name="password"
+                    label="Password"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    onChange={handleChange}
+                  />
+
+
+                  {/* Save changes button */}
+                  <Box >
+                    <Button
+                      variant="contained"
+                      color="success"
+                      type="button"
+                      sx={{ m: '5px' }}
+                      disabled={loading}
+                      onClick={handleSubmit}
+                    >
+                      {loading ? 'Loading...' : 'Save Changes'}
+                    </Button>
+                    <Button
+
+                      startIcon={<DeleteIcon />}
+                      variant="outlined"
+                      color="secondary"
+                      type="button"
+                      onClick={handleDelete}
+                    >
+                      Delete
+                    </Button>
+                  </Box>
+
+
+
+
+                </form>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
       </Container>
     </>
   )
