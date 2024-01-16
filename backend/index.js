@@ -162,7 +162,7 @@ io.on("connection", async (socket) => {
     (async () => {
       try {
         const user_id = await getUserDataFromRequest(token);
-        console.log(user_id.id);
+        // console.log(user_id.id);
         await User.findByIdAndUpdate(user_id.id, {
           $set: { onlineOffline: "0" },
         });
