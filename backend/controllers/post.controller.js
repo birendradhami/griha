@@ -12,14 +12,9 @@ export const createPost = async (req, res, next) => {
   }
 };
 
-//======handle post Delete========//
+// Post Delete
 export const deletePost = async (req, res, next) => {
   const isPostExist = await Listing.findById(req.params.id);
-
-  if (!isPostExist) return next(throwError(404, "Post not found"));
-
-  if (req.user.id != isPostExist.userRef)
-    return next(throwError(400, "You can delete your own post"));
 
   try {
     await Listing.findByIdAndDelete(req.params.id);
@@ -30,7 +25,7 @@ export const deletePost = async (req, res, next) => {
   }
 };
 
-//===== Handle Post Update ======//
+// Post Update
 export const updatePost = async (req, res, next) => {
   const isPostExist = await Listing.findById(req.params.id);
   if (!isPostExist) return next(throwError(404, "Post not found"));
@@ -48,7 +43,7 @@ export const updatePost = async (req, res, next) => {
   }
 };
 
-//===== Get A Single Post ====//
+// Single Post
 export const singlePost = async (req, res, next) => {
   try {
     const post = await Listing.findById(req.params.id);
@@ -58,9 +53,7 @@ export const singlePost = async (req, res, next) => {
   }
 };
 
-//====GET LISTING Post ====//
-
-//====GET LISTING Post ====//
+// Get Posts
 
 export const getListingPost = async (req, res, next) => {
   try {

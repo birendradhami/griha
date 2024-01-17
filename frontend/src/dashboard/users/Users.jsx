@@ -23,6 +23,8 @@ const Users = ({ setSelectedLink, link }) => {
     setRowId(params.id);
   };
 
+  console.log(currentUser)
+
   const columns = useMemo(
     () => [
       {

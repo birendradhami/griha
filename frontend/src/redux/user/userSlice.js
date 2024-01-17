@@ -6,6 +6,7 @@ const initialState = {
   signinError: null,
   error: null,
   users: [],
+  rooms: [],
 };
 
 const userSlice = createSlice({
@@ -77,6 +78,9 @@ const userSlice = createSlice({
     handleLisingRemove: (state, action) => {
       state.savedListing = action.payload;
     },
+    getRoomsSuccess: (state, action) => {
+      state.rooms = action.payload;
+    },
   },
 });
 
@@ -95,6 +99,7 @@ export const {
   handleSave,
   handleLisingRemove,
   getUsersSuccess,
+  getRoomsSuccess
 } = userSlice.actions;
 
 export default userSlice.reducer;
