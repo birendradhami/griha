@@ -86,6 +86,7 @@ const handleTogglePasswordVisibility = () => {
           toast.success("login successful", {
             autoClose: 200,
             onClose: () => {
+              // console.log(userData)
               // Dispatch the success action and navigate after the toast is closed
               dispatch(signinSuccess(userData));
               navigate("/home");

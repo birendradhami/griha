@@ -4,7 +4,7 @@ import {
   getNotification,
   deleteNotification,
 } from "../controllers/notification.controller.js";
-import { verifyToken } from "../utils/varifyUser.js";
+import { verifyToken } from "../utils/verifyUser.js";
 
 const router = express.Router();
 
