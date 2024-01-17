@@ -1,11 +1,193 @@
-import React from 'react'
+import { useEffect, useMemo, useState } from "react";
+import { Avatar, Box, Tooltip, Typography } from "@mui/material";
+import { DataGrid, gridClasses } from "@mui/x-data-grid";
+import moment from "moment";
+import { grey } from "@mui/material/colors";
+import RoomsActions from "./RoomsActions.jsx";
+import isAdmin from "../utils/isAdmin";
+import { useSelector, useDispatch } from "react-redux";
+import { getRooms } from "./RoomsActions.jsx";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import {
+ CreateOutlined
+} from "@mui/icons-material";
 
-const Rooms = () => {
+const Rooms = ({ setSelectedLink, link }) => {
+  const { currentUser, rooms } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  const [pageSize, setPageSize] = useState(5);
+  const [userDetails, setUserDetails] = useState({});
+  const [userDetailsFetched, setUserDetailsFetched] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setSelectedLink(link);
+    if (rooms) getRooms(dispatch, currentUser);
+
+    const fetchUserDetails = async () => {
+      const userDetailsMap = {};
+      const uniqueUserRefs = Array.from(
+        new Set(rooms.map((room) => room.userRef))
+      );
+
+      for (const userRef of uniqueUserRefs) {
+        try {
+          const response = await axios.get(
+            `${import.meta.env.VITE_SERVER_URL}/api/users/${userRef}`
+          );
+          const { _id, username, avatar } = response.data;
+          userDetailsMap[_id] = { username, avatar };
+        } catch (error) {
+          console.error(
+            `Error fetching user details for userRef ${userRef}:`,
+            error
+          );
+        }
+      }
+
+      setUserDetails(userDetailsMap);
+      setUserDetailsFetched(true);
+    };
+
+    fetchUserDetails();
+  }, [currentUser]);
+
+  const columns = useMemo(
+    () => [
+      {
+        field: "imgUrl",
+        headerName: "Photo",
+        width: 80,
+        renderCell: (params) => (
+          <Avatar src={params.row.imgUrl[0]} variant="rounded" />
+        ),
+        sortable: false,
+        filterable: false,
+      },
+      {
+        field: "price",
+        headerName: "Cost",
+        width: 100,
+        renderCell: (params) => "NPR." + params.row.price,
+      },
+      { field: "title", headerName: "Title", width: 150 },
+      { field: "description", headerName: "Description", width: 200 },
+      {
+        field: "username",
+        headerName: "Added by",
+        width: 80,
+        renderCell: (params) => (
+          <Tooltip title={userDetails[params.row.userRef]?.username}>
+            <Avatar src={userDetails[params.row.userRef]?.avatar} />
+          </Tooltip>
+        ),
+      },
+      {
+        field: "createdAt",
+        headerName: "Created At",
+        width: 150,
+        renderCell: (params) =>
+          moment(params.row.createdAt).format("YYYY-MM-DD HH:MM:SS"),
+      },
+      // { field: "_id", hide: true },
+      {
+        field: "actions",
+        headerName: "Actions",
+        type: "actions",
+        width: 200,
+        renderCell: (params) => <RoomsActions {...{ params }} />,
+      },
+    ],
+    [userDetails, rooms]
+  );
+
+  const CustomNoRowsOverlay = () => {
+    if (!userDetailsFetched) {
+      return null;
+    }
+
+    return (
+      <Box
+        sx={{
+          width: "100%",
+          height: 200,
+          fontSize: 18,
+          color: "grey",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Typography >No rooms available.</Typography>
+        <Typography
+          onClick={() => navigate(`/create_post`)}
+          sx={{ cursor: "pointer", mt: 3 }}
+        >
+          <CreateOutlined /> Create Room
+        </Typography>
+      </Box>
+    );
+  };
+
   return (
-    <div>
-      Rooms
-    </div>
-  )
-}
+    <Box
+      sx={{
+        height: 400,
+        width: "fit-content",
+        mx: "auto",
+        "@media (max-width: 1024px)": {
+          height: 350,
+          width: "100%",
+        },
+      }}
+    >
+      <Typography
+        variant="h3"
+        component="h3"
+        sx={{
+          fontSize: 38,
+          fontWeight: 400,
+          textAlign: "center",
+          mt: 3,
+          mb: 6,
+          "@media (max-width: 1024px)": {
+            fontSize: 30,
+            fontWeight: 400,
+          },
+        }}
+      >
+        Manage Rooms
+      </Typography>
+      <DataGrid
+        columns={columns}
+        rows={
+          isAdmin(currentUser)
+            ? rooms
+            : rooms.filter((room) => room.userRef === currentUser._id)
+        }
+        getRowId={(row) => row._id}
+        rowsPerPageOptions={[5, 10, 20]}
+        pageSize={pageSize}
+        slots={{
+          noRowsOverlay: CustomNoRowsOverlay,
+        }}
+        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+        getRowSpacing={(params) => ({
+          top: params.isFirstVisible ? 0 : 5,
+          bottom: params.isLastVisible ? 0 : 5,
+        })}
+        sx={{
+          [`& .${gridClasses.row}`]: {
+            bgcolor: (theme) =>
+              theme.palette.mode === "light" ? grey[200] : grey[900],
+          },
+        }}
+      />
+    </Box>
+  );
+};
 
-export default Rooms
+export default Rooms;
