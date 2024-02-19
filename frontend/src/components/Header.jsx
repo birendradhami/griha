@@ -30,7 +30,7 @@ const Header = () => {
                   alt="Griha Logo"
                   className="w-[25%] sm:w-[25%] lg:w-[8%] mr-2 sm:mr-2"
                 ></img>
-                <span className="text-3xl sm:text-4xl"> Griha</span>
+                <span className="text-3xl sm:text-[40px]"> Griha</span>
               </Link>
             </h1>
           </div>
