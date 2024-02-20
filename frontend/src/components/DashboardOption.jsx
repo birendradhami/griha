@@ -11,27 +11,31 @@ const DashboardOption = ({ user }) => {
     const dispatch = useDispatch();
     const [dropdownOpen, setDropdownOpen] = useState(false);
   
-    const handleLogOut = async () => {
-      try {
-        const res = await fetch("api/auth/signout");
-        const data = await res.json();
-        if (data.success === false) {
-          dispatch(signoutFailed(data.message));
-          toast.error(data.message, {
-            autoClose: 2000,
-          });
-        } else {
-          dispatch(signoutSuccess());
-          dispatch(clearSavedListing());
-          setDropdownOpen(false);
-        }
-      } catch (error) {
-        dispatch(signoutFailed(error.message));
-        toast.error(error.message, {
-          autoClose: 2000,
-        });
-      }
-    };
+  const handleLogOut = async () => {
+
+       try {
+         const res = await fetch("api/auth/signout");
+         if (res.success === false) {
+           const data = await res.json();
+           console.log(data);
+           dispatch(signoutFailed(data.message));
+           toast.error(data.message, {
+             autoClose: 2000,
+           });
+         } else {
+           dispatch(signoutSuccess());
+           dispatch(clearSavedListing());
+           setDropdownOpen(false);
+         }
+       } catch (error) {
+        
+         dispatch(signoutFailed(error.message));
+         toast.error(error.message, {
+           autoClose: 2000,
+         });
+       }
+   };
+ 
   
     const toggleDropdown = () => {
       setDropdownOpen(!dropdownOpen);

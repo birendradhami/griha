@@ -61,6 +61,7 @@ const ListingPage = () => {
         });
         setLoading(false);
       } else {
+        console.log(json.message);
         setListings(json);
         setLoading(false);
         if (_id) {
