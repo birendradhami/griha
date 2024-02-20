@@ -30,7 +30,7 @@ const Header = () => {
                   alt="Griha Logo"
                   className="w-[25%] sm:w-[25%] lg:w-[8%] mr-2 sm:mr-2"
                 ></img>
-                <span className="text-3xl sm:text-4xl"> Griha</span>
+                <span className="mt-1 text-[35px]  sm:text-[40px]"> Griha</span>
               </Link>
             </h1>
           </div>
@@ -78,10 +78,10 @@ const Header = () => {
                   <Dashboard user={currentUser} />
                 </div>
               ) : (
-                <li className="mr-6">
+                <li className="mr-[0.5rem]">
                   <Link
                     to="/login"
-                    className=" text-white px-5 font-bold font-headi py-[0.6rem] rounded uppercase bg-black text-sm duration-300 hover:shadow-sm"
+                    className=" text-white mt-2 px-5 font-bold font-headi py-[0.6rem] rounded uppercase bg-black text-sm duration-300 hover:shadow-sm"
                   >
                     Login
                   </Link>
