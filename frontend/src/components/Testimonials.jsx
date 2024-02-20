@@ -85,7 +85,7 @@ const TestimonialsComponent = () => {
   return (
     <section id="testimonials" className=" pt-2  sm:pt-14  ">
       <style>{styles}</style>
-      <div className="testimonials text-center py-16">
+      <div className="testimonials text-center py-16 pb-7">
         <div className="container mx-auto text-black">
           <h3 className="text-4xl font-bold mb-11">Testimonials</h3>
           <Slider {...settings} className="mx-auto max-w-4xl">

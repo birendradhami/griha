@@ -63,7 +63,7 @@ const DashboardOption = ({ user }) => {
 
           <ul
             tabIndex={0}
-            className={` mt-4 sm:mt-7 z-[999999] p-2 sm:mx-1 shadow-md menu menu-lg  sm:menu-sm dropdown-content bg-white rounded-md sm:w-52 ${
+            className={` mt-6 xl:mt-9 sm:mt-7 z-[999999] p-2 sm:mx-1 shadow-md menu menu-lg  sm:menu-sm dropdown-content bg-white rounded-md sm:w-52 ${
               dropdownOpen ? "block" : "hidden"
             }`}
           >

@@ -17,6 +17,7 @@ export const getRooms = async (dispatch) => {
     );
 
     const result = response.data;
+    result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     dispatch(getRoomsSuccess(result));
     return true;
   } catch (error) {

@@ -101,6 +101,7 @@ const Home = () => {
   };
 
   const [scrollY, setScrollY] = useState(0);
+  const [shouldShrinkOnLoad, setShouldShrinkOnLoad] = useState(false);
 
   const handleScroll = () => {
     setScrollY(window.scrollY);
@@ -116,11 +117,23 @@ const Home = () => {
 
   const shouldShrink = scrollY > 0;
 
+  useEffect(() => {
+    const homeArtContainer = document.querySelector('.home-art-container');
+    const containerRect = homeArtContainer.getBoundingClientRect();
+
+    if (containerRect.bottom + 90 > window.innerHeight) {
+      setShouldShrinkOnLoad(false);
+    } else {
+      setShouldShrinkOnLoad(true);
+    }
+  }, []);
+
+
   return (
     <>
       {/* Hero Section */}
 
-      <section id="banner" className={`relative h-screen transition-all ${shouldShrink ? 'h-50' : ''}`}>
+      <section id="banner" className={`relative max-h-full transition-all ${shouldShrink ? 'h-50' : ''}`}>
         <div className="absolute bg-white"></div>
 
         <div className="relative ">
@@ -191,7 +204,7 @@ const Home = () => {
               </div>
             )}
           </div>
-          <div className={`home-art-container ${shouldShrink ? ' mx-[5%] lg:mx-[21%] ' : 'h-full'}`}>
+          <div className={`home-art-container ${shouldShrink || shouldShrinkOnLoad ? ' mx-[5%] sm:mx-[5%] lg:mx-[13%] xl:mx-[23%] ' : 'h-full'}`}>
         <img className="object-cover min-h-[5rem]" src={Homeart} alt="Home art" />
       </div>
         </div>
@@ -199,7 +212,7 @@ const Home = () => {
 
       {/*Tab Section */}
 
-      <section>
+      <section className=" mt-10">
         <div className="flex items-center justify-center">
           <div className=" rounded w-[90%] max-w-[770px]">
             <div className="flex flex-col md:flex-row gap-4  ">

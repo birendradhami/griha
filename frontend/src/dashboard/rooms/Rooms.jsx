@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Avatar, Box, Tooltip, Typography } from "@mui/material";
+import { Avatar, Box, Divider, Tooltip, Typography } from "@mui/material";
 import { DataGrid, gridClasses } from "@mui/x-data-grid";
 import moment from "moment";
 import { grey } from "@mui/material/colors";
@@ -10,7 +10,7 @@ import { getRooms } from "./RoomsActions.jsx";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {
- CreateOutlined
+ CreateOutlined, AddHome
 } from "@mui/icons-material";
 
 const Rooms = ({ setSelectedLink, link }) => {
@@ -122,12 +122,7 @@ const Rooms = ({ setSelectedLink, link }) => {
         }}
       >
         <Typography >No rooms available.</Typography>
-        <Typography
-          onClick={() => navigate(`/create_post`)}
-          sx={{ cursor: "pointer", mt: 3 }}
-        >
-          <CreateOutlined /> Create Room
-        </Typography>
+        
       </Box>
     );
   };
@@ -151,8 +146,8 @@ const Rooms = ({ setSelectedLink, link }) => {
           fontSize: 38,
           fontWeight: 400,
           textAlign: "center",
-          mt: 3,
-          mb: 6,
+          mt: 2,
+          mb: 3,
           "@media (max-width: 1024px)": {
             fontSize: 30,
             fontWeight: 400,
@@ -161,6 +156,20 @@ const Rooms = ({ setSelectedLink, link }) => {
       >
         Manage Rooms
       </Typography>
+      <Box sx={{width:"15%", boxShadow:2, mx:"auto", "@media (max-width: 1024px)": {
+          width:"30%"
+        },"@media (max-width: 600px)": {
+          width: "55%",
+        },}}>
+         <Typography
+          onClick={() => navigate(`/create_post`)}
+          sx={{ cursor: "pointer",textAlign:"center", mt:0, mb:4, }}
+        >
+          <AddHome sx={{mb:1, mr:0}}/> Create Room
+        </Typography>
+      </Box>
+     
+        <Divider/>
       <DataGrid
         columns={columns}
         rows={

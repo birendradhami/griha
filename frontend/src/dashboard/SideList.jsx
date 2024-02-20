@@ -129,15 +129,16 @@ const SideList = ({ open, setOpen, darkTheme, dark, setDark }) => {
 
   const list = useMemo(
     () => [
+      {
+        title: "Overview",
+        icon: <Dashboard />,
+        link: "",
+        component: <Overview {...{ setSelectedLink, link: "" }} />,
+        onClick: () => navigate(""),
+      },
       ...(isAdmin(currentUser)
         ? [
-            {
-              title: "Overview",
-              icon: <Dashboard />,
-              link: "",
-              component: <Overview {...{ setSelectedLink, link: "" }} />,
-              onClick: () => navigate(""),
-            },
+            
             {
               title: "Users",
               icon: <PeopleAlt />,
@@ -147,6 +148,8 @@ const SideList = ({ open, setOpen, darkTheme, dark, setDark }) => {
             },
           ]
         : []),
+
+      
 
       {
         title: "Profile",
@@ -189,12 +192,15 @@ const SideList = ({ open, setOpen, darkTheme, dark, setDark }) => {
         <Box
           sx={{
             display: { xs: "none", sm: "none", md: "flex" },
-            mt: 1,
+            mt: 4,
             mb: 2,
             justifyContent: "space-around",
             visibility: open ? "visible" : "hidden",
             "@media (max-width: 1024px)": {
-              display: open ? "flex" : "none",
+              display: open ? "flex" : "none",mt:6
+            },
+            "@media (max-width: 900px)": {
+              mt:2,
             },
           }}
         >
@@ -206,7 +212,7 @@ const SideList = ({ open, setOpen, darkTheme, dark, setDark }) => {
                 letterSpacing: -1,
                 color: darkTheme.palette.text.primary,
                 mr: 3,
-                ml: 1,
+                ml: 3,
               }}
               onClick={() => navigate("/")}
             >
@@ -230,7 +236,10 @@ const SideList = ({ open, setOpen, darkTheme, dark, setDark }) => {
             mt: 1,
             mb: 1,
             "@media (max-width: 1024px)": {
-              mt:2,
+              mt:"-20px",
+            },
+            "@media (max-width: 900px)": {
+              mt:1,
             },
           }}
         >

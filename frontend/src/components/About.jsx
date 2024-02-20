@@ -4,12 +4,12 @@ import GrihaLogo from '../../assets/Griha.png';
 
 const AboutSection = () => {
   return (
-    <section id='about' className="bg-white py-6 sm:py-16 pt-0 sm:pt-24 mt-3">
+    <section id='about' className="bg-white pt-[6.5rem] py-6 sm:py-16 pt-0 sm:pt-24 mt-3">
       <div className="container mx-auto flex items-center justify-center flex-col sm:flex-row">
         <div className="flex items-center justify-center mb-8 sm:mr-8">
           <Link to="/home" className="flex items-center justify-start">
             {/* Circular container for the room logo and text */}
-            <div className="w-[13rem] h-[13rem] sm:w-[14rem] sm:h-[14rem] rounded-full object-cover sm:mr-11 mx-auto mb-2 shadow-md bg-cover bg-center flex items-center justify-center text-4xl">
+            <div className="w-[12rem] h-[12rem] sm:w-[14rem] sm:h-[14rem] rounded-full object-cover sm:mr-11 mx-auto mb-2 shadow-md bg-cover bg-center flex items-center justify-center text-4xl">
               <img src={GrihaLogo} alt='Griha Logo' className="text-black text-8xl">
                 
               </img>
