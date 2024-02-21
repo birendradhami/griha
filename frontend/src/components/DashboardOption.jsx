@@ -11,10 +11,12 @@ import { useNavigate } from "react-router-dom";
 const DashboardOption = ({ user }) => {
     const dispatch = useDispatch();
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const navigate = useNavigate();
+
   
     const handleLogOut = async () => {
       try {
-        const res = await fetch("api/auth/signout");
+        const res = await fetch("api/auth/signout/id");
         const data = await res.json();
         if (data.success === false) {
           dispatch(signoutFailed(data.message));
@@ -25,6 +27,7 @@ const DashboardOption = ({ user }) => {
           dispatch(signoutSuccess());
           dispatch(clearSavedListing());
           setDropdownOpen(false);
+          navigate("/");
         }
       } catch (error) {
         dispatch(signoutFailed(error.message));
