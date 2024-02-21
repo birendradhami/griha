@@ -37,7 +37,7 @@ export default function Chart() {
       for (let i = 0; i < months; i++) {
         tempData[i].users = 0;
       }
-      users.result.forEach((user) => {
+      users.forEach((user) => {
         for (let i = 0; i < months; i++) {
           if (moment(tempData[i].date).isSame(user?.createdAt, "month"))
             return tempData[i].users++;

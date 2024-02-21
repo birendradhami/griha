@@ -98,7 +98,7 @@ export const userPosts = async (req, res, next) => {
 export const getUsers = async (req, res, next) => {
 
     const users = await User.find().sort({ _id: -1 });
-    res.status(200).json({ success: true, result: users });
+    res.status(200).json(users);
 };
 
 // Update User Status

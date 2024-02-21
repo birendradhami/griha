@@ -30,17 +30,17 @@ const Overview = ({ setSelectedLink, link }) => {
   const [totalRoomCost, setTotalRoomCost] = useState(0);
 
   useEffect(() => {
-    const price = calculateTotalRoomCostForCurrentUser(rooms, currentUser);
-    setTotalRoomCost(price);
-  }, [rooms, currentUser]);
-
-  useEffect(() => {
     setSelectedLink(link);
     if (rooms) getRooms(dispatch, currentUser);
     if (users) getUsers(dispatch, currentUser);
-    if (rooms.length === 0) getRooms(dispatch);
-    if (users.length === 0) getUsers(dispatch, currentUser);
   }, []);
+
+  console.log(users)
+
+  useEffect(() => {
+    const price = calculateTotalRoomCostForCurrentUser(rooms, currentUser);
+    setTotalRoomCost(price);
+  }, [rooms, currentUser]);
 
   return (
     <Box
@@ -121,7 +121,7 @@ const Overview = ({ setSelectedLink, link }) => {
                 variant="h5"
                 sx={{ display: "flex", alignItems: "center", ml: 2 }}
               >
-                {users.result.length}
+                {users.length}
               </Typography>
             </Box>
           </Paper>
@@ -180,7 +180,7 @@ const Overview = ({ setSelectedLink, link }) => {
                 Recently added Users
               </Typography>
               <List>
-                {users.result.slice(0, 3).map((user, i) => (
+                {users.slice(0, 3).map((user, i) => (
                   <Box key={user._id}>
                     <ListItem>
                       <ListItemAvatar>

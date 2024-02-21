@@ -100,7 +100,7 @@ const Users = ({ setSelectedLink, link }) => {
       </Typography>
       <DataGrid
         columns={columns}
-        rows={users.result || []}
+        rows={users}
         getRowId={(row) => row._id}
         rowsPerPageOptions={[5, 10, 20]}
         pageSize={pageSize}
