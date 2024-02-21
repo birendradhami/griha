@@ -12,6 +12,7 @@ import { IoLocationSharp } from "react-icons/io5";
 import AddRent from "../components/AddRent";
 import AboutSection from "../components/About";
 import TestimonialSection from "../components/Testimonials";
+
 const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -98,20 +99,49 @@ const Home = () => {
     setSearchValue("");
   };
 
+  const [scrollY, setScrollY] = useState(0);
+  const [shouldShrinkOnLoad, setShouldShrinkOnLoad] = useState(false);
+
+  const handleScroll = () => {
+    setScrollY(window.scrollY);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const shouldShrink = scrollY > 0;
+
+  useEffect(() => {
+    const homeArtContainer = document.querySelector('.home-art-container');
+    const containerRect = homeArtContainer.getBoundingClientRect();
+
+    if (containerRect.bottom + 90 > window.innerHeight) {
+      setShouldShrinkOnLoad(false);
+    } else {
+      setShouldShrinkOnLoad(true);
+    }
+  }, []);
+
+
   return (
     <>
       {/* Hero Section */}
 
-      <section id="banner" className="relative h-screen 2xl:h-[75vh]">
+      <section id="banner" className={`relative max-h-full transition-all ${shouldShrink ? 'h-50' : ''}`}>
         <div className="absolute bg-white"></div>
 
         <div className="relative ">
           <div className=" text-center">
-            <h1 className=" text-[36px] sm:text-5xl lg:text-6xl font-bold mx-auto pt-16 sm:pt-28  text-black">
+            <h1 className=" text-[36px] sm:text-5xl lg:text-6xl font-bold mx-auto pt-[2rem] sm:pt-16 text-black">
               Room Finder Site
             </h1>
 
-            <div className=" flex flex-col ml-[31%] sm:ml-0 sm:flex-row justify-center gap-4 mt-5 mb-8">
+            <div className=" flex flex-col ml-[31%] sm:ml-0 sm:flex-row justify-center gap-2 sm:gap-4 mt-5 mb-8">
               <div className=" flex items-center gap-2 text-gray-500">
                 <i className=" text-gray-500">
                   <FaRegCheckCircle />
@@ -157,7 +187,7 @@ const Home = () => {
                 </div>
               </form>
             </div>
-            <div className="flex justify-center gap-4 mt-11 mb-8">
+            <div className="flex justify-center gap-4 mt-11 mb-4 sm:mb-8">
               <div className="flex items-center gap-2 text-gray-600">
                 <i className="text-2xl text-gray-600">
                   <IoLocationSharp />
@@ -173,12 +203,15 @@ const Home = () => {
               </div>
             )}
           </div>
+          <div className={`home-art-container ${shouldShrink || shouldShrinkOnLoad ? ' mx-[5%] sm:mx-[5%] lg:mx-[13%] xl:mx-[23%] ' : 'h-full'}`}>
+        <img className="object-cover min-h-[5rem]" src={Homeart} alt="Home art" />
+      </div>
         </div>
       </section>
 
       {/*Tab Section */}
 
-      <section>
+      <section className=" mt-10">
         <div className="flex items-center justify-center">
           <div className=" rounded w-[90%] max-w-[770px]">
             <div className="flex flex-col md:flex-row gap-4  ">

@@ -20,7 +20,7 @@ const Conversations = ({ conversationInfo }) => {
 
 
 
-    const isNotify = notificationsDB.some(notify => notify.chatId === conversation._id);
+    const isNotify = notificationsDB.some(notify => notify.chatId === conversation?._id);
 
     const handleNotificationClick = (conversationId) => {
         const notificationIndex = notifications.some(notify => notify.chatId === conversationId);
@@ -55,7 +55,7 @@ const Conversations = ({ conversationInfo }) => {
 
     return (
         <>
-            {       
+            {
                 conversation.participantId && conversation.participantId === currentUser._id
                     ?
                     // When current user is in participent role 

@@ -9,25 +9,25 @@ const TestimonialsComponent = () => {
       id: 1,
       content:
         "Working with this team was a fantastic experience. They delivered high-quality results on time and exceeded our expectations.",
-      author: "John Doe, CEO",
+      author: "MK, CEO",
       image:
-        "https://media.licdn.com/dms/image/C4E22AQGtBPuqfy3gaQ/feedshare-shrink_2048_1536/0/1650972527479?e=1706140800&v=beta&t=YNhdkVG-0qwQYJxYUAVy1zUB2InuITJeoI-Zr508mBM",
+        "https://media.licdn.com/dms/image/C4E22AQGtBPuqfy3gaQ/feedshare-shrink_2048_1536/0/1650972527479?e=2147483647&v=beta&t=yATCotEL_tpSk-DR9Ya6LYCzui5vKKMinD7vNQ4n53E",
     },
     {
       id: 2,
       content:
         "I highly recommend this service. The team is professional, and their attention to detail is commendable.",
-      author: "Jane Smith, Marketing Manager",
+      author: "Tej, Marketing Manager",
       image:
-        "https://media.licdn.com/dms/image/C4E22AQGtBPuqfy3gaQ/feedshare-shrink_2048_1536/0/1650972527479?e=1706140800&v=beta&t=YNhdkVG-0qwQYJxYUAVy1zUB2InuITJeoI-Zr508mBM",
+        "https://media.licdn.com/dms/image/D4D03AQEL3YwDnrllNg/profile-displayphoto-shrink_800_800/0/1691405056216?e=2147483647&v=beta&t=n16sZyCgk47Xesttw9ReHCYzeNc189duii13NTVAb1g",
     },
     {
       id: 3,
       content:
         "Exceptional work! The team is creative, responsive, and committed to delivering top-notch solutions.",
-      author: "Alex Johnson, Product Manager",
+      author: "PK, Product Manager",
       image:
-        "https://media.licdn.com/dms/image/C4E22AQGtBPuqfy3gaQ/feedshare-shrink_2048_1536/0/1650972527479?e=1706140800&v=beta&t=YNhdkVG-0qwQYJxYUAVy1zUB2InuITJeoI-Zr508mBM",
+        "https://media.licdn.com/dms/image/C4E22AQGtBPuqfy3gaQ/feedshare-shrink_2048_1536/0/1650972527479?e=2147483647&v=beta&t=yATCotEL_tpSk-DR9Ya6LYCzui5vKKMinD7vNQ4n53E",
     },
   ];
 
@@ -85,7 +85,7 @@ const TestimonialsComponent = () => {
   return (
     <section id="testimonials" className=" pt-2  sm:pt-14  ">
       <style>{styles}</style>
-      <div className="testimonials text-center py-16">
+      <div className="testimonials text-center py-16 pb-7">
         <div className="container mx-auto text-black">
           <h3 className="text-4xl font-bold mb-11">Testimonials</h3>
           <Slider {...settings} className="mx-auto max-w-4xl">

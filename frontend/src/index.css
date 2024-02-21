@@ -59,6 +59,8 @@ form{
 .chats_container {
   height: calc(100vh - 75px);
 }
+
+
 .message_container {
   height: calc(100vh - 200px);
 }
@@ -66,6 +68,11 @@ footer{
   margin-top: auto
 }
 
+@media screen and (max-width: 500px) {
+  .css-b387i0-MuiDrawer-docked {
+  width: 64px !important;
+}
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
