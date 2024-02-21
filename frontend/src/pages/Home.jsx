@@ -12,6 +12,7 @@ import { IoLocationSharp } from "react-icons/io5";
 import AddRent from "../components/AddRent";
 import AboutSection from "../components/About";
 import TestimonialSection from "../components/Testimonials";
+import Homeart from '../../assets/Fpart.png';
 
 const Home = () => {
   const navigate = useNavigate();
