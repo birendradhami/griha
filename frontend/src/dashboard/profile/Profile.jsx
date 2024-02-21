@@ -179,12 +179,12 @@ const Profile = () => {
 
   return (
     <>
-      <Container sx={{ mt: 4 }}>
+      <Container sx={{ mt: 10 }}>
         <Grid container spacing={4}>
           {/* Profile picture card */}
 
           <Grid item xs={12} md={4}>
-
+        
             <Card>
               <CardHeader title="Profile Picture" sx={{ textAlign: 'center' }} />
               <CardContent sx={{ textAlign: 'left', position: 'relative' }}>
@@ -201,7 +201,7 @@ const Profile = () => {
                 <Avatar
                   src={formData.avatar || currentUser.avatar}
                   alt="avatar"
-                  sx={{ width: 120, height: 120, mx: 'auto', mb: 2 }}
+                  sx={{ width: 150, height: 150, mx: 'auto', mb: 2 }}
                 />
 
                 <Typography variant="h5" sx={{ textAlign: 'center' }}>

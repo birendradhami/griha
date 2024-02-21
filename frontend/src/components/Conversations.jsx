@@ -55,11 +55,12 @@ const Conversations = ({ conversationInfo }) => {
 
     return (
         <>
-            {
+            {       
                 conversation.participantId && conversation.participantId === currentUser._id
                     ?
                     // When current user is in participent role 
                     <>
+             
                         <div
                             onClick={() => (
 
