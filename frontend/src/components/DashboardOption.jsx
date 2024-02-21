@@ -9,34 +9,36 @@ import { FaBookmark, FaSignOutAlt, FaUser, FaHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const DashboardOption = ({ user }) => {
-    const dispatch = useDispatch();
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-  
-    const handleLogOut = async () => {
-      try {
-        const res = await fetch("api/auth/signout");
-        const data = await res.json();
-        if (data.success === false) {
-          dispatch(signoutFailed(data.message));
-          toast.error(data.message, {
-            autoClose: 2000,
-          });
-        } else {
-          dispatch(signoutSuccess());
-          dispatch(clearSavedListing());
-          setDropdownOpen(false);
-        }
-      } catch (error) {
-        dispatch(signoutFailed(error.message));
-        toast.error(error.message, {
+  const dispatch = useDispatch();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogOut = async () => {
+    try {
+      const res = await fetch("/api/auth/signout");
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(signoutFailed(data.message));
+        toast.error(data.message, {
           autoClose: 2000,
         });
+      } else {
+        dispatch(signoutSuccess());
+        dispatch(clearSavedListing());
+        setDropdownOpen(false);
+        navigate("/");
       }
-    };
-  
-    const toggleDropdown = () => {
-      setDropdownOpen(!dropdownOpen);
-    };
+    } catch (error) {
+      dispatch(signoutFailed(error.message));
+      toast.error(error.message, {
+        autoClose: 2000,
+      });
+    }
+  };
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
 
   const styles = ` .menu li > *:not(ul):not(.menu-title):not(details):active {
         background-color: transparent !important;
