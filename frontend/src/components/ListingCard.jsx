@@ -53,20 +53,20 @@ const ListingCard = ({ listing }) => {
     }
   };
 
-  useEffect(() => {
-    if (currentUser) {
-      const isSaved = saveListings.some(
-        (saveListing) => saveListing._id === _id
-      );
-      if (isSaved) {
-        setHeart(true);
-      } else {
-        setHeart(false);
-      }
-    } else {
-      dispatch(clearSavedListing());
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     const isSaved = saveListings.some(
+  //       (saveListing) => saveListing._id === _id
+  //     );
+  //     if (isSaved) {
+  //       setHeart(true);
+  //     } else {
+  //       setHeart(false);
+  //     }
+  //   } else {
+  //     dispatch(clearSavedListing());
+  //   }
+  // }, []);
 
   return (
     <div className="listing_card bg-white mb-5 shadow-lg shadow-black/10  hover:shadow-black/20 rounded-sm w-full hover:shadow-lg group sm:mr-auto sm:ml-0 mx-auto">

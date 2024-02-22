@@ -35,8 +35,6 @@ const Overview = ({ setSelectedLink, link }) => {
     if (users) getUsers(dispatch, currentUser);
   }, []);
 
-  console.log(users)
-
   useEffect(() => {
     const price = calculateTotalRoomCostForCurrentUser(rooms, currentUser);
     setTotalRoomCost(price);

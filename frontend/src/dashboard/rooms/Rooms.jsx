@@ -54,9 +54,6 @@ const Rooms = ({ setSelectedLink, link }) => {
     fetchUserDetails();
   }, [currentUser]);
 
-
-  console.log(rooms)
-
   const columns = useMemo(
     () => [
       {
