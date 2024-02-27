@@ -6,6 +6,7 @@ import {
   updatePost,
   singlePost,
   getListingPost,
+  approvePost
 } from "../controllers/post.controller.js";
 
 const router = express.Router();
@@ -15,5 +16,6 @@ router.delete("/delete/:id", deletePost);
 router.post("/update/:id", verifyToken, updatePost);
 router.get("/:id", singlePost);
 router.get("/", getListingPost);
+router.put("/approve/:id",verifyToken, approvePost);
 
 export default router;

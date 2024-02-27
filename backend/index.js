@@ -6,6 +6,7 @@ import auth from "./routes/auth.route.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import postRouter from "./routes/post.route.js";
+import mailRoutes from './routes/mail.route.js';
 import messageRouter from "./routes/message.route.js";
 import conversationRoute from "./routes/conversation.route.js";
 import notificatonRoute from "./routes/notification.route.js";
@@ -56,6 +57,7 @@ expressServer.listen(PORT, () => {
 app.use("/api/users", userRouter);
 app.use("/api/auth", auth);
 app.use("/api/posts", postRouter);
+app.use('/api/mail', mailRoutes);
 app.use("/api/message", messageRouter);
 app.use("/api/conversation", conversationRoute);
 app.use("/api/notification", notificatonRoute);

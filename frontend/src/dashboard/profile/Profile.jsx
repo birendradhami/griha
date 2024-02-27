@@ -1,21 +1,28 @@
-import { React, useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { AiFillEdit } from "react-icons/ai";
-import { BsFillPlusSquareFill } from 'react-icons/bs'
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
-import { firebaseApp } from '../../firebase.js';
-import { loddingStart, signoutFailed, signoutSuccess, userDeleteFail, userDeleteSuccess, userUpdateFailed, userUpdateSuccess } from '../../redux/user/userSlice.js'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom';
-import PostCard from '../../components/PostCard.jsx';
-import Loading from '../../components/Loading.jsx';
-import { clearSavedListing } from '../../redux/saveListing/saveListingSlice.js';
-import Footer from '../../components/Footer.jsx';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import DeleteIcon from '@mui/icons-material/Delete';
-import BorderColorIcon from '@mui/icons-material/BorderColor';
-import EditNoteIcon from '@mui/icons-material/EditNote';
+import { React, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { firebaseApp } from "../../firebase.js";
+import {
+  loddingStart,
+  userDeleteFail,
+  userDeleteSuccess,
+  userUpdateFailed,
+  userUpdateSuccess,
+} from "../../redux/user/userSlice.js";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
+import Loading from "../../components/Loading.jsx";
+import { clearSavedListing } from "../../redux/saveListing/saveListingSlice.js";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import DeleteIcon from "@mui/icons-material/Delete";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import EditNoteIcon from "@mui/icons-material/EditNote";
 import {
   Container,
   Grid,
@@ -28,30 +35,31 @@ import {
   Typography,
   IconButton,
   Box,
-} from '@mui/material';
-import { CenterFocusStrong } from '@mui/icons-material';
-
+} from "@mui/material";
+import {
+  AddPhotoAlternate,
+  BookmarkAdd,
+  CenterFocusStrong,
+  Edit,
+} from "@mui/icons-material";
 
 const Profile = () => {
-  const { currentUser } = useSelector(state => state.user)
+  const { currentUser } = useSelector((state) => state.user);
   const [file, setFile] = useState(undefined);
   const [uploadingPerc, setUploadingPerc] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
-  const [formData, setFormData] = useState({});
-  const [userPosts, setUserPost] = useState({
-    isPostExist: false,
-    posts: []
-  })
-
-  const [userPostLoading, setUserPostLoading] = useState(false)
-
+  const [formData, setFormData] = useState({
+    username: currentUser.username,
+    email: currentUser.email,
+    password: "",
+  });
+  const [editMode, setEditMode] = useState(false);
+  const [tempAvatar, setTempAvatar] = useState(formData.avatar);
 
   const fileRef = useRef(null);
-  const { loading } = useSelector((state => state.user))
+  const { loading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-
-
+  const navigate = useNavigate();
 
   const handleFileUpload = (file) => {
     if (file) {
@@ -60,134 +68,131 @@ const Profile = () => {
       const storageRef = ref(fireBaseStorage, fileName);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
-      uploadTask.on("state_changed",
+      uploadTask.on(
+        "state_changed",
         (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           setUploadingPerc(Math.round(progress));
         },
         (error) => {
           setFileUploadError(true);
         },
         () => {
-          getDownloadURL(uploadTask.snapshot.ref).then(downloadUrl => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
             setFormData({ ...formData, avatar: downloadUrl });
           });
         }
       );
     }
-  }
+  };
 
   useEffect(() => {
-    handleFileUpload(file)
-  }, [file])
+    handleFileUpload(file);
+  }, [file]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
+  const handleEdit = () => {
+    setEditMode(true);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // setLoading(true)
     try {
-      dispatch(loddingStart())
+      dispatch(loddingStart());
       const res = await fetch(`/api/users/update/${currentUser._id}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
       const userData = await res.json();
 
-
-      //===checking reqest success or not ===//
       if (userData.success === false) {
-        dispatch(userUpdateFailed(userData.message))
+        dispatch(userUpdateFailed(userData.message));
 
-        //===showing error in tostify====//
         toast.error(userData.message, {
           autoClose: 5000,
-        })
-      }
-      else {
-        dispatch(userUpdateSuccess(userData))
-        toast.success('Profile updated successfully', {
+        });
+      } else {
+        dispatch(userUpdateSuccess(userData));
+        toast.success("Profile updated successfully", {
           autoClose: 2000,
-        })
+        });
+        setEditMode(false);
       }
     } catch (error) {
-      dispatch(userUpdateFailed(error.message))
+      dispatch(userUpdateFailed(error.message));
       toast.error(error.message, {
         autoClose: 2000,
-      })
+      });
     }
-  }
-
+  };
 
   const handleDelete = async () => {
     try {
-      dispatch(loddingStart())
+      dispatch(loddingStart());
       const res = await fetch(`/api/users/delete/${currentUser._id}`, {
-        method: 'DELETE'
-      })
+        method: "DELETE",
+      });
       const resData = await res.json();
-      //===checking reqest success or not ===//
       if (resData.success === false) {
-        dispatch(userDeleteFail(resData.message))
+        dispatch(userDeleteFail(resData.message));
 
-        //===showing error in tostify====//
         toast.error(resData.message, {
           autoClose: 2000,
-        })
-      }
-      else {
-        dispatch(userDeleteSuccess())
-      }
-
-    } catch (error) {
-      dispatch(userDeleteFail(error.message))
-      toast.error(error.message, {
-        autoClose: 2000,
-      })
-    }
-  }
-
-  const handleLogOut = async () => {
-    try {
-
-      const res = await fetch(`/api/auth/signout/${currentUser._id}`);
-      const data = await res.json();
-      if (data.success === false) {
-
-        dispatch(signoutFailed(data.message))
-        toast.error(data.message, {
-          autoClose: 2000,
-        })
-      }
-      else {
-        dispatch(signoutSuccess())
-        dispatch(clearSavedListing())
+        });
+      } else {
+        dispatch(userDeleteSuccess());
       }
     } catch (error) {
-      dispatch(signoutFailed(error.message))
+      dispatch(userDeleteFail(error.message));
       toast.error(error.message, {
         autoClose: 2000,
-      })
+      });
     }
-  }
-
-
+  };
+  const handleCancel = () => {
+    setFormData({
+      username: currentUser.username,
+      email: currentUser.email,
+      password: "",
+      avatar: currentUser.avatar,
+    });
+    setFile(undefined);
+    setTempAvatar(currentUser.avatar);
+    setFileUploadError(false);
+    setUploadingPerc(0);
+    setEditMode(false);
+  };
 
   return (
     <>
-      <Container sx={{ mt: 10 }}>
-        <Grid container spacing={4}>
-          {/* Profile picture card */}
-
+      <Container
+        sx={{
+          mt: 12,
+          width: "100%",
+          mx: "auto",
+          "@media (max-width: 600px)": {
+            p: 0,
+            mt: 4,
+          },
+        }}
+      >
+        <Grid container spacing={4} sx={{ alignItems: "center" }}>
           <Grid item xs={12} md={4}>
-        
             <Card>
-              <CardHeader title="Profile Picture" sx={{ textAlign: 'center' }} />
-              <CardContent sx={{ textAlign: 'left', position: 'relative' }}>
+              <CardHeader
+                title="Profile Picture"
+                sx={{ textAlign: "center" }}
+              />
+              <CardContent sx={{ textAlign: "left", position: "relative" }}>
                 <input
                   onChange={(e) => setFile(e.target.files[0])}
                   hidden
@@ -197,121 +202,220 @@ const Profile = () => {
                   id="profile_image"
                   ref={fileRef}
                 />
-                {/* Profile picture image */}
                 <Avatar
                   src={formData.avatar || currentUser.avatar}
                   alt="avatar"
-                  sx={{ width: 150, height: 150, mx: 'auto', mb: 2 }}
+                  sx={{
+                    width: 150,
+                    height: 150,
+                    mx: "auto",
+                    mb: 0,
+                    "@media (max-width: 900px)": {
+                      width: 100,
+                      height: 100,
+                    },
+                  }}
                 />
-
-                <Typography variant="h5" sx={{ textAlign: 'center' }}>
+                {editMode && (
+                  <Box
+                    onClick={() => fileRef.current.click()}
+                    sx={{
+                      cursor: "pointer",
+                      textAlign: "center",
+                      margin: "0",
+                      position: "relative",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        // background: "gray",
+                        // color: "white",
+                        borderRadius: 5,
+                        padding: "2px",
+                        width: "10%",
+                        mx: "auto",
+                        position: "absolute",
+                        right: 50,
+                        bottom: 10,
+                      }}
+                    >
+                      <BookmarkAdd />
+                      {/* Edit */}
+                    </Typography>
+                  </Box>
+                )}
+                <Typography variant="h5" sx={{ textAlign: "center", mt: 1 }}>
                   {currentUser.username}
                 </Typography>
-                <Typography variant="body2" sx={{ textAlign: 'center' }}>{currentUser.role}</Typography>
-                {/* Profile picture upload button */}
-
-
-                <Box
+                <Typography
+                  variant="body2"
                   sx={{
-                    cursor: 'pointer',
-                    textAlign: 'center',
-                    margin: '0'
+                    textAlign: "center",
+                    mt: 2,
+                    mb: 1,
+                    fontSize: 18,
+                    position: "relative",
                   }}
                 >
-                  <EditNoteIcon
-                    onClick={() => fileRef.current.click()}
-                  />
-                  
-                </Box>
-                <Typography variant="body2"  sx={{ textAlign: 'center', fontSize: '0.8rem' }}>
-                (Image format must be JPG, PNG)
-              </Typography>
+                  {currentUser.role}
+                </Typography>
+
+                <Typography
+                  variant="body2"
+                  sx={{ textAlign: "center", fontSize: "0.8rem" }}
+                >
+                  (Image format must be JPG, PNG)
+                </Typography>
                 {fileUploadError ? (
-                  <Typography variant="caption" sx={{ color: 'red' }} mt={1} >
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      color: "red",
+                      display: "flex",
+                      width: "80%",
+                      justifyContent: "center",
+                      mx: "auto",
+                    }}
+                    mt={1}
+                  >
                     File upload failed
                   </Typography>
                 ) : uploadingPerc > 0 && uploadingPerc < 100 ? (
-                  <Typography variant="caption" sx={{ color: 'black' }} mt={1} >
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      color: "black",
+                      display: "flex",
+                      width: "50%",
+                      justifyContent: "center",
+                      mx: "auto",
+                    }}
+                    mt={1}
+                  >
                     File uploading...{uploadingPerc}%
                   </Typography>
-                ) : uploadingPerc === 100 && (
-                  <Typography variant="caption" sx={{ color: 'green' }} mt={1} >
-                    File uploaded!!!
-                  </Typography>
+                ) : (
+                  uploadingPerc === 100 && (
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        color: "green",
+                        display: "flex",
+                        width: "50%",
+                        justifyContent: "center",
+                        mx: "auto",
+                      }}
+                      mt={1}
+                    >
+                      File uploaded!!!
+                    </Typography>
+                  )
                 )}
               </CardContent>
             </Card>
           </Grid>
 
-          {/* Account details card */}
-          <Grid item xs={12} md={8}>
-            <Card>
+          <Grid item xs={12} md={8} sx={{ width: "60%" }}>
+            <Card sx={{ pt: 0 }}>
               <CardHeader title="Account Details" />
-              <CardContent>
+              <CardContent sx={{ pt: 0, width: "90%" }}>
                 <form>
-                  {/* Form Group (username) */}
-
                   <TextField
                     fullWidth
                     label="Username (how your name will appear to other users on the site)"
-                    defaultValue={currentUser.username}
+                    value={formData.username}
                     name="username"
                     type="text"
-                    variant="outlined"
                     margin="normal"
-                    padding="2px"
+                    padding="1px"
                     onChange={handleChange}
+                    disabled={!editMode}
                   />
 
-                  {/* Form Group (email address) */}
-                  <TextField
-                    fullWidth
-                    label="Email address"
-                    variant="outlined"
-                    margin="normal"
-                    type="email"
-                    defaultValue={currentUser.email}
-                    onChange={handleChange}
+                  {!editMode && (
+                    <TextField
+                      fullWidth
+                      label="Email address"
+                      margin="normal"
+                      type="email"
+                      value={formData.email}
+                      disabled={!editMode}
+                      sx={{ p: 0, color: "black" }}
+                    />
+                  )}
 
-                  />
                   <TextField
                     type="password"
                     name="password"
+                    value={formData.password}
                     label="Password"
                     variant="outlined"
                     fullWidth
                     margin="normal"
                     onChange={handleChange}
+                    disabled={!editMode}
                   />
 
-
-                  {/* Save changes button */}
-                  <Box >
-                    <Button
-                      variant="contained"
-                      color="success"
-                      type="button"
-                      sx={{ m: '5px' }}
-                      disabled={loading}
-                      onClick={handleSubmit}
-                    >
-                      {loading ? 'Loading...' : 'Save Changes'}
-                    </Button>
-                    <Button
-
-                      startIcon={<DeleteIcon />}
-                      variant="outlined"
-                      color="secondary"
-                      type="button"
-                      onClick={handleDelete}
-                    >
-                      Delete
-                    </Button>
+                  <Box>
+                    {editMode ? (
+                      <>
+                        <Button
+                          variant="contained"
+                          type="button"
+                          sx={{
+                            backgroundColor: "black",
+                            color: "white",
+                            ":hover": { backgroundColor: "#000" },
+                            mr: 1,
+                          }}
+                          onClick={handleSubmit}
+                        >
+                          Save Changes
+                        </Button>
+                        <Button
+                          variant="contained"
+                          type="button"
+                          sx={{
+                            backgroundColor: "gray",
+                            color: "white",
+                            ":hover": { backgroundColor: "#777" },
+                            mr: 1,
+                          }}
+                          onClick={handleCancel}
+                        >
+                          Cancel
+                        </Button>
+                      </>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        type="button"
+                        sx={{
+                          backgroundColor: "black",
+                          color: "white",
+                          mr: 1,
+                          ":hover": { backgroundColor: "#000" },
+                        }}
+                        onClick={handleEdit}
+                      >
+                        Edit Profile
+                      </Button>
+                    )}
+                    {!editMode && (
+                      <Button
+                        // startIcon={<DeleteIcon />}
+                        type="button"
+                        sx={{
+                          backgroundColor: "gray",
+                          color: "white",
+                          ":hover": { backgroundColor: "#777" },
+                        }}
+                        onClick={handleDelete}
+                      >
+                        Delete
+                      </Button>
+                    )}
                   </Box>
-
-
-
-
                 </form>
               </CardContent>
             </Card>
@@ -319,7 +423,7 @@ const Profile = () => {
         </Grid>
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;

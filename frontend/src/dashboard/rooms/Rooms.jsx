@@ -73,7 +73,7 @@ const Rooms = ({ setSelectedLink, link }) => {
         renderCell: (params) => "NPR." + params.row.price,
       },
       { field: "title", headerName: "Title", width: 150 },
-      { field: "description", headerName: "Description", width: 200 },
+      { field: "description", headerName: "Description", width: 150 },
       {
         field: "username",
         headerName: "Added by",
@@ -85,13 +85,18 @@ const Rooms = ({ setSelectedLink, link }) => {
         ),
       },
       {
+        field: "status",
+        headerName: "Status",
+        width: 100,
+        renderCell: (params) =>
+          params.row.approved ? "Approved" : "Pending",
+      },
+      {
         field: "createdAt",
         headerName: "Created At",
         width: 150,
-        renderCell: (params) =>
-          moment(params.row.createdAt).format("YYYY-MM-DD HH:MM:SS"),
+        hide: true, // hide the createdAt field
       },
-      // { field: "_id", hide: true },
       {
         field: "actions",
         headerName: "Actions",

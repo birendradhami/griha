@@ -10,6 +10,7 @@ import {
 } from "recharts";
 import { useSelector, useDispatch } from "react-redux";
 import isAdmin from "../utils/isAdmin.js";
+import { Box } from "@mui/material";
 
 const months = 5;
 const today = new Date();
@@ -74,7 +75,9 @@ export default function Chart() {
   }, [rooms, currentUser]);
 
   return (
-    <div style={{ width: "100%", height: 300, minWidth: 250 }}>
+    <Box sx={{ width: "100%", height: 290, minWidth: 250,"@media (max-width: 600px)": {
+      height:250
+    }, }}>
       <ResponsiveContainer>
         <AreaChart
           data={data}
@@ -107,6 +110,6 @@ export default function Chart() {
           />
         </AreaChart>
       </ResponsiveContainer>
-    </div>
+    </Box>
   );
 }

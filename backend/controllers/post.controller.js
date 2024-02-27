@@ -1,11 +1,21 @@
 import Listing from "../models/listing.models.js";
 import { throwError } from "../utils/error.js";
 
+// Create 
 export const createPost = async (req, res, next) => {
-  if (req.user.id != req.body.userRef)
-    return next(throwError(400, "Token Expired, Login for create post"));
+  if (req.user.id !== req.body.userRef) {
+    return next(throwError(400, 'Token Expired, Login for create post'));
+  }
+
   try {
-    const post = await Listing.create(req.body);
+    const user = req.user;
+    const isAdmin = user.role === 'admin';
+
+    const post = await Listing.create({
+      ...req.body,
+      approved: isAdmin ? true : false,
+    });
+
     res.status(201).json(post);
   } catch (error) {
     next(error);
@@ -27,21 +37,84 @@ export const deletePost = async (req, res, next) => {
 
 // Post Update
 export const updatePost = async (req, res, next) => {
-  const isPostExist = await Listing.findById(req.params.id);
-  if (!isPostExist) return next(throwError(404, "Post not found"));
-  if (req.user.id != isPostExist.userRef)
-    return next(throwError(400, "You can only update  your own account"));
   try {
-    const updatedPost = await Listing.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-    res.status(200).json(updatedPost);
+    const existingPost = await Listing.findById(req.params.id);
+
+    if (!existingPost) {
+      return next(throwError(404, "Post not found"));
+    }
+
+    console.log(req.user)
+
+    if (req.user.id !== existingPost.userRef && req.user.role !== "admin") {
+      return next(throwError(400, "You can only update your own account"));
+    }
+
+    try {
+      let updatedPost;
+
+      if (req.user.role === "admin") {
+        updatedPost = await Listing.findByIdAndUpdate(
+          req.params.id,
+          { ...req.body, userRef: existingPost.userRef },
+          { new: true }
+        );
+      } else {
+        if (req.body.userRef && req.body.userRef !== existingPost.userRef) {
+          return next(
+            throwError(400, "You are not allowed to change the owner")
+          );
+        }
+
+        updatedPost = await Listing.findByIdAndUpdate(
+          req.params.id,
+          req.body,
+          { new: true }
+        );
+      }
+
+      res.status(200).json(updatedPost);
+    } catch (error) {
+      next(error);
+    }
   } catch (error) {
     next(error);
   }
 };
+
+// Approve Room
+
+export const approvePost = async (req, res, next) => {
+  try {
+    const existingPost = await Listing.findById(req.params.id);
+
+    if (!existingPost) {
+      return next(throwError(404, "Post not found"));
+    }
+    console.log(req.user)
+
+    const isAdmin = req.user.role === "admin";
+
+    if (!isAdmin) {
+      return next(throwError(403, "You are not allowed to approve posts"));
+    }
+
+    try {
+      const approvedPost = await Listing.findByIdAndUpdate(
+        req.params.id,
+        { approved: true },
+        { new: true }
+      );
+
+      res.status(200).json(approvedPost);
+    } catch (error) {
+      next(error);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 // Single Post
 export const singlePost = async (req, res, next) => {
@@ -67,6 +140,7 @@ export const getListingPost = async (req, res, next) => {
       maxPrice = Infinity,
       page = 1,
       sort,
+      approved = false,
     } = req.query;
 
     const query = {
@@ -90,9 +164,12 @@ export const getListingPost = async (req, res, next) => {
       query.furnished = true;
     }
 
-    // Add a condition for the price range
     if (minPrice || maxPrice !== Infinity) {
       query.price = { $gte: parseInt(minPrice), $lte: parseInt(maxPrice) };
+    }
+
+    if (approved === "true") {
+      query.approved = true;
     }
 
     const limit = 12;
@@ -117,3 +194,5 @@ export const getListingPost = async (req, res, next) => {
     next(error);
   }
 };
+
+

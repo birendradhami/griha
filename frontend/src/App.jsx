@@ -19,6 +19,7 @@ import SocketConnection from "./components/SocketConnection";
 import ScrollToTop from "./components/ScrollToTop";
 import EmailVerify from "./components/EmailVerify";
 import Dashboard from "./dashboard/Dashboard";
+import TermCondition from "./pages/TermCondition";
 function App() {
   return (
     <BrowserRouter>
@@ -49,6 +50,7 @@ function AppContent() {
         <Route path="/create_post" element={<CreatePost />} />
         <Route path="*" element={<PageNotFound />} />
         <Route path="/saved_listing" element={<SaveListing />} />
+        <Route path="/termsandconditions" element={<TermCondition />} />
         <Route element={<PrivateRoute />}>
           <Route path="dashboard/*" element={<Dashboard />} />
           <Route path="/update_post/:id" element={<UpdatePost />} />

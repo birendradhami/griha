@@ -1,12 +1,27 @@
 import jwt from "jsonwebtoken";
-import { throwError } from "./error.js";
+import User from "../models/user.models.js";
 
-export const verifyToken = (req, res, next) => {
+export const verifyToken = async (req, res, next) => {
   const token = req.cookies.access_token;
-  if (!token) return next(throwError(401, "Session End. Login Again! "));
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) return next(throwError(403, "Forbidden"));
+
+  if (!token) {
+    console.error("Token not found in cookies:", req.cookies);
+    return res.status(401).json({ error: "Session End. Login Again!" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      console.error("User not found in the database");
+      return res.status(401).json({ error: "Session End. Login Again!" });
+    }
+
     req.user = user;
     next();
-  });
+  } catch (err) {
+    console.error("Token verification failed:", err);
+    return res.status(403).json({ error: "Forbidden" });
+  }
 };
