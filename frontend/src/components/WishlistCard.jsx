@@ -53,20 +53,20 @@ const WhishlistCard = ({ listing }) => {
     }
   };
 
-  useEffect(() => {
-    if (currentUser) {
-      const isSaved = saveListings.some(
-        (saveListing) => saveListing._id === _id
-      );
-      if (isSaved) {
-        setHeart(true);
-      } else {
-        setHeart(false);
-      }
-    } else {
-      dispatch(clearSavedListing());
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     const isSaved = saveListings.some(
+  //       (saveListing) => saveListing._id === _id
+  //     );
+  //     if (isSaved) {
+  //       setHeart(true);
+  //     } else {
+  //       setHeart(false);
+  //     }
+  //   } else {
+  //     dispatch(clearSavedListing());
+  //   }
+  // }, []);
 
   return (
     <div className="listing_card pb-6 p-3 sm:p-6 lg:mx-12 bg-white lg:mx-auto">

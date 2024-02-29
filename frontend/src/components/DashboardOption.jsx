@@ -43,10 +43,25 @@ const DashboardOption = ({ user }) => {
   const styles = ` .menu li > *:not(ul):not(.menu-title):not(details):active {
         background-color: transparent !important;
     }`;
-  return (
-    <>
-      <style>{styles}</style>
-      <div className="flex-none gap-2">
+    const isMobile = window.innerWidth <= 640; 
+
+    return (
+      <>
+        <style>{styles}</style>
+        <div className="flex-none gap-2">
+          {isMobile ? (
+            <Link
+              className="btn btn-ghost btn-circle avatar hover:outline-0"
+            >
+              <div className=" w-16 rounded-full">
+                <img
+                  className="rounded-full border border-brand-blue/20 h-10 w-8 object-cover"
+                  src={user?.avatar}
+                  alt="profile image"
+                />
+              </div>
+            </Link>
+          ) : (
         <div className="dropdown dropdown-end" onClick={toggleDropdown}>
           <label
             tabIndex={0}
@@ -106,7 +121,7 @@ const DashboardOption = ({ user }) => {
               </Link>
             </li>
           </ul>
-        </div>
+        </div>)}
         <ToastContainer />
       </div>
     </>

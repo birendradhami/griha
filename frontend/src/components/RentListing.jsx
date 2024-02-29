@@ -20,7 +20,7 @@ const RentListing = () => {
     (async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/posts?type=rent`);
+        const res = await fetch(`/api/posts?type=rent&approved=true`);
         const json = await res.json();
         if (json.success === false) {
           setLoading(false);
@@ -34,6 +34,7 @@ const RentListing = () => {
       }
     })();
   }, []);
+  
 
   const settings = {
     dots: false,

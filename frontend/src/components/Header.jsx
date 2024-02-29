@@ -1,15 +1,14 @@
-// import { React, useState } from "react";
 import React, { useEffect, useState } from "react";
-
 import { Link } from "react-router-dom";
 import MobileMenu from "./MobileMenu";
 import { useSelector } from "react-redux";
 import Dashboard from "./DashboardOption";
-import { FaHeart, FaHome} from "react-icons/fa";
+import { FaHeart, FaHome } from "react-icons/fa";
 import { IoChatboxEllipsesSharp } from "react-icons/io5";
-import GrihaLogo from '../../assets/Griha.png';
- import { useCookies } from "react-cookie";
+import GrihaLogo from "../../assets/Griha.png";
+import { useCookies } from "react-cookie";
 import io from "socket.io-client";
+import BottomNav from "./BottomNav";
 
 const Header = () => {
   const [isActiveMoblie, setisActiveMoblie] = useState(false);
@@ -38,7 +37,7 @@ const Header = () => {
             <ul className=" sm:ml-5 sm:flex items-center justify-end  sm:pr-4 font-semibold text-black font-content ">
               <li className="hidden sm:block">
                 <Link
-                  to={`${currentUser ? "/saved_listing" : "/login"}`}
+                  to={"/saved_listing"}
                   className="flex   items-center gap-1 mr-4 text-lg"
                 >
                   Wishlist
@@ -89,6 +88,7 @@ const Header = () => {
               )}
             </ul>
           </div>
+          <BottomNav user={currentUser}/>
         </div>
       </div>
     </>

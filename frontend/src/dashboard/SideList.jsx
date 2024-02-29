@@ -7,6 +7,9 @@ import {
   Person,
   Brightness4,
   Brightness7,
+  CheckBox,
+  ApprovalOutlined,
+  Recommend,
 } from "@mui/icons-material";
 import {
   Box,
@@ -38,6 +41,7 @@ import { Menu } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import GrihaLogo from "../../assets/Griha.png";
 import isAdmin from "./utils/isAdmin.js";
+import Approval from "./approval/Approval.jsx";
 
 const drawerWidth = 240;
 
@@ -146,6 +150,14 @@ const SideList = ({ open, setOpen, darkTheme, dark, setDark }) => {
               component: <Users {...{ setSelectedLink, link: "users" }} />,
               onClick: () => navigate("users"),
             },
+            {
+              title: "Approval",
+              icon: <Recommend />,
+              link: "approval",
+              component: <Approval {...{ setSelectedLink, link: "approval" }} />,
+              onClick: () => navigate("approval"),
+            },
+
           ]
         : []),
 
@@ -270,7 +282,7 @@ const SideList = ({ open, setOpen, darkTheme, dark, setDark }) => {
                     color:
                       darkTheme.palette.mode === "light" ? "black" : "white",
                     fontSize: 25,
-                    "@media (min-width: 1024px)": {
+                    "@media (min-width: 600px)": {
                       display: "none",
                     },
                   }}

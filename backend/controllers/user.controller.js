@@ -25,11 +25,17 @@ export const updateUser = async (req, res, next) => {
   if (req.user.id !== req.params.id)
     return next(throwError(401, "User Invalid"));
 
-  const checkEmail = await User.findOne({ email });
-  if (checkEmail) return next(throwError(500, "Invalid Information"));
+    const existingUser = await User.findById(req.params.id);
 
-  const checkUserName = await User.findOne({ username });
-  if (checkUserName) return next(throwError(500, "Invalid Information"));
+    if (existingUser.email !== email) {
+      const checkEmail = await User.findOne({ email });
+      if (checkEmail) return next(throwError(500, "Email is already in use"));
+    }
+    
+    if (existingUser.username !== username) {
+      const checkUserName = await User.findOne({ username });
+      if (checkUserName) return next(throwError(500, "Username is already in use"));
+    }
 
   try {
     if (req.body.password) {

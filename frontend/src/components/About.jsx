@@ -9,7 +9,7 @@ const AboutSection = () => {
         <div className="flex items-center justify-center mb-8 sm:mr-8">
           <Link to="/home" className="flex items-center justify-start">
             {/* Circular container for the room logo and text */}
-            <div className="w-[12rem] h-[12rem] sm:w-[14rem] sm:h-[14rem] rounded-full object-cover sm:mr-11 mx-auto mb-2 shadow-md bg-cover bg-center flex items-center justify-center text-4xl">
+            <div className="w-[10rem] h-[10rem] sm:w-[14rem] sm:h-[14rem] rounded-full object-cover sm:mr-11 mx-auto mb-2 shadow-md bg-cover bg-center flex items-center justify-center text-4xl">
               <img src={GrihaLogo} alt='Griha Logo' className="text-black text-8xl">
                 
               </img>
@@ -18,7 +18,7 @@ const AboutSection = () => {
           </Link>
         </div>
         <div className="text-black leading-relaxed max-w-lg text-center sm:pl-3 sm:text-start">
-          <h2 className="text-4xl font-bold mb-8">About Us</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold mb-8">About Us</h2>
           <p>
             Welcome to Griha, your ultimate destination for finding the perfect room. We understand
             that finding the right living space is crucial, and Griha is here to simplify that
