@@ -19,7 +19,7 @@ export const getUsers = async (dispatch, currentUser) => {
     );
 
     const result = response.data;
-    console.log(result)
+    // console.log(result)
     dispatch(getUsersSuccess(result));
     return true;
   } catch (error) {

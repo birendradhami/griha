@@ -77,7 +77,7 @@ export const deleteUser = async (req, res, next) => {
 
     await Listing.deleteMany({ userRef: user._id });
 
-    await user.remove();
+    await user.deleteOne({ _id: user._id });
 
     res.clearCookie("access_token");
 
