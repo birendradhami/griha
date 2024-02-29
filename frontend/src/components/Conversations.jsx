@@ -76,10 +76,10 @@ const Conversations = ({ conversationInfo }) => {
               handleNotificationClick(conversation._id),
               (activeChatId.value.chatId = conversation._id)
             )}
-            className={`chat_user flex items-center justify-center sm:justify-start sm:flex-row sm:gap-4 hover:bg-gray-100/90 active:bg-black  group w-full p-2 sm:p-3 gap-1 duration-300  cursor-pointer ${
+            className={`chat_user flex items-center justify-center sm:justify-start sm:flex-row sm:gap-4 hover:bg-gray-100/90 active:bg-gray-100  group w-full p-2 sm:p-3 gap-1 duration-300  cursor-pointer ${
               trackConversation.conversationActive ===
               conversation.chatCreator._id
-                ? "bg-black text-white"
+                ? "bg-gray-100 text-black"
                 : "bg-gray-200 text-black"
             }`}
           >
@@ -93,7 +93,7 @@ const Conversations = ({ conversationInfo }) => {
               {/* <div className="absolute h-3 w-3 bottom-0 right-0 rounded-full bg-green-600 border-[.1px] border-black"></div>
                */}
             </div>
-            <p className="hidden sm:block  font-semibold font-content text-sm truncate duration-400 ease-in-out group-hover:text-white">
+            <p className="hidden sm:block  font-semibold font-content text-sm truncate duration-400 ease-in-out group-hover:text-black">
               {conversation.chatCreator.username}
             </p>
             {isNotify && (
@@ -127,12 +127,12 @@ const Conversations = ({ conversationInfo }) => {
               handleNotificationClick(conversation._id),
               (activeChatId.value.chatId = conversation._id)
             )}
-            className={`chat_user flex items-center justify-center sm:justify-start sm:flex-row sm:gap-4 hover:bg-brand-blue/90 active:bg-brand-blue group w-full p-2 sm:p-3 gap-1 duration-300  cursor-pointer 
+            className={`chat_user flex items-center justify-center sm:justify-start sm:flex-row sm:gap-4 hover:bg-gray-100/90 active:bg-brand-blue group w-full p-2 sm:p-3 gap-1 duration-300  cursor-pointer 
                         ${
                           trackConversation.conversationActive ===
                           conversation.chatPartner._id
-                            ? "bg-brand-blue text-white"
-                            : "bg-gray-200 text-brand-blue"
+                            ? "bg-gray-200 text-black"
+                            : "bg-gray-200 text-black"
                         }
                         `}
           >
@@ -149,7 +149,7 @@ const Conversations = ({ conversationInfo }) => {
               )} */}
             </div>
 
-            <p className="hidden sm:block  font-semibold font-content text-sm truncate duration-400 ease-in-out group-hover:text-white ">
+            <p className="hidden sm:block  font-semibold font-content text-sm truncate duration-400 ease-in-out group-hover:text-black ">
               {conversation.chatPartner.username}
             </p>
             {isNotify && (

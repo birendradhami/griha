@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Chat from "../components/Chat";
 import { useDispatch, useSelector } from "react-redux";
 import Conversations from "../components/Conversations";
@@ -18,15 +18,15 @@ const Message = () => {
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const chatContainerRef = useRef(null);
 
-  // Load Current user Conversations
   useEffect(() => {
     (async () => {
       try {
         setConversationLoading(true);
         const res = await fetch(`/api/conversation/${currentUser._id}`);
         const getConversations = await res.json();
-        
+
         if (getConversations.success === false) {
           setConversationLoading(false);
           toast.error(getConversations.message, {
@@ -40,14 +40,22 @@ const Message = () => {
         }
       } catch (error) {
         setConversationLoading(false);
-        toast.error(getConversations.message, {
+        toast.error(error.message, {
           autoClose: 5000,
         });
         setError(true);
         console.log(error);
       }
     })();
-  }, []);
+  }, [currentUser._id]);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = 0;
+    }
+  }, [trackConversation.conversationActive]);
+  
+  
 
   return (
     <>
@@ -103,7 +111,6 @@ const Message = () => {
                         Conversations Loading
                       </p>
                     </div>
-                    
                   ) : (
                     <>
                       <h3 className=" mx-auto px-2 mb-3 sm:px-3 text-sm sm:text-[22px] font-medium text-black">
@@ -124,8 +131,11 @@ const Message = () => {
                   )}
                 </div>
 
-                {trackConversation.conversationActive ? (
-                  <div className="conversation_container col-span-9 ">
+                <div
+                  className="conversation_container col-span-9"
+                  ref={chatContainerRef}
+                >
+                  {trackConversation.conversationActive ? (
                     <Chat
                       conversationInfo={{
                         trackConversation,
@@ -134,14 +144,12 @@ const Message = () => {
                         setConversation,
                       }}
                     />
-                  </div>
-                ) : (
-                  <div className="conversation_container col-span-9 ">
-                    <p className="mt-20 text-sm sm:text-2xl text-center font-heading ">
-                      Select and Start Conversating!
+                  ) : (
+                    <p className="mt-20 text-sm sm:text-2xl font-medium text-center text-black ">
+                      Select and Start Conversation!
                     </p>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             )}
           </div>

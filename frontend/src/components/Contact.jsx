@@ -23,7 +23,7 @@ const Contact = ({ listing }) => {
       const res = await fetch(`/api/users/${listing.userRef}`);
       const json = await res.json();
       if (json.success === false) {
-        setLoading(false);
+        setLoading(true);
       } else {
         setOwnerInfo(json);
         setLoading(false);

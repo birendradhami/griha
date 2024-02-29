@@ -291,11 +291,11 @@ const pageNotFound = () => {
               <h1 className="text-6xl font-thin text-center text-gray-800">
                 GOT LOST ?
               </h1>
-              <Link to={"/"} className="w-32 px-3 py-2 text-2xl font-light uppercase transition duration-200 ease-in border-b border-yellow-600 hover:bg-yellow-600 hover:text-white focus:outline-none">
+              <Link to={"/"} className="w-32 px-3 py-2 text-2xl font-light uppercase transition duration-200 ease-in border-b  focus:outline-none">
                 Help Me
               </Link>
             </div>
-            <div className="relative block w-full mx-auto mt-6 md:mt-0">
+            <div className="relative block w-full h-2 mx-auto mt-6 md:mt-0">
               <svg
                 className="max-w-2xl m-auto"
                 viewBox="0 0 1440 1024"

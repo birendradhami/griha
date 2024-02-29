@@ -9,7 +9,7 @@ import { activeChatId } from "./Conversations";
 import { signal } from "@preact/signals-react";
 
 //production
-// const Node_Env = "local"
+//const Node_Env = "local"
 export const socket = io("https://thunder-scarlet-wizard.glitch.me/", {
   headers: {
     "user-agent": "chrome",
@@ -24,7 +24,7 @@ const SocketConnection = () => {
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
-  //======== Get Notification From DB =========//
+  // Get Notification From DB
   useEffect(() => {
     const loadPrevNotification = async () => {
       try {
@@ -45,8 +45,7 @@ const SocketConnection = () => {
     currentUser && loadPrevNotification();
   }, []);
 
-  //=========== Store notificaions to DB =============//
-
+  //Store notificaions to DB 
   const sendNotificationToDB = async (notificationData) => {
     try {
       const sendNotification = await fetch("/api/notification/create", {

@@ -29,7 +29,7 @@ import MuiDrawer from "@mui/material/Drawer";
 import { useMemo, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import Overview from "./overview/Overview.jsx";
-import Messages from "./messages/Messages";
+import Chat from "./Chat/Chat.jsx";
 import Rooms from "./rooms/Rooms";
 import Users from "./users/Users";
 import Profile from "./profile/Profile.jsx";
@@ -180,17 +180,17 @@ const SideList = ({ open, setOpen, darkTheme, dark, setDark }) => {
       },
 
       {
-        title: "Messages",
+        title: "Chat",
         icon: <MarkChatUnread />,
-        link: "messages",
-        component: <Messages {...{ setSelectedLink, link: "messages" }} />,
-        onClick: () => navigate("messages"),
+        link: "chat",
+        component: <Chat {...{ setSelectedLink, link: "chat" }} />,
+        onClick: () => navigate("chat"),
       },
       {
         title: "Logout",
         icon: <Logout />,
-        onClick: async () => {
-          await handleLogout();
+        onClick: () => {
+           handleLogout();
           navigate("/");
         },
       },
@@ -268,6 +268,7 @@ const SideList = ({ open, setOpen, darkTheme, dark, setDark }) => {
                   fontSize: 18,
                   fontWeight: 500,
                   mt: 3,
+                  mb:1,
                   color: darkTheme.palette.text.primary,
                 }}
               >
@@ -275,7 +276,9 @@ const SideList = ({ open, setOpen, darkTheme, dark, setDark }) => {
               </Typography>
               <IconButton
                 onClick={() => setOpen(false)}
-                sx={{ borderRadius: 0 }}
+                sx={{ borderRadius: 0,"@media (min-width: 600px)": {
+                  display: "none",
+                }, }}
               >
                 <Menu
                   sx={{

@@ -63,7 +63,7 @@ app.use("/api/conversation", conversationRoute);
 app.use("/api/notification", notificatonRoute);
 app.use("/api/forgotPassword", forgotPasswordRouter);
 
-//============== Deployment==============//
+// Deployment
 
 const __dirname = path.resolve();
 
@@ -76,7 +76,6 @@ if (process.env.NODE_ENV === "production") {
 } else {
 }
 
-//============== Deployment==============//
 app.get("/", (req, res) => {
   res.send("api listing...");
 });
@@ -91,49 +90,40 @@ app.use((err, req, res, next) => {
   });
 });
 
-//----------------------------Handling Socket.io ------------------------------//
+
 
 // Handling CORS origin
 export const io = new Server(expressServer, {
   cors: {
     origin: [
       "http://localhost:5173",
-      "https://property-sell.vercel.app",
-      "https://property-sell-gjz462ec1-emoncr.vercel.app/",
     ],
     credentials: true,
   },
 });
 io.on("connection", async (socket) => {
-  // console.log(`socket connected with ${socket.id}`);
   const token = socket.handshake.auth.token;
-  // console.log(token);
   
   
   async function getUserDataFromRequest(token) {
     try {
       if (token) {
         const userData = await jwt.verify(token, process.env.JWT_SECRET);
-        // console.log("Decoded Token:", userData);
         return userData;
       } else {
-        // throw new Error("No token");
         console.log("Not found token");
       }
     } catch (error) {
       console.error("Token Verification Error:", error);
-      // throw error;
     }
   }
 
   (async () => {
     try {
       const user_id = await getUserDataFromRequest(token);
-      // console.log(user_id.id);
       await User.findByIdAndUpdate(user_id.id, {
         $set: { onlineOffline: "1" },
       });
-      //  user broadcast online status
       socket.broadcast.emit("getOnlineUser", {
         userID: user_id.id,
         status: "Online",
@@ -148,7 +138,7 @@ io.on("connection", async (socket) => {
     }
   })();
 
-  //=======Messaging Feature Here ======//
+  // Messaging
   socket.on("join_room", (chatId) => {
     socket.join(chatId);
   });
