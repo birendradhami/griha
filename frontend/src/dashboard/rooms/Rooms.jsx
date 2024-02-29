@@ -24,7 +24,7 @@ const Rooms = ({ setSelectedLink, link }) => {
 
   useEffect(() => {
     setSelectedLink(link);
-    if (rooms) getRooms(dispatch, currentUser);
+     getRooms(dispatch, currentUser);
 
     const fetchUserDetails = async () => {
       const userDetailsMap = {};

@@ -8,17 +8,23 @@ import { getUsersSuccess } from "../../redux/user/userSlice";
 
 export const getUsers = async (dispatch, currentUser) => {
   try {
-    const response = await axios.get(
-      `${import.meta.env.VITE_SERVER_URL}/api/users`,
-      {
-        headers: {
-          Authorization: `Bearer ${currentUser.token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    if (currentUser.role !== 'admin') {
+      return false;
+    }
+
+    const response = await axios.get(`/api/users`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.status !== 200) {
+      console.error(`Error fetching users. Status: ${response.status}`);
+      return false;
+    }
 
     const result = response.data;
+
     dispatch(getUsersSuccess(result));
     return true;
   } catch (error) {
@@ -26,6 +32,7 @@ export const getUsers = async (dispatch, currentUser) => {
     return false;
   }
 };
+
 
 export const updateStatus = async (userId, data, dispatch, currentUser) => {
   try {

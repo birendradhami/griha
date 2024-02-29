@@ -65,7 +65,7 @@ export const updateUser = async (req, res, next) => {
 // Delete User
 
 export const deleteUser = async (req, res, next) => {
-  if (req.user.id !== req.params.id)
+  if (String(req.user.id) !== req.params.id)
     return next(throwError(401, "User Invalid"));
 
   try {
@@ -77,7 +77,7 @@ export const deleteUser = async (req, res, next) => {
 
     await Listing.deleteMany({ userRef: user._id });
 
-    await user.remove();
+    await User.deleteOne({ _id: req.params.id });
 
     res.clearCookie("access_token");
 
@@ -86,6 +86,7 @@ export const deleteUser = async (req, res, next) => {
     next(error);
   }
 };
+
 
 // Get User Post
 export const userPosts = async (req, res, next) => {
@@ -102,10 +103,15 @@ export const userPosts = async (req, res, next) => {
 
 // Get Users
 export const getUsers = async (req, res, next) => {
-
-    const users = await User.find().sort({ _id: -1 });
-    res.status(200).json(users);
+  try {
+      const users = await User.find().sort({ _id: -1 });
+      res.status(200).json(users);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
 };
+
 
 // Update User Status
 export const updateStatus = (req, res) => {

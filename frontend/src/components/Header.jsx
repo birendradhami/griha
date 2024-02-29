@@ -22,16 +22,16 @@ const Header = () => {
         <div className=" px-2 sm:px-5 justify-between  max-w-screen-2xl w-full !mx-auto gap-1">
           {/* Logo container  */}
           <div className="col-span-3 sm:col-span-4">
-            <h1 className="font-blach sm:text-xl text-sm text-left hover:bg-transparent  text-black tracking-tighter w-full font-heading font-bold flex items-center justify-start">
-              <Link to={"/home"} className="flex items-center justify-start">
-                <img
+              <div className="flex items-center justify-start">
+                <img 
                   src={GrihaLogo}
                   alt="Griha Logo"
                   className="w-[25%] sm:w-[25%] lg:w-[8%] mr-2 sm:mr-2"
-                ></img>
-                <span className="mt-1 text-[35px]  sm:text-[40px]"> Griha</span>
-              </Link>
-            </h1>
+                ></img><Link to={"/home"} >
+                <span className="mt-1 text-[35px] font-bold text-left text-black sm:text-[42px]"> Griha</span>
+                </Link>
+                
+              </div>
           </div>
           <div className="col-span-3 sm:col-span-5  md:col-span-4 flex items-center justify-end">
             <ul className=" sm:ml-5 sm:flex items-center justify-end  sm:pr-4 font-semibold text-black font-content ">

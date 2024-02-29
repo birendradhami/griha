@@ -17,7 +17,7 @@ router.get("/:id", getUser);
 router.post("/update/:id", verifyToken, updateUser);
 router.delete("/delete/:id", verifyToken, deleteUser);
 router.get("/posts/:id", verifyToken, userPosts);
-router.get("/", getUsers);
+router.get("/",verifyToken,checkAccess, getUsers);
 router.patch("/updateStatus/:id", updateStatus);
 
 router.get("/getOnlineStatus/:id", getOnlineStatus);
