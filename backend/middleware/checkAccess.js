@@ -1,6 +1,5 @@
 const checkAccess = (req, res, next) => {
   const user = req.user;
-  console.log('User in checkAccess:', user);
 
   if (user && user.role === 'admin') {
     next();

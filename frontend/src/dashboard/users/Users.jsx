@@ -16,7 +16,7 @@ const Users = ({ setSelectedLink, link }) => {
 
   useEffect(() => {
     setSelectedLink(link);
-    if (users) getUsers(dispatch, currentUser);
+    getUsers(dispatch, currentUser);
   }, [currentUser]);
 
   const processRowUpdate = (params) => {
@@ -100,7 +100,7 @@ const Users = ({ setSelectedLink, link }) => {
       </Typography>
       <DataGrid
         columns={columns}
-        rows={users}
+        rows={users || []}
         getRowId={(row) => row._id}
         rowsPerPageOptions={[5, 10, 20]}
         pageSize={pageSize}

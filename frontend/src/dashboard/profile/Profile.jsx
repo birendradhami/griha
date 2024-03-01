@@ -51,7 +51,7 @@ const Profile = () => {
   const [formData, setFormData] = useState({
     username: currentUser.username,
     email: currentUser.email,
-    password: "",
+    password: currentUser.password,
   });
   const [editMode, setEditMode] = useState(false);
   const [tempAvatar, setTempAvatar] = useState(formData.avatar);
@@ -179,9 +179,13 @@ const Profile = () => {
           mt: 12,
           width: "100%",
           mx: "auto",
+          "@media (max-width: 900px)": {
+            p: 0,
+            mt: 2,
+          },
           "@media (max-width: 600px)": {
             p: 0,
-            mt: 4,
+            mt: 2,
           },
         }}
       >
@@ -206,8 +210,8 @@ const Profile = () => {
                   src={formData.avatar || currentUser.avatar}
                   alt="avatar"
                   sx={{
-                    width: 150,
-                    height: 150,
+                    width: 90,
+                    height: 90,
                     mx: "auto",
                     mb: 0,
                     "@media (max-width: 900px)": {
@@ -318,7 +322,9 @@ const Profile = () => {
           <Grid item xs={12} md={8} sx={{ width: "60%" }}>
             <Card sx={{ pt: 0 }}>
               <CardHeader title="Account Details" />
-              <CardContent sx={{ pt: 0, width: "90%" }}>
+              <CardContent sx={{ pt: 0, width: "90%","@media (max-width: 600px)": {
+            p: 0,pl:2
+          }, }}>
                 <form>
                   <TextField
                     fullWidth
@@ -343,7 +349,8 @@ const Profile = () => {
                       sx={{ p: 0, color: "black" }}
                     />
                   )}
-
+                  
+                  {editMode && (
                   <TextField
                     type="password"
                     name="password"
@@ -354,9 +361,10 @@ const Profile = () => {
                     margin="normal"
                     onChange={handleChange}
                     disabled={!editMode}
-                  />
+                    required
+                  />)}
 
-                  <Box>
+                  <Box sx={{display:"flex"}}>
                     {editMode ? (
                       <>
                         <Button
@@ -366,7 +374,8 @@ const Profile = () => {
                             backgroundColor: "black",
                             color: "white",
                             ":hover": { backgroundColor: "#000" },
-                            mr: 1,
+                            mr: 2,
+                            mt:2,
                           }}
                           onClick={handleSubmit}
                         >
@@ -379,7 +388,8 @@ const Profile = () => {
                             backgroundColor: "gray",
                             color: "white",
                             ":hover": { backgroundColor: "#777" },
-                            mr: 1,
+                            mr: 2,
+                            mt:2,
                           }}
                           onClick={handleCancel}
                         >
@@ -393,7 +403,8 @@ const Profile = () => {
                         sx={{
                           backgroundColor: "black",
                           color: "white",
-                          mr: 1,
+                          mr: 2,
+                          mt:2,
                           ":hover": { backgroundColor: "#000" },
                         }}
                         onClick={handleEdit}
@@ -408,6 +419,7 @@ const Profile = () => {
                         sx={{
                           backgroundColor: "gray",
                           color: "white",
+                          mt:2,
                           ":hover": { backgroundColor: "#777" },
                         }}
                         onClick={handleDelete}
