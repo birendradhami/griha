@@ -3,7 +3,7 @@ import {
   createNotification,
   getNotification,
   deleteNotification,
-} from "../controllers/notification.controller.js";
+} from "../controllers/notificationController.js";
 import { verifyToken } from "../utils/verifyUser.js";
 
 const router = express.Router();

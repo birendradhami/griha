@@ -1,79 +1,77 @@
-import Listing from "../models/listing.models.js";
+import Listing from "../models/Listing.js";
 import { throwError } from "../utils/error.js";
 
 // Create 
-export const createPost = async (req, res, next) => {
+export const createRoom = async (req, res, next) => {
   if (req.user.id !== req.body.userRef) {
-    return next(throwError(400, 'Token Expired, Login for create post'));
+    return next(throwError(400, 'Token Expired, Login for create room'));
   }
 
   try {
     const user = req.user;
     const isAdmin = user.role === 'admin';
 
-    const post = await Listing.create({
+    const room = await Listing.create({
       ...req.body,
       approved: isAdmin ? true : false,
     });
 
-    res.status(201).json(post);
+    res.status(201).json(room);
   } catch (error) {
     next(error);
   }
 };
 
-// Post Delete
-export const deletePost = async (req, res, next) => {
-  const isPostExist = await Listing.findById(req.params.id);
+// Room Delete
+export const deleteRoom = async (req, res, next) => {
+  const isRoomExist = await Listing.findById(req.params.id);
 
   try {
     await Listing.findByIdAndDelete(req.params.id);
 
-    res.status(200).json("Post delete successfully");
+    res.status(200).json("Room deleted successfully");
   } catch (error) {
     next(error);
   }
 };
 
-// Post Update
-export const updatePost = async (req, res, next) => {
+// Room Update
+export const updateRoom = async (req, res, next) => {
   try {
-    const existingPost = await Listing.findById(req.params.id);
+    const existingRoom = await Listing.findById(req.params.id);
 
-    if (!existingPost) {
-      return next(throwError(404, "Post not found"));
+    if (!existingRoom) {
+      return next(throwError(404, "Room not found"));
     }
 
-    console.log(req.user)
-
-    if (req.user.id !== existingPost.userRef && req.user.role !== "admin") {
+    if (req.user.id !== existingRoom.userRef && req.user.role !== "admin") {
       return next(throwError(400, "You can only update your own account"));
     }
 
     try {
-      let updatedPost;
+      let updatedRoom;
 
       if (req.user.role === "admin") {
-        updatedPost = await Listing.findByIdAndUpdate(
+        updatedRoom = await Listing.findByIdAndUpdate(
           req.params.id,
-          { ...req.body, userRef: existingPost.userRef },
+          { ...req.body, userRef: existingRoom.userRef },
           { new: true }
         );
       } else {
-        if (req.body.userRef && req.body.userRef !== existingPost.userRef) {
+        if (req.body.userRef && req.body.userRef !== existingRoom.userRef) {
           return next(
             throwError(400, "You are not allowed to change the owner")
           );
         }
 
-        updatedPost = await Listing.findByIdAndUpdate(
+        updatedRoom = await Listing.findByIdAndUpdate(
           req.params.id,
           req.body,
           { new: true }
         );
       }
 
-      res.status(200).json(updatedPost);
+      res.status(200).json(updatedRoom);
     } catch (error) {
       next(error);
     }
@@ -84,29 +82,29 @@ export const updatePost = async (req, res, next) => {
 
 // Approve Room
 
-export const approvePost = async (req, res, next) => {
+export const approveRoom = async (req, res, next) => {
   try {
-    const existingPost = await Listing.findById(req.params.id);
+    const existingRoom = await Listing.findById(req.params.id);
 
-    if (!existingPost) {
-      return next(throwError(404, "Post not found"));
+    if (!existingRoom) {
+      return next(throwError(404, "Room not found"));
     }
     console.log(req.user)
 
     const isAdmin = req.user.role === "admin";
 
     if (!isAdmin) {
-      return next(throwError(403, "You are not allowed to approve posts"));
+      return next(throwError(403, "You are not allowed to approve rooms"));
     }
 
     try {
-      const approvedPost = await Listing.findByIdAndUpdate(
+      const approvedRoom = await Listing.findByIdAndUpdate(
         req.params.id,
         { approved: true },
         { new: true }
       );
 
-      res.status(200).json(approvedPost);
+      res.status(200).json(approvedRoom);
     } catch (error) {
       next(error);
     }
@@ -116,19 +114,19 @@ export const approvePost = async (req, res, next) => {
 };
 
 
-// Single Post
-export const singlePost = async (req, res, next) => {
+// Single Room
+export const singleRoom = async (req, res, next) => {
   try {
-    const post = await Listing.findById(req.params.id);
-    res.status(200).json(post);
+    const room = await Listing.findById(req.params.id);
+    res.status(200).json(room);
   } catch (error) {
     next(error);
   }
 };
 
-// Get Posts
+// Get Rooms
 
-export const getListingPost = async (req, res, next) => {
+export const getListingRoom = async (req, res, next) => {
   try {
     const {
       searchTerm = "",

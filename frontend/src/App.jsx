@@ -7,8 +7,8 @@ import ResetPassword from "./components/ResetPassword";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import PrivateRoute from "./components/PrivateRoute";
-import CreatePost from "./pages/CreatePost";
-import UpdatePost from "./pages/UpdatePost";
+import Createroom from "./pages/CreateRoom";
+import UpdateRoom from "./pages/UpdateRoom";
 import ListingPage from "./pages/ListingPage";
 import SaveListing from "./pages/SaveListing";
 import Search from "./pages/Search";
@@ -47,13 +47,13 @@ function AppContent() {
         <Route path="/search?" element={<Search />} />
         <Route path="/message" element={<Message />} />
         <Route path="/users/:id/verify/:token" element={<EmailVerify />} />
-        <Route path="/create_post" element={<CreatePost />} />
+        <Route path="/create_room" element={<Createroom />} />
         <Route path="*" element={<PageNotFound />} />
         <Route path="/saved_listing" element={<SaveListing />} />
         <Route path="/termsandconditions" element={<TermCondition />} />
         <Route element={<PrivateRoute />}>
           <Route path="dashboard/*" element={<Dashboard />} />
-          <Route path="/update_post/:id" element={<UpdatePost />} />
+          <Route path="/update_room/:id" element={<UpdateRoom />} />
         </Route>
       </Routes>
       {!isDashboardRoute && <Footer />}

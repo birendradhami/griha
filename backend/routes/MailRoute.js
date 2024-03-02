@@ -1,5 +1,5 @@
 import express from 'express';
-import { sendApprovalEmail, sendDenialEmail } from '../controllers/mail.controller.js';
+import { sendApprovalEmail, sendDenialEmail } from '../controllers/mailController.js';
 
 const router = express.Router();
 

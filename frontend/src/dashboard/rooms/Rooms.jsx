@@ -167,7 +167,7 @@ const Rooms = ({ setSelectedLink, link }) => {
           width: "55%",
         },}}>
          <Typography
-          onClick={() => navigate(`/create_post`)}
+          onClick={() => navigate(`/create_room`)}
           sx={{ cursor: "pointer",textAlign:"center", mt:0, mb:4, }}
         >
           <AddHome sx={{mb:1, mr:0}}/> Create Room

@@ -19,7 +19,7 @@ import { getRoomsSuccess } from "../../redux/user/userSlice";
 export const getRooms = async (dispatch) => {
   try {
     const response = await axios.get(
-      `${import.meta.env.VITE_SERVER_URL}/api/posts`,
+      `${import.meta.env.VITE_SERVER_URL}/api/rooms`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -45,27 +45,27 @@ const RoomsActions = ({ params }) => {
 
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [postIdToDelete, setPostIdToDelete] = useState(null);
+  const [roomIdToDelete, setroomIdToDelete] = useState(null);
 
-  const handleDeleteWithConfirmation = (postId) => {
-    setPostIdToDelete(postId);
+  const handleDeleteWithConfirmation = (roomId) => {
+    setroomIdToDelete(roomId);
     setOpen(true);
   };
 
   const handleDeleteConfirmed = () => {
-    handlePostDelete(postIdToDelete);
+    handleroomDelete(roomIdToDelete);
     setOpen(false);
   };
 
   const handleCancelDelete = () => {
-    setPostIdToDelete(null);
+    setroomIdToDelete(null);
     setOpen(false);
   };
 
-  const handlePostDelete = async (postId, currentUser) => {
+  const handleroomDelete = async (roomId, currentUser) => {
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_SERVER_URL}/api/posts/delete/${postId}`,
+        `${import.meta.env.VITE_SERVER_URL}/api/rooms/delete/${roomId}`,
         {
           method: "DELETE",
         }
@@ -85,7 +85,7 @@ const RoomsActions = ({ params }) => {
         </IconButton>
       </Tooltip>
       <Tooltip title="Edit this room">
-        <IconButton onClick={() => navigate(`/update_post/${params.id}`)}>
+        <IconButton onClick={() => navigate(`/update_room/${params.id}`)}>
           <Edit />
         </IconButton>
       </Tooltip>

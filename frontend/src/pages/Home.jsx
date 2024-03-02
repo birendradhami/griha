@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import Footer from "../components/Footer";
-import SaleListing from "../components/SaleListing";
 import RentListing from "../components/RentListing";
-import OfferedListing from "../components/OfferedListing";
 import { useDispatch } from "react-redux";
 import { BsChatHeart, BsSearch } from "react-icons/bs";
 import { setSearchTermState } from "../redux/search/searchSlice";

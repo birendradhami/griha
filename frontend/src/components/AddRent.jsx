@@ -25,9 +25,9 @@ const AddRent = () => {
           </div>
 
           <div className="mt-4 md:mt-0 md:ml-4 pt-6 sm:pt-0">
-            <Link to={"/create_post"}>
+            <Link to={"/create_room"}>
             <button className="bg-black text-white font-bold  py-[0.6rem] px-4 rounded focus:outline-none focus:shadow-outline-blue">
-              Create Post
+              Create Room
             </button>
             </Link>
             

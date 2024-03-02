@@ -25,7 +25,7 @@ const Approval = () => {
   const fetchRoomRequests = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}/api/posts`
+        `${import.meta.env.VITE_SERVER_URL}/api/rooms`
       );
       const notApprovedRequests = response.data.filter(
         (request) => !request.approved
@@ -42,8 +42,8 @@ const Approval = () => {
         `${import.meta.env.VITE_SERVER_URL}/api/mail/send-approval-email`,
         {
           to: userEmail,
-          subject: "Your post has been approved",
-          text: "Congratulations! Your post has been approved.",
+          subject: "Your room has been approved",
+          text: "Congratulations! Your room has been approved.",
         }
       );
     } catch (error) {
@@ -57,8 +57,8 @@ const Approval = () => {
         `${import.meta.env.VITE_SERVER_URL}/api/mail/send-denial-email`,
         {
           to: userEmail,
-          subject: "Your post has been denied",
-          text: "Unfortunately, your post has been denied.",
+          subject: "Your room has been denied",
+          text: "Unfortunately, your room has been denied.",
         }
       );
     } catch (error) {
@@ -68,7 +68,7 @@ const Approval = () => {
 
   const handleApprove = async (requestId, userRef) => {
     try {
-      await fetch(`/api/posts/approve/${requestId}`, {
+      await fetch(`/api/rooms/approve/${requestId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -94,7 +94,7 @@ const Approval = () => {
   const handleDeny = async (requestId, userRef) => {
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_SERVER_URL}/api/posts/delete/${requestId}`,
+        `${import.meta.env.VITE_SERVER_URL}/api/rooms/delete/${requestId}`,
         {
           method: "DELETE",
         }

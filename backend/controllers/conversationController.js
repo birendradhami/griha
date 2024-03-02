@@ -1,4 +1,4 @@
-import Conversation from "../models/conversation.models.js";
+import Conversation from "../models/conversation.js";
 import { throwError } from "../utils/error.js";
 
 // Get Conversation controller
@@ -56,7 +56,7 @@ export const createConversation = async (req, res, next) => {
   }
 };
 
-// ====== Delete Conversations ==========//
+// Delete Conversations
 
 export const deleteConversation = async (req, res, next) => {
   const chatId = req.params.chatId;

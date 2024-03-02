@@ -1,5 +1,5 @@
 import express from "express";
-import { getMessage, postMessage } from "../controllers/message.controller.js";
+import { getMessage, postMessage } from "../controllers/messageController.js";
 import { verifyToken } from "../utils/verifyUser.js";
 
 const router = express.Router();

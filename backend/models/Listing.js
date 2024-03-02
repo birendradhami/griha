@@ -61,10 +61,13 @@ const listingSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    mapUrl: {
+      type: String,
+    }
   },
   { timestamps: true }
 );
 
-const Listing = mongoose.model("Post", listingSchema);
+const Listing = mongoose.model("Room", listingSchema);
 
 export default Listing;

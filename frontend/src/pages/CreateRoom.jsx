@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Select from "react-select";
 
-const CreatePost = () => {
+const Createroom = () => {
   const nepalProvinces = [
     {
       province: "Koshi Province",
@@ -293,54 +293,53 @@ const CreatePost = () => {
       autoClose: 2000,
     });
 
-    const handleFormSubmit = async (data) => {
-      try {
-        if (formData.imgUrl.length < 1) {
-          toast.error("Please upload an image before submitting the form.", {
-            autoClose: 2000,
-          });
-          return;
-        }
-    
-        setFormSubmitLoading(true);
-    
-        const res = await fetch("api/posts/create", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            ...data,
-            address: `${address},${selectedDistrict?.label || ""}`,
-            imgUrl: formData.imgUrl,
-            userRef: currentUser._id,
-          }),
+  const handleFormSubmit = async (data) => {
+    try {
+      if (formData.imgUrl.length < 1) {
+        toast.error("Please upload an image before submitting the form.", {
+          autoClose: 2000,
         });
-    
-        const serverRes = await res.json();
-    
-        if (serverRes.success === false) {
-          toast.error(serverRes.message, {
-            autoClose: 2000,
-          });
-          setFormSubmitLoading(false);
-        } else {
-          if (currentUser && currentUser.role === 'admin') {
-            navigate(`/listing/${serverRes._id}`);
-          } else {
-            toast.success("Post created successfully and Sent for Approval!");
-            navigate(`/listing/${serverRes._id}`);
-          }
-          setFormSubmitLoading(false);
-        }
-      } catch (error) {
-        toast.error(error.message, {
+        return;
+      }
+
+      setFormSubmitLoading(true);
+
+      const res = await fetch("api/rooms/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...data,
+          address: `${address},${selectedDistrict?.label || ""}`,
+          imgUrl: formData.imgUrl,
+          userRef: currentUser._id,
+        }),
+      });
+
+      const serverRes = await res.json();
+
+      if (serverRes.success === false) {
+        toast.error(serverRes.message, {
           autoClose: 2000,
         });
         setFormSubmitLoading(false);
+      } else {
+        if (currentUser && currentUser.role === "admin") {
+          navigate(`/listing/${serverRes._id}`);
+        } else {
+          toast.success("room created successfully and Sent for Approval!");
+          navigate(`/listing/${serverRes._id}`);
+        }
+        setFormSubmitLoading(false);
       }
-    };
-    
+    } catch (error) {
+      toast.error(error.message, {
+        autoClose: 2000,
+      });
+      setFormSubmitLoading(false);
+    }
+  };
 
   const renderDetailsStep = () => (
     <div className="details-step mt-7">
@@ -594,7 +593,7 @@ const CreatePost = () => {
         >
           Next
         </button>
-        
+
         <div className="mt-3 flex items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -610,7 +609,7 @@ const CreatePost = () => {
               d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          
+
           <span className="text-black">Proceed to next Step</span>
         </div>
       </div>
@@ -675,6 +674,37 @@ const CreatePost = () => {
         onChange={(e) => setAddress(e.target.value)}
         className="form_input border-[1px] focus:border-brand-blue rounded-md placeholder:text-sm mt-3"
       />
+
+      <div></div>
+
+      <textarea
+        id="mapUrl"
+        placeholder="Google Maps Shared Iframe Link
+eg. <Iframe></Iframe>"
+        name="mapUrl"
+        className="form_input border-[1px] mt-4 focus:border-brand-blue rounded-md placeholder:text-sm "
+        {...register("mapUrl", {
+          required: "This field is required*",
+        })}
+      ></textarea>
+      <div className="mt-3 flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            className="w-5 h-5 mr-2 text-gray-500"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+
+          <span className="text-black">Only  enter the iframe code from Google maps.</span>
+        </div>
 
       <div className="flex justify-center gap-3 mt-6">
         <button
@@ -856,4 +886,4 @@ const CreatePost = () => {
   );
 };
 
-export default CreatePost;
+export default Createroom;

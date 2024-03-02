@@ -1,4 +1,4 @@
-import userModel from "../models/user.models.js";
+import userModel from "../models/User.js";
 import { createTransport } from "nodemailer"
 import crypto from "crypto"
 import bcrypt from "bcrypt"
