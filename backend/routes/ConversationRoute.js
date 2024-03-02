@@ -3,7 +3,7 @@ import {
   createConversation,
   deleteConversation,
   getConversation,
-} from "../controllers/conversation.controller.js";
+} from "../controllers/conversationController.js";
 import { verifyToken } from "../utils/verifyUser.js";
 
 const router = express.Router();

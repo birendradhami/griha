@@ -49,10 +49,10 @@ form{
 .slick-dots li {
   @apply bg-white rounded-full;
 }
-.post_container .slick-list {
+.room_container .slick-list {
   @apply pb-11 sm:pb-16;
 }
-.post_container .slick-slide {
+.room_container .slick-slide {
   @apply p-3;
 }
 

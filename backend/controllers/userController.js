@@ -1,5 +1,5 @@
-import Listing from "../models/listing.models.js";
-import User from "../models/user.models.js";
+import Listing from "../models/Listing.js";
+import User from "../models/User.js";
 import { throwError } from "../utils/error.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -88,14 +88,13 @@ export const deleteUser = async (req, res, next) => {
 };
 
 
-// Get User Post
-export const userPosts = async (req, res, next) => {
-  console.log(req.user)
+// Get User Room
+export const userRooms = async (req, res, next) => {
   if (req.user.id !== req.params.id)
-    return next(throwError(401, "You can see only your posts"));
+    return next(throwError(401, "You can see only your rooms"));
   try {
-    const posts = await Listing.find({ userRef: req.params.id });
-    res.status(200).json(posts);
+    const rooms = await Listing.find({ userRef: req.params.id });
+    res.status(200).json(rooms);
   } catch (error) {
     next(throwError(404, error.message));
   }

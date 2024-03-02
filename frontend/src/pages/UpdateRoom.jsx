@@ -13,7 +13,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../components/Loading";
 import Select from "react-select";
 
-const UpdatePost = () => {
+const UpdateRoom = () => {
   const nepalProvinces = [
     {
       province: "Koshi Province",
@@ -133,24 +133,22 @@ const UpdatePost = () => {
     setAgreed(!agreed);
   };
 
-
-  const districtOptions = selectedProvince && selectedProvince.districts
-  ? selectedProvince.districts.map((district) => ({
-      value: district,
-      label: district,
-    }))
-  : [];
-
+  const districtOptions =
+    selectedProvince && selectedProvince.districts
+      ? selectedProvince.districts.map((district) => ({
+          value: district,
+          label: district,
+        }))
+      : [];
 
   const [currentStep, setCurrentStep] = useState(1);
 
-
   const handleStepClick = async (step) => {
     const isStepAhead = step > currentStep;
-  
+
     if (isStepAhead) {
       const isStepValid = await validateCurrentStep();
-  
+
       if (isStepValid) {
         setCurrentStep(step);
       } else {
@@ -160,17 +158,17 @@ const UpdatePost = () => {
       setCurrentStep(step);
     }
   };
-  
+
   const handleNextStep = async () => {
     const isStepValid = await validateCurrentStep();
-  
+
     if (isStepValid) {
       setCurrentStep((prevStep) => prevStep + 1);
     } else {
       console.log("Fill in the blank!");
     }
   };
-  
+
   const validateCurrentStep = async () => {
     switch (currentStep) {
       case 1:
@@ -183,33 +181,32 @@ const UpdatePost = () => {
         return false;
     }
   };
-  
+
   const validateDetailsStep = () => {
     const { title, description, price } = getValues();
-  
+
     if (!title || !description || !price) {
-      toast.error('Please fill in all fields for Details step.');
+      toast.error("Please fill in all fields for Details step.");
       return false;
     }
-  
+
     return true;
   };
 
   const validateAddressStep = () => {
-   
-  if (!selectedProvince || !selectedDistrict || !address) {
-    toast.error('Please fill in all fields for Address step.');
-    return false;
-  }
+    if (!selectedProvince || !selectedDistrict || !address) {
+      toast.error("Please fill in all fields for Address step.");
+      return false;
+    }
 
-  return true;
+    return true;
   };
 
   const validateImagesStep = () => {
     const { imgUrl } = getValues();
 
-    if (!imgUrl ) {
-      toast.error('Please fill in all fields for Image step.');
+    if (!imgUrl) {
+      toast.error("Please fill in all fields for Image step.");
       return false;
     }
 
@@ -231,9 +228,9 @@ const UpdatePost = () => {
   });
 
   useEffect(() => {
-    const getPostInfo = async () => {
+    const getRoomInfo = async () => {
       setDataLoading(true);
-      const res = await fetch(`/api/posts/${params.id}`);
+      const res = await fetch(`/api/rooms/${params.id}`);
       const data = await res.json();
 
       if (data.success === false) {
@@ -248,7 +245,7 @@ const UpdatePost = () => {
         setDataLoading(false);
       }
     };
-    getPostInfo();
+    getRoomInfo();
   }, []);
 
   const districtToProvinceMap = nepalProvinces.reduce((map, province) => {
@@ -262,18 +259,19 @@ const UpdatePost = () => {
     const [address, district] = data.address
       .split(",")
       .map((item) => item.trim());
-  
+
     const selectedProvince = districtToProvinceMap[district];
-  
+
     setSelectedProvince({ value: selectedProvince, label: selectedProvince });
     setSelectedDistrict({ value: district, label: district });
     setAddress(address);
-  
+
     setValue("title", data.title);
     setValue("description", data.description);
     setValue("address", address);
     setValue("district", { value: district, label: district });
     setValue("province", { value: selectedProvince, label: selectedProvince });
+    setValue("mapUrl", data.mapUrl);
     setValue("type", data.type);
     setValue("area", data.area && data.area);
     setValue("bath", data.bath);
@@ -284,18 +282,18 @@ const UpdatePost = () => {
     setValue("price", data.price);
     setValue("discountPrice", data.discountPrice);
   };
-  
+
   const handleImageUpload = async (selectedFiles) => {
     const totalFiles = selectedFiles.length + formData.imgUrl.length;
-  
+
     if (totalFiles <= 6) {
       setLoading(true);
       const promises = [];
-  
+
       for (let i = 0; i < selectedFiles.length; i++) {
         promises.push(uploadToFirebase(selectedFiles[i]));
       }
-  
+
       try {
         const urls = await Promise.all(promises);
         setFormData({ ...formData, imgUrl: formData.imgUrl.concat(urls) });
@@ -316,7 +314,6 @@ const UpdatePost = () => {
       });
     }
   };
-  
 
   const uploadToFirebase = (file) => {
     return new Promise((resolve, reject) => {
@@ -360,7 +357,6 @@ const UpdatePost = () => {
 
   const handleFormSubmit = async (data) => {
     try {
-
       if (formData.imgUrl.length < 1) {
         toast.error("Please upload an image before submitting the form.", {
           autoClose: 2000,
@@ -374,7 +370,7 @@ const UpdatePost = () => {
       //   return;
       // }
       setFormSubmitLoading(true);
-      const res = await fetch(`/api/posts/update/${params.id}`, {
+      const res = await fetch(`/api/rooms/update/${params.id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -408,7 +404,9 @@ const UpdatePost = () => {
     <div className="details-step mt-7">
       <div className="info_container flex justify-evenly flex-col sm:flex-row">
         <div className="input_feilds w-[90%] mx-auto sm:w-[40%]">
-          <p className="text-lg font-semibold  text-black mb-2">Property Name</p>
+          <p className="text-lg font-semibold  text-black mb-2">
+            Property Name
+          </p>
           <input
             id="title"
             type="text"
@@ -654,7 +652,7 @@ const UpdatePost = () => {
         >
           Next
         </button>
-        
+
         <div className="mt-3 flex items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -670,7 +668,7 @@ const UpdatePost = () => {
               d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          
+
           <span className="text-black">Proceed to next Step</span>
         </div>
       </div>
@@ -695,13 +693,13 @@ const UpdatePost = () => {
           ...theme,
           borderradius: 0,
           colors: {
-          ...theme.colors,
-            text: '#fff',
-            font:'#3599b8',
-            primary25: '#3599b8',
-            primary: 'black',
-            neutral80: 'black',
-            color: 'black',
+            ...theme.colors,
+            text: "#fff",
+            font: "#3599b8",
+            primary25: "#3599b8",
+            primary: "black",
+            neutral80: "black",
+            color: "black",
           },
         })}
       />
@@ -716,13 +714,13 @@ const UpdatePost = () => {
           ...theme,
           borderradius: 0,
           colors: {
-          ...theme.colors,
-            text: '#fff',
-            font:'#3599b8',
-            primary25: '#3599b8',
-            primary: 'black',
-            neutral80: 'black',
-            color: 'black',
+            ...theme.colors,
+            text: "#fff",
+            font: "#3599b8",
+            primary25: "#3599b8",
+            primary: "black",
+            neutral80: "black",
+            color: "black",
           },
         })}
       />
@@ -736,11 +734,48 @@ const UpdatePost = () => {
         className="form_input border-[1px] focus:border-brand-blue rounded-md placeholder:text-sm mt-3"
       />
 
+<textarea
+        id="mapUrl"
+        placeholder="Google Maps Shared Iframe Link
+eg. <Iframe></Iframe>"
+        name="mapUrl"
+        className="form_input border-[1px] mt-4 focus:border-brand-blue rounded-md placeholder:text-sm "
+        {...register("mapUrl", {
+          required: "This field is required*",
+        })}
+      ></textarea>
+      <div className="mt-3 flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            className="w-5 h-5 mr-2 text-gray-500"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+
+          <span className="text-black">Only  enter the iframe code from Google maps.</span>
+        </div>
+
       <div className="flex justify-center gap-3 mt-6">
-        <button type="button" className="px-4 font-bold py-2 rounded-md flex items-center cursor-pointer bg-black text-white " onClick={handlePrevStep}>
+        <button
+          type="button"
+          className="px-4 font-bold py-2 rounded-md flex items-center cursor-pointer bg-black text-white "
+          onClick={handlePrevStep}
+        >
           Previous
         </button>
-        <button type="button" className="px-4 font-bold py-2 rounded-md flex items-center cursor-pointer bg-black text-white" onClick={handleNextStep}>
+        <button
+          type="button"
+          className="px-4 font-bold py-2 rounded-md flex items-center cursor-pointer bg-black text-white"
+          onClick={handleNextStep}
+        >
           Next
         </button>
       </div>
@@ -828,20 +863,21 @@ const UpdatePost = () => {
       </div>
     </div>
   );
-  
 
   const renderProgressSteps = () => (
     <div className="progress-steps flex justify-center space-x-2 relative max-w-full mx-auto mt-3 mb-12">
       <div
-      onClick={() => handleStepClick(1)}
-      className={`group relative ${
-        currentStep >= 1 ? "bg-black text-white" : "bg-gray-200 text-gray-500"
-      } px-4 py-2 rounded-full flex items-center cursor-pointer`}
-    >
-      <span className="relative z-10 ">1</span>
-      <div className={`tooltip absolute bottom-[45px] -top-8 left-1/2 transform -translate-x-1/2 bg-gray-500 text-white px-2  rounded-md opacity-0 pointer-events-none transition-opacity duration-300 group-hover:opacity-100 group-hover:pointer-events-auto`}>
-        Details
-      </div>
+        onClick={() => handleStepClick(1)}
+        className={`group relative ${
+          currentStep >= 1 ? "bg-black text-white" : "bg-gray-200 text-gray-500"
+        } px-4 py-2 rounded-full flex items-center cursor-pointer`}
+      >
+        <span className="relative z-10 ">1</span>
+        <div
+          className={`tooltip absolute bottom-[45px] -top-8 left-1/2 transform -translate-x-1/2 bg-gray-500 text-white px-2  rounded-md opacity-0 pointer-events-none transition-opacity duration-300 group-hover:opacity-100 group-hover:pointer-events-auto`}
+        >
+          Details
+        </div>
       </div>
       <div
         className={`line bg-${currentStep >= 2 ? "black" : "gray-200"} h-1 w-4`}
@@ -853,23 +889,27 @@ const UpdatePost = () => {
         } px-4 py-2 rounded-full flex items-center cursor-pointer`}
       >
         2
-        <div className={`tooltip absolute bottom-[45px] -top-8 left-1/2 transform -translate-x-1/2 bg-gray-500 text-white px-2  rounded-md opacity-0 pointer-events-none transition-opacity duration-300 group-hover:opacity-100 group-hover:pointer-events-auto`}>
-        Address
-      </div>
+        <div
+          className={`tooltip absolute bottom-[45px] -top-8 left-1/2 transform -translate-x-1/2 bg-gray-500 text-white px-2  rounded-md opacity-0 pointer-events-none transition-opacity duration-300 group-hover:opacity-100 group-hover:pointer-events-auto`}
+        >
+          Address
+        </div>
       </div>
       <div
         className={`line bg-${currentStep >= 3 ? "black" : "gray-200"} h-1 w-4`}
       ></div>
       <div
         onClick={() => handleStepClick(3)}
-        className={ `group step relative ${
+        className={`group step relative ${
           currentStep >= 3 ? "bg-black text-white" : "bg-gray-200 text-gray-500"
         } px-4 py-2 rounded-full flex items-center cursor-pointer`}
       >
         3
-        <div className={`tooltip absolute bottom-[45px] -top-8 left-1/2 transform -translate-x-1/2 bg-gray-500 text-white px-2  rounded-md opacity-0 pointer-events-none transition-opacity duration-300 group-hover:opacity-100 group-hover:pointer-events-auto`}>
-        Image
-      </div>
+        <div
+          className={`tooltip absolute bottom-[45px] -top-8 left-1/2 transform -translate-x-1/2 bg-gray-500 text-white px-2  rounded-md opacity-0 pointer-events-none transition-opacity duration-300 group-hover:opacity-100 group-hover:pointer-events-auto`}
+        >
+          Image
+        </div>
       </div>
     </div>
   );
@@ -900,4 +940,4 @@ const UpdatePost = () => {
   );
 };
 
-export default UpdatePost;
+export default UpdateRoom;

@@ -1,18 +1,18 @@
 import express from "express";
 import mongoose from "mongoose";
 import "dotenv/config";
-import userRouter from "./routes/user.route.js";
-import auth from "./routes/auth.route.js";
+import userRouter from "./routes/UserRoute.js";
+import auth from "./routes/AuthRoute.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import postRouter from "./routes/post.route.js";
-import mailRoutes from './routes/mail.route.js';
-import messageRouter from "./routes/message.route.js";
-import conversationRoute from "./routes/conversation.route.js";
-import notificatonRoute from "./routes/notification.route.js";
-import forgotPasswordRouter from "./routes/forgotPassword.js";
+import roomRouter from "./routes/RoomRoute.js";
+import mailRoutes from './routes/MailRoute.js';
+import messageRouter from "./routes/MessageRoute.js";
+import conversationRoute from "./routes/ConversationRoute.js";
+import notificatonRoute from "./routes/NotificationRoute.js";
+import forgotPasswordRoute from "./routes/ForgotPasswordRoute.js";
 import jwt from "jsonwebtoken";
-import User from "./models/user.models.js";
+import User from "./models/User.js";
 
 import path from "path";
 import http from "http";
@@ -56,12 +56,12 @@ expressServer.listen(PORT, () => {
 // Routes
 app.use("/api/users", userRouter);
 app.use("/api/auth", auth);
-app.use("/api/posts", postRouter);
+app.use("/api/rooms", roomRouter);
 app.use('/api/mail', mailRoutes);
 app.use("/api/message", messageRouter);
 app.use("/api/conversation", conversationRoute);
 app.use("/api/notification", notificatonRoute);
-app.use("/api/forgotPassword", forgotPasswordRouter);
+app.use("/api/forgotPassword", forgotPasswordRoute);
 
 // Deployment
 

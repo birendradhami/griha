@@ -1,4 +1,4 @@
-import Message from "../models/message.models.js";
+import Message from "../models/Message.js";
 import { throwError } from "../utils/error.js";
 
 export const getMessage = async (req, res, next) => {

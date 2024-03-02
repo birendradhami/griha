@@ -2,7 +2,7 @@ import React from "react";
 import { FaBath, FaBed, FaCamera, FaCheck } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-const PostCard = ({ postInfo }) => {
+const RoomCard = ({ roomInfo }) => {
   const {
     bed,
     address,
@@ -17,7 +17,7 @@ const PostCard = ({ postInfo }) => {
     title,
     type,
     _id,
-  } = postInfo.post;
+  } = roomInfo.room;
   const navigate = useNavigate();
 
   return (
@@ -126,7 +126,7 @@ const PostCard = ({ postInfo }) => {
 
               <div className="inline-flex rounded-xl max-w-[150px]  duration-500">
                 <p className="font-heading text-lg truncate">
-                  {postInfo.post.area ? postInfo.post.area : 0}{" "}
+                  {roomInfo.room.area ? roomInfo.room.area : 0}{" "}
                   <span className="font-content">/sqft</span>{" "}
                 </p>
               </div>
@@ -135,13 +135,13 @@ const PostCard = ({ postInfo }) => {
 
           <div className="mt-4 flex items-end justify-between">
             <button
-              onClick={() => navigate(`/update_post/${_id}`)}
+              onClick={() => navigate(`/update_room/${_id}`)}
               className="bg-brand-blue rounded-sm py-2 px-7 font-heading text-white hover:opacity-95 text-sm"
             >
               Edit
             </button>
             <button
-              onClick={() => postInfo.handlePostDelete(_id)}
+              onClick={() => roomInfo.handleRoomDelete(_id)}
               className="bg-red-800 py-2 px-5 rounded-sm  font-heading text-white hover:opacity-95 text-sm z-10"
             >
               Delete
@@ -153,4 +153,4 @@ const PostCard = ({ postInfo }) => {
   );
 };
 
-export default PostCard;
+export default RoomCard;

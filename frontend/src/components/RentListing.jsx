@@ -20,7 +20,7 @@ const RentListing = () => {
     (async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/posts?type=rent&approved=true`);
+        const res = await fetch(`/api/rooms?type=rent&approved=true`);
         const json = await res.json();
         if (json.success === false) {
           setLoading(false);
@@ -112,7 +112,7 @@ const RentListing = () => {
           </p>
         </div>
 
-        <div className="post_container !mt-4">
+        <div className="room_container !mt-4">
           {loading ? (
             <SkletonLoading />
           ) : (

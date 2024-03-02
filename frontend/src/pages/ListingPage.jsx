@@ -16,6 +16,8 @@ import {
 } from "../redux/saveListing/saveListingSlice";
 import { Fancybox } from "@fancyapps/ui";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 
 const ListingPage = () => {
   const [listings, setListings] = useState({});
@@ -23,6 +25,8 @@ const ListingPage = () => {
   const [loading, setLoading] = useState(false);
   const [savedListing, setSavedListing] = useState(false);
   const thumbnailSliderRef = useRef(null);
+  const [map, setMap] = useState(null);
+  const [iframeSrc, setIframeSrc] = useState("");
   const {
     area,
     address,
@@ -38,6 +42,7 @@ const ListingPage = () => {
     type,
     _id,
     userRef,
+    mapUrl,
   } = listings;
 
   const navigate = useNavigate();
@@ -48,12 +53,12 @@ const ListingPage = () => {
 
   const dispatch = useDispatch();
 
-  //   Load Posts
+  //   Load rooms
 
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const res = await fetch(`/api/posts/${params.id}`);
+      const res = await fetch(`/api/rooms/${params.id}`);
       const json = await res.json();
       if (json.success === false) {
         toast.error(json.message, {
@@ -93,29 +98,29 @@ const ListingPage = () => {
     dots: false,
     centerMode: true,
     focusOnSelect: true,
-    infinite:true,
+    infinite: true,
     slidesToShow: Math.min(6, listings.imgUrl ? listings.imgUrl.length : 0),
     slidesToScroll: 1,
     beforeChange: (current, next) => mainSliderRef.current.slickGoTo(next),
     responsive: [
       {
-        breakpoint: 660, 
+        breakpoint: 660,
         settings: {
           slidesToShow: 3,
         },
       },
     ],
   };
-  
+
   useEffect(() => {
     Fancybox.bind("[data-fancybox]", {});
   }, []);
 
   //   Delete
 
-  const handlePostDelete = async (postId) => {
+  const handleroomDelete = async (roomId) => {
     try {
-      const res = await fetch(`/api/posts/delete/${postId}`, {
+      const res = await fetch(`/api/rooms/delete/${roomId}`, {
         method: "DELETE",
       });
       const data = await res.json();
@@ -174,15 +179,77 @@ const ListingPage = () => {
   }
 `;
 
+  useEffect(() => {
+    if (mapUrl) {
+      return; // No need to proceed if mapUrl is present
+    }
+
+    if (!map && (address || mapUrl)) {
+      const newMap = L.map("map").setView([0, 0], 13);
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap contributors",
+      }).addTo(newMap);
+
+      setMap(newMap);
+
+      // Fetch coordinates based on address and update the map
+      if (address) {
+        fetch(
+          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+            address
+          )}`
+        )
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Failed to fetch coordinates");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data.length > 0) {
+              const { lat, lon } = data[0];
+              newMap.setView([lat, lon], 13);
+              L.marker([lat, lon]).addTo(newMap);
+            } else {
+              throw new Error("No coordinates found for the provided address");
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching coordinates:", error);
+          });
+      }
+    }
+  }, [address, map, mapUrl]);
+
+  useEffect(() => {
+    // Extract iframe source if mapUrl changes
+    if (mapUrl) {
+      const extractSrc = () => {
+        try {
+          const match = mapUrl.match(/<iframe.*?src=["'](.*?)["']/);
+          if (match && match[1]) {
+            setIframeSrc(match[1]);
+          } else {
+            setIframeSrc("Src attribute not found in iframe.");
+          }
+        } catch (error) {
+          console.error("Error extracting src:", error);
+          setIframeSrc("Error extracting src. Check console for details.");
+        }
+      };
+
+      extractSrc();
+    }
+  }, [mapUrl]);
+
   return (
     <>
       <style>{styles}</style>
       {loading ? (
         <>
           <Loading />
-          <p className="text-black text-center font-heading text-xl">
-            Loading
-          </p>
+          <p className="text-black text-center font-heading text-xl">Loading</p>
         </>
       ) : (
         <div className="w-[87%] flex flex-col md:flex lg:flex-row f relative mt-3 mb-8 mx-auto justify-between">
@@ -339,6 +406,38 @@ const ListingPage = () => {
                   </div>
                 </div>
               </div>
+              <div className="w-full xl:w-[95%]">
+                {mapUrl ? (
+                  <div>
+                    <p className="font-content mt-8 mb-3 text-black font-semibold justify-center text-base flex items-center">
+                      <IoLocationSharp className="text-black" />
+                      <span className="ml-1 text-[16px]">Google Map</span>
+                    </p>
+                    <div>
+                      <iframe
+                        title="Embedded Map"
+                        width="100%"
+                        height="330"
+                        loading="lazy"
+                        allowFullScreen
+                        src={iframeSrc}
+                        style={{ border: 0 }}
+                      ></iframe>
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <p className="font-content mt-8 mb-3 text-black font-semibold justify-center text-base flex items-center">
+                      <IoLocationSharp className="text-black" />
+                      <span className="ml-1 text-[16px]">{address}</span>
+                    </p>
+                    <div
+                      id="map"
+                      style={{ height: "330px", width: "100%" }}
+                    ></div>
+                  </div>
+                )}
+              </div>
             </div>
 
             <ToastContainer />
@@ -346,28 +445,28 @@ const ListingPage = () => {
           <div className=" w-full  lg:w-[30%]">
             <div className="bg-white lg:p-[2rem] lg:pt-[2px] p-6   sticky top-[7.6rem]  lg:flex justify-center">
               {currentUser && currentUser._id === userRef ? (
-                <div className="post_owner sm:mt-16">
+                <div className="room_owner sm:mt-16">
                   <div className="btn_container w-11">
                     <button
-                      onClick={() => navigate(`/update_post/${params.id}`)}
+                      onClick={() => navigate(`/update_room/${params.id}`)}
                       className="flex justify-center relative bg-black text-white w-full px-2 py-3 text-lg font-heading rounded-full"
                     >
                       <FaEdit />
                       <span className="absolute top-2 left-14  text-black font-extrabold">
-                         :Edit
-                        </span>
+                        :Edit
+                      </span>
                     </button>
                   </div>
 
                   <div className="contant_btn_container mt-2 w-11">
                     <button
-                      onClick={() => handlePostDelete(params.id)}
+                      onClick={() => handleroomDelete(params.id)}
                       className="flex justify-center relative bg-black text-white w-full px-2 py-3 text-lg font-heading rounded-full"
                     >
                       <AiFillDelete />
                       <span className="absolute top-2 left-14  text-black font-extrabold">
-                         :Delete
-                        </span>
+                        :Delete
+                      </span>
                     </button>
                   </div>
                   <div className="contant_btn_container mt-2 w-11">
@@ -377,37 +476,36 @@ const ListingPage = () => {
                     >
                       <FaListAlt />
                       <span className="absolute top-2 left-14  text-black font-extrabold">
-                         :Posts
-                        </span>
+                        :rooms
+                      </span>
                     </button>
                   </div>
-                    <div className="btn_container mt-2 w-11 ">
-                      <button
-                        onClick={handleUrlShare}
-                        className="flex justify-center relative text-white w-full bg-black px-2 py-3 text-lg font-heading rounded-full"
-                      >
-                       
-                          <FaShareSquare className="  text-white" />
-                          <span className="absolute top-2 left-14  text-black font-extrabold">
-                         :Share
-                        </span>
-                       
-                      </button>
-                    </div>
-                    <div className="contant_btn_container w-11 mt-2">
-                      <button
-                        onClick={handleSaveListing}
-                        className="flex justify-center relative text-white w-full bg-black px-2 py-3 text-lg font-heading rounded-full"
-                      ><FaHeart
-                            className={`  ${
-                              savedListing ? "text-white" : "text-white"
-                            } `}
-                          />
-                        <span className="absolute top-2 left-14  text-black font-extrabold">
+                  <div className="btn_container mt-2 w-11 ">
+                    <button
+                      onClick={handleUrlShare}
+                      className="flex justify-center relative text-white w-full bg-black px-2 py-3 text-lg font-heading rounded-full"
+                    >
+                      <FaShareSquare className="  text-white" />
+                      <span className="absolute top-2 left-14  text-black font-extrabold">
+                        :Share
+                      </span>
+                    </button>
+                  </div>
+                  <div className="contant_btn_container w-11 mt-2">
+                    <button
+                      onClick={handleSaveListing}
+                      className="flex justify-center relative text-white w-full bg-black px-2 py-3 text-lg font-heading rounded-full"
+                    >
+                      <FaHeart
+                        className={`  ${
+                          savedListing ? "text-white" : "text-white"
+                        } `}
+                      />
+                      <span className="absolute top-2 left-14  text-black font-extrabold">
                         {savedListing ? ":Saved" : ":Save"}
-                        </span>
-                      </button>
-                    </div>
+                      </span>
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <div className="visitor_view">

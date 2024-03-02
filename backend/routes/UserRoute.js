@@ -3,11 +3,11 @@ import {
   deleteUser,
   updateUser,
   getUser,
-  userPosts,
+  userRooms,
   getUsers,
   updateStatus,
   getOnlineStatus,
-} from "../controllers/user.controller.js";
+} from "../controllers/userController.js";
 import { verifyToken } from "../utils/verifyUser.js";
 import checkAccess from "../middleware/checkAccess.js";
 
@@ -16,7 +16,7 @@ const router = express.Router();
 router.get("/:id", getUser);
 router.post("/update/:id", verifyToken, updateUser);
 router.delete("/delete/:id", verifyToken, deleteUser);
-router.get("/posts/:id", verifyToken, userPosts);
+router.get("/rooms/:id", verifyToken, userRooms);
 router.get("/",verifyToken,checkAccess, getUsers);
 router.patch("/updateStatus/:id", updateStatus);
 

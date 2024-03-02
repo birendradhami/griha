@@ -5,7 +5,7 @@ import {
   signin,
   singup,
   signupVerify,
-} from "../controllers/auth.controller.js";
+} from "../controllers/authController.js";
 
 const route = express.Router();
 

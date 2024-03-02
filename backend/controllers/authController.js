@@ -1,15 +1,14 @@
 import bcrypt from "bcrypt";
 import * as crypto from "crypto";
-import User from "../models/user.models.js";
+import User from "../models/User.js";
 import { throwError } from "../utils/error.js";
 import jwt from "jsonwebtoken";
 import { passwordGenarator, usernameGenarator } from "../utils/helper.js";
 // import User from '../models/User'; 
-import Token from "../models/token.js"; 
+import Token from "../models/Token.js"; 
 import sendEmail from "../utils/sendEmail.js"; 
 
-//======handle singup route ===========//
-
+// Handle Signup Verify
 export const signupVerify = async (req, res, next) => {
   try {
     const user = await User.findOne({ _id: req.params.id });
@@ -22,8 +21,8 @@ export const signupVerify = async (req, res, next) => {
     if (!token) return res.status(400).send({ message: "Invalid link" });
   
     await User.findOneAndUpdate(
-      { _id: user._id }, // Filter to find the document
-      { $set: { verified: true } } // Update the 'verified' field
+      { _id: user._id }, 
+      { $set: { verified: true } }
       );
     
       await Token.deleteMany({ userId: user._id });
@@ -36,10 +35,7 @@ export const signupVerify = async (req, res, next) => {
   }
 };
 
-
-//======handle singup route ===========//
-
-
+// Handle Signup
 export  const singup = async (req, res, next) => {
   const { username, email, password } = req.body;
   try {
@@ -74,7 +70,7 @@ export  const singup = async (req, res, next) => {
 
 
 
-// ========sing in route handling here =====//
+// Handle signin
 export const signin = async (req, res, next) => {
   const { email, userPassword} = req.body;
   try {
@@ -135,7 +131,7 @@ export const signin = async (req, res, next) => {
   }
 };
 
-//=====Handle Google Singin Here ======//
+// Handle GoogleSignin
 export const googleSignIn = async (req, res, next) => {
   const { email, name, photo } = req.body;
   try {
@@ -149,7 +145,6 @@ export const googleSignIn = async (req, res, next) => {
         });
       }}
 
-    //====IF user exist in DB====//
     if (user) {
       const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
         expiresIn: "720h",
@@ -161,7 +156,6 @@ export const googleSignIn = async (req, res, next) => {
         .status(200)
         .json(rest);
     }
-    //====IF user not exist in DB====//
     else {
       const hashedPassword = bcrypt.hashSync(passwordGenarator(), 10);
       const newUser = new User({
@@ -183,12 +177,11 @@ export const googleSignIn = async (req, res, next) => {
         .json(rest);
     }
   } catch (error) {
-    //======Handling Error Here =====//
     next(throwError(error));
   }
 };
 
-//=====handle signout=====//
+// Handle Signout
 export const signOut = async (req, res, next) => {
   try {
     res.clearCookie("access_token");

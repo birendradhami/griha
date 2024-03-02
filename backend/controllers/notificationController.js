@@ -1,7 +1,7 @@
-import Notifications from "../models/notification.model.js";
+import Notifications from "../models/Notification.js";
 import { throwError } from "../utils/error.js";
 
-// ====== Create Notifications
+// Create
 export const createNotification = async (req, res, next) => {
   try {
     const { from } = req.body;
@@ -21,7 +21,7 @@ export const createNotification = async (req, res, next) => {
   }
 };
 
-//======= Get Notification=======//
+// Get
 export const getNotification = async (req, res, next) => {
   if (req.user.id != req.params.id)
     return next(throwError(401, "User unauthorized!"));
@@ -32,8 +32,6 @@ export const getNotification = async (req, res, next) => {
     next(error);
   }
 };
-
-//======== Delete Notificaton=========//
 
 export const deleteNotification = async (req, res, next) => {
   try {
