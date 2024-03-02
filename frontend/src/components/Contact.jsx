@@ -23,7 +23,7 @@ const Contact = ({ listing }) => {
       const res = await fetch(`/api/users/${listing.userRef}`);
       const json = await res.json();
       if (json.success === false) {
-        setLoading(false);
+        setLoading(true);
       } else {
         setOwnerInfo(json);
         setLoading(false);
@@ -86,6 +86,7 @@ const Contact = ({ listing }) => {
       setSending(false);
     }
   };
+
 // online offline status
   useEffect(() => {
     if (uid === ownerInfo._id) {
@@ -170,8 +171,8 @@ const Contact = ({ listing }) => {
                     {responseMsg}
                   </p>
                   <Link to={"/message"}>
-                    <button className="text-sm font-heading mt-2 px-5 py-2 bg-black text-white rounded-md hover:bg-green-700 duration-300">
-                      Go to Messenger
+                    <button className="text-sm font-heading mt-2 px-5 py-2 bg-black text-white rounded-md duration-300">
+                      Go to your  messages
                     </button>
                   </Link>
                 </div>
@@ -182,7 +183,7 @@ const Contact = ({ listing }) => {
                     type="text"
                     placeholder="Write your message"
                     name="message"
-                    className="form_input border-[1px] border-gray-400  focus:border-brand-blue h-44 rounded-md placeholder:text-sm mt-3"
+                    className="form_input border-[1px] border-gray-400 text-black  focus:border-black h-44 rounded-md placeholder:text-sm mt-3"
                     onChange={handleChange}
                   />
                   {currentUser ? (
@@ -195,7 +196,7 @@ const Contact = ({ listing }) => {
                     </button>
                   ) : (
                     <Link to="/login">
-                      <button className="w-full px-2 py-3 text-lg font-heading text-white bg-brand-blue">
+                      <button className="w-full px-2 py-3 text-lg font-heading text-white bg-black">
                         Login to Send
                       </button>
                     </Link>

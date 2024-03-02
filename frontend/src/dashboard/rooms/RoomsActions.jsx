@@ -1,4 +1,15 @@
-import { Box, IconButton, Tooltip } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Tooltip,
+  Dialog,
+  Button,
+  DialogContent,
+  DialogActions,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
+import React, { useState } from "react";
 import { Delete, Edit, Preview } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -33,6 +44,23 @@ const RoomsActions = ({ params }) => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [postIdToDelete, setPostIdToDelete] = useState(null);
+
+  const handleDeleteWithConfirmation = (postId) => {
+    setPostIdToDelete(postId);
+    setOpen(true);
+  };
+
+  const handleDeleteConfirmed = () => {
+    handlePostDelete(postIdToDelete);
+    setOpen(false);
+  };
+
+  const handleCancelDelete = () => {
+    setPostIdToDelete(null);
+    setOpen(false);
+  };
 
   const handlePostDelete = async (postId, currentUser) => {
     try {
@@ -62,10 +90,32 @@ const RoomsActions = ({ params }) => {
         </IconButton>
       </Tooltip>
       <Tooltip title="Delete this room">
-        <IconButton onClick={() => handlePostDelete(params.id)}>
+        <IconButton onClick={() => handleDeleteWithConfirmation(params.id)}>
           <Delete />
         </IconButton>
       </Tooltip>
+      {/* Delete Confirmation Modal */}
+      <Dialog
+        open={open}
+        onClose={handleCancelDelete}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Confirm Delete"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteConfirmed} color="primary" autoFocus>
+            Yes
+          </Button>
+          <Button onClick={handleCancelDelete} color="error">
+            No
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

@@ -35,6 +35,11 @@ import {
   Typography,
   IconButton,
   Box,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 import {
   AddPhotoAlternate,
@@ -51,7 +56,7 @@ const Profile = () => {
   const [formData, setFormData] = useState({
     username: currentUser.username,
     email: currentUser.email,
-    password: currentUser.password,
+    password: "",
   });
   const [editMode, setEditMode] = useState(false);
   const [tempAvatar, setTempAvatar] = useState(formData.avatar);
@@ -60,6 +65,20 @@ const Profile = () => {
   const { loading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+
+  const handleDeleteWithConfirmation = () => {
+    setOpen(true);
+  };
+
+  const handleDeleteConfirmed = () => {
+    handleDelete();
+    setOpen(false);
+  };
+
+  const handleCancelDelete = () => {
+    setOpen(false);
+  };
 
   const handleFileUpload = (file) => {
     if (file) {
@@ -103,8 +122,29 @@ const Profile = () => {
     setEditMode(true);
   };
 
+  const isValidUsername = (username) => {
+    return /^[a-zA-Z0-9_]+$/.test(username);
+  };
+
+  const isValidPassword = (password) => {
+    return password.length >= 1;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!isValidUsername(formData.username)) {
+      dispatch(userUpdateFailed("Username Required"));
+      toast.error("Username Required", { autoClose: 2000 });
+      return;
+    }
+
+    if (!isValidPassword(formData.password)) {
+      dispatch(userUpdateFailed("Password Required"));
+      toast.error("Password Required", { autoClose: 2000 });
+      return;
+    }
+
     try {
       dispatch(loddingStart());
       const res = await fetch(`/api/users/update/${currentUser._id}`, {
@@ -322,9 +362,16 @@ const Profile = () => {
           <Grid item xs={12} md={8} sx={{ width: "60%" }}>
             <Card sx={{ pt: 0 }}>
               <CardHeader title="Account Details" />
-              <CardContent sx={{ pt: 0, width: "90%","@media (max-width: 600px)": {
-            p: 0,pl:2
-          }, }}>
+              <CardContent
+                sx={{
+                  pt: 0,
+                  width: "90%",
+                  "@media (max-width: 600px)": {
+                    p: 0,
+                    pl: 2,
+                  },
+                }}
+              >
                 <form>
                   <TextField
                     fullWidth
@@ -349,22 +396,23 @@ const Profile = () => {
                       sx={{ p: 0, color: "black" }}
                     />
                   )}
-                  
-                  {editMode && (
-                  <TextField
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    label="Password"
-                    variant="outlined"
-                    fullWidth
-                    margin="normal"
-                    onChange={handleChange}
-                    disabled={!editMode}
-                    required
-                  />)}
 
-                  <Box sx={{display:"flex"}}>
+                  {editMode && (
+                    <TextField
+                      type="password"
+                      name="password"
+                      value={formData.password}
+                      label="Password"
+                      variant="outlined"
+                      fullWidth
+                      margin="normal"
+                      onChange={handleChange}
+                      disabled={!editMode}
+                      required
+                    />
+                  )}
+
+                  <Box sx={{ display: "flex" }}>
                     {editMode ? (
                       <>
                         <Button
@@ -375,7 +423,7 @@ const Profile = () => {
                             color: "white",
                             ":hover": { backgroundColor: "#000" },
                             mr: 2,
-                            mt:2,
+                            mt: 2,
                           }}
                           onClick={handleSubmit}
                         >
@@ -389,7 +437,7 @@ const Profile = () => {
                             color: "white",
                             ":hover": { backgroundColor: "#777" },
                             mr: 2,
-                            mt:2,
+                            mt: 2,
                           }}
                           onClick={handleCancel}
                         >
@@ -404,7 +452,7 @@ const Profile = () => {
                           backgroundColor: "black",
                           color: "white",
                           mr: 2,
-                          mt:2,
+                          mt: 2,
                           ":hover": { backgroundColor: "#000" },
                         }}
                         onClick={handleEdit}
@@ -413,19 +461,48 @@ const Profile = () => {
                       </Button>
                     )}
                     {!editMode && (
-                      <Button
-                        // startIcon={<DeleteIcon />}
-                        type="button"
-                        sx={{
-                          backgroundColor: "gray",
-                          color: "white",
-                          mt:2,
-                          ":hover": { backgroundColor: "#777" },
-                        }}
-                        onClick={handleDelete}
-                      >
-                        Delete
-                      </Button>
+                      <>
+                        <Button
+                          // startIcon={<DeleteIcon />}
+                          type="button"
+                          sx={{
+                            backgroundColor: "gray",
+                            color: "white",
+                            mt: 2,
+                            ":hover": { backgroundColor: "#777" },
+                          }}
+                          onClick={handleDeleteWithConfirmation}
+                        >
+                          Delete
+                        </Button>
+                        <Dialog
+                          open={open}
+                          onClose={handleCancelDelete}
+                          aria-labelledby="alert-dialog-title"
+                          aria-describedby="alert-dialog-description"
+                        >
+                          <DialogTitle id="alert-dialog-title">
+                            {"Confirm Delete"}
+                          </DialogTitle>
+                          <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                              Are you sure you want to delete?
+                            </DialogContentText>
+                          </DialogContent>
+                          <DialogActions>
+                            <Button
+                              onClick={handleDeleteConfirmed}
+                              color="primary"
+                              autoFocus
+                            >
+                              Yes
+                            </Button>
+                            <Button onClick={handleCancelDelete} color="error">
+                              No
+                            </Button>
+                          </DialogActions>
+                        </Dialog>
+                      </>
                     )}
                   </Box>
                 </form>

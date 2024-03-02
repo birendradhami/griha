@@ -1,92 +1,92 @@
-import React, { useEffect, useState } from 'react'
-import Chat from '../components/Chat';
-import { useDispatch, useSelector } from 'react-redux';
-import Conversations from '../components/Conversations';
-import { ToastContainer, toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-import { signoutSuccess } from '../redux/user/userSlice';
-import Footer from '../components/Footer';
-
+import React, { useEffect, useState, useRef } from "react";
+import Chat from "../components/Chat";
+import { useDispatch, useSelector } from "react-redux";
+import Conversations from "../components/Conversations";
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { signoutSuccess } from "../redux/user/userSlice";
 
 const Message = () => {
-    const { currentUser } = useSelector(state => state.user)
-    const [conversations, setConversation] = useState([])
-    const [conversationLoading, setConversationLoading] = useState(true)
-    const [error, setError] = useState(false)
-    const [trackConversation, setTrackConversation] = useState({
-        sender: "",
-        receiver: "",
-        conversationActive: null,
-    })
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
+  const { currentUser } = useSelector((state) => state.user);
+  const [conversations, setConversation] = useState([]);
+  const [conversationLoading, setConversationLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [trackConversation, setTrackConversation] = useState({
+    sender: "",
+    receiver: "",
+    conversationActive: null,
+  });
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const chatContainerRef = useRef(null);
 
+  useEffect(() => {
+    (async () => {
+      try {
+        setConversationLoading(true);
+        const res = await fetch(`/api/conversation/${currentUser._id}`);
+        const getConversations = await res.json();
 
+        if (getConversations.success === false) {
+          setConversationLoading(false);
+          toast.error(getConversations.message, {
+            autoClose: 5000,
+          });
+          setError(true);
+          dispatch(signoutSuccess());
+        } else {
+          setConversationLoading(false);
+          setConversation(getConversations);
+        }
+      } catch (error) {
+        setConversationLoading(false);
+        toast.error(error.message, {
+          autoClose: 5000,
+        });
+        setError(true);
+        console.log(error);
+      }
+    })();
+  }, [currentUser._id]);
 
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = 0;
+    }
+  }, [trackConversation.conversationActive]);
+  
+  
 
-
-
-    // Load Current user Conversations
-    useEffect(() => {
-        (async () => {
-            try {
-                setConversationLoading(true)
-                const res = await fetch(`/api/conversation/${currentUser._id}`)
-                const getConversations = await res.json();
-                if (getConversations.success === false) {
-                    setConversationLoading(false)
-                    toast.error(getConversations.message, {
-                        autoClose: 5000
-                    })
-                    setError(true)
-                    dispatch(signoutSuccess())
-                }
-                else {
-                    setConversationLoading(false)
-                    setConversation(getConversations)
-                }
-            } catch (error) {
-                setConversationLoading(false)
-                toast.error(getConversations.message, {
-                    autoClose: 5000
-                })
-                setError(true)
-                console.log(error);
-            }
-        })()
-    }, [])
-
-
-
-    return (
-        <>
-            <ToastContainer />
-            <section className="main_container">
-                {
-                    error ?
-                        <div>
-                            <p className='bg-white text-center text-sm sm:text-xl mt-20 font-heading font-bold flex flex-col items-center justify-center max-w-3xl mx-auto py-10 text-black px-5 rounded shadow-md'>
-                                <span className='text-red-600'>Your session has expired. Please log in again to continue. </span>
-                                <button
-                                    className="group relative inline-flex items-center overflow-hidden rounded bg-brand-blue px-6 py-2 mt-5 text-white "
-                                    onClick={() => navigate('/login')}
-                                >
-                                    <span className="absolute -end-full transition-all group-hover:end-4">
-                                        <svg
-                                            className="h-5 w-5 rtl:rotate-180"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth="2"
-                                                d="M17 8l4 4m0 0l-4 4m4-4H3"
-                                            />
-                                        </svg>
-                                    </span>
+  return (
+    <>
+      <ToastContainer />
+      <section className="main_container">
+        {error ? (
+          <div>
+            <p className="bg-white text-center text-sm sm:text-xl mt-20 font-heading font-bold flex flex-col items-center justify-center max-w-3xl mx-auto py-10 text-black px-5 rounded shadow-md">
+              <span className="text-red-600">
+                Your session has expired. Please log in again to continue.{" "}
+              </span>
+              <button
+                className="group relative inline-flex items-center overflow-hidden rounded bg-brand-blue px-6 py-2 mt-5 text-white "
+                onClick={() => navigate("/login")}
+              >
+                <span className="absolute -end-full transition-all group-hover:end-4">
+                  <svg
+                    className="h-5 w-5 rtl:rotate-180"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </span>
 
                                     <span className="text-sm font-medium transition-all  group-hover:me-4">
                                         Login
@@ -133,9 +133,7 @@ const Message = () => {
                                                                         }
                                                                     }
                                                                     key={conversation._id}
-                                                                    
                                                                 />
-                                                                
                                                             )
 
                                                         }
@@ -166,9 +164,9 @@ const Message = () => {
                 }
             </section>
 
-        
+
         </>
     )
 }
 
-export default Message
+export default Message;

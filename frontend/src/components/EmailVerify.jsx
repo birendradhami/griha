@@ -50,7 +50,7 @@ const EmailVerify = () => {
           <img src={success} alt="success_img" className="w-24 h-24" />
           <h1>Email verified successfully</h1>
           <Link to="/login">
-            <button className="py-3 px-6 bg-green-500 rounded-full font-bold text-white text-base mt-4">
+            <button className="py-3 px-6 bg-black rounded-md font-bold text-white text-base mt-4">
               Login
             </button>
           </Link>

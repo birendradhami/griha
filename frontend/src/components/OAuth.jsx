@@ -48,7 +48,7 @@ const OAuth = () => {
 
         <button
           onClick={handleGoogleSignIn}
-          className="group h-12 px-6 border-2 border-brand-black/50 shadow-brand shadow-black/40 rounded-md transition duration-300 active:bg-brand-blue w-full"
+          className="group h-12 px-6 border-2 border-brand-black/50 shadow-brand shadow-black/40 rounded-md transition duration-300 active:bg-white w-full"
         >
           <div className="relative flex items-center space-x-4 justify-center">
             <img
@@ -57,7 +57,7 @@ const OAuth = () => {
               src="https://www.svgrepo.com/show/475656/google-color.svg"
             />
 
-            <span className="block w-max font-semibold tracking-wide text-black text-sm transition duration-300 group-hover:text-brand-blue sm:text-base">
+            <span className="block w-max font-semibold tracking-wide text-black text-sm transition duration-300 group-hover:text-black sm:text-base">
               Continue with Google
             </span>
           </div>
