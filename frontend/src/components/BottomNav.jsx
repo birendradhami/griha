@@ -83,7 +83,7 @@ const BottomNav = ({ user }) => {
           </i>
           Wishlist
         </Link>
-        <Link to={"/message"} className="bottom-nav-item text-xs text-black">
+        <Link to={`${currentUser ? "/message" : "/login"}`} className="bottom-nav-item text-xs text-black">
           <IoChatboxEllipses className="bottom-nav-icon w-7 h-7 mb-1" />
           Chat
         </Link>

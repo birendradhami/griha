@@ -45,13 +45,13 @@ function AppContent() {
         <Route path="/resetPassword" element={<ResetPassword />} />
         <Route path="/listing/:id" element={<ListingPage />} />
         <Route path="/search?" element={<Search />} />
-        <Route path="/message" element={<Message />} />
         <Route path="/users/:id/verify/:token" element={<EmailVerify />} />
         <Route path="/create_room" element={<Createroom />} />
         <Route path="*" element={<PageNotFound />} />
         <Route path="/saved_listing" element={<SaveListing />} />
         <Route path="/termsandconditions" element={<TermCondition />} />
         <Route element={<PrivateRoute />}>
+          <Route path="/message" element={<Message />} />
           <Route path="dashboard/*" element={<Dashboard />} />
           <Route path="/update_room/:id" element={<UpdateRoom />} />
         </Route>
