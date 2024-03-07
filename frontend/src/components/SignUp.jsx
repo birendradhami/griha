@@ -12,11 +12,11 @@ const Signup = ({ userState }) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-const handleTogglePasswordVisibility = () => {
-  setShowPassword(!showPassword);
-};
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   const onSubmit = async (formData) => {
     setLoading(true);
     const res = await fetch("/api/auth/signup", {
@@ -72,12 +72,29 @@ const handleTogglePasswordVisibility = () => {
         {/* Password input with show/hide functionality */}
         <div className="relative mt-5">
           <input
-            {...register("password", { required: true })}
+            {...register("password", {
+              required: "This field is required",
+              minLength: {
+                value: 8,
+                message: "Password must be at least 8 characters long",
+              },
+              pattern: {
+                value: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
+                message:
+                  "Password must contain at least one uppercase letter, one lowercase letter, and one number",
+              },
+            })}
             type={showPassword ? "text" : "password"}
             placeholder="Password"
             className="form_input pr-10"
             required
           />
+          {errors.password && (
+            <span className="text-red-700 font-semibold text-sm mb-2 mt-1">
+              {errors.password.message}
+            </span>
+          )}
+
           <div
             className="absolute inset-y-0 right-0 pr-3 flex items-center  cursor-pointer"
             onClick={handleTogglePasswordVisibility}

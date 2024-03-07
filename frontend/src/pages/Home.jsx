@@ -134,7 +134,7 @@ const Home = () => {
         <div className="absolute bg-white"></div>
 
         <div className="relative ">
-          <div className=" text-center">
+          <div className=" text-center mt-5">
             <h1 className=" text-[36px] sm:text-5xl lg:text-6xl font-bold mx-auto pt-[2rem] sm:pt-16 text-black">
               Room Finder Site
             </h1>
@@ -161,7 +161,7 @@ const Home = () => {
             </div>
             <div className="col-span-6 sm:col-span-3  md:col-span-4">
               <form onSubmit={handleSubmit}>
-                <div className="form-control w-full max-w-full sm:max-w-sm flex flex-row mx-auto items-center justify-center relative">
+                <div className="form-control w-full mt-5 max-w-full sm:max-w-sm flex flex-row mx-auto items-center justify-center relative">
                   <input
                     id="search"
                     type="text"
@@ -188,9 +188,9 @@ const Home = () => {
             <div className="flex justify-center gap-4 mt-11 mb-4 sm:mb-8">
               <div className="flex items-center gap-2 text-gray-600">
                 <i className="text-2xl text-gray-600">
-                  <IoLocationSharp />
+                  {/* <IoLocationSharp /> */}
                 </i>
-                Your current location: {userLocation || "Loading..."}
+                {/* Your current location: {userLocation || "Loading..."} */}
               </div>
             </div>
 
