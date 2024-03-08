@@ -14,4 +14,13 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets', 
+    minify: 'terser', 
+    sourcemap: false,
+    target: 'es2015', 
+    commonjsOptions: {
+      transformMixedEsModules: false,
+    },}
 });
