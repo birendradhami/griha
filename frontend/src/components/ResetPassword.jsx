@@ -30,7 +30,7 @@ const navigate = useNavigate();
             try {
               const token = searchParams.get("token");
               const res = await axios.post(
-                `/api/forgotPassword/resetPassword`,
+                `${import.meta.env.VITE_SERVER_URL}/api/forgotPassword/resetPassword`,
                 { token, password }
               );
               setMessage(res.data.message);

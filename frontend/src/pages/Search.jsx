@@ -71,7 +71,7 @@ const Search = () => {
         try {
           setLoading(true);
           const res = await fetch(
-            `/api/rooms?searchTerm=${searchTerm}&type=${type}&parking=${parking}&furnished=${furnished}&offer=${offer}&minPrice=${minPrice}&maxPrice=${maxPrice}&page=${page}&sort=${sort}&approved=true`
+            `${import.meta.env.VITE_SERVER_URL}/api/rooms?searchTerm=${searchTerm}&type=${type}&parking=${parking}&furnished=${furnished}&offer=${offer}&minPrice=${minPrice}&maxPrice=${maxPrice}&page=${page}&sort=${sort}&approved=true`
           );
           const json = await res.json();
           if (json.success === false) {

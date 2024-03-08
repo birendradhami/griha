@@ -58,7 +58,7 @@ const ListingPage = () => {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const res = await fetch(`/api/rooms/${params.id}`);
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/rooms/${params.id}`);
       const json = await res.json();
       if (json.success === false) {
         toast.error(json.message, {
@@ -120,7 +120,7 @@ const ListingPage = () => {
 
   const handleroomDelete = async (roomId) => {
     try {
-      const res = await fetch(`/api/rooms/delete/${roomId}`, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/rooms/delete/${roomId}`, {
         method: "DELETE",
       });
       const data = await res.json();

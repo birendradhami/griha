@@ -230,7 +230,7 @@ const UpdateRoom = () => {
   useEffect(() => {
     const getRoomInfo = async () => {
       setDataLoading(true);
-      const res = await fetch(`/api/rooms/${params.id}`);
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/rooms/${params.id}`);
       const data = await res.json();
 
       if (data.success === false) {
@@ -370,7 +370,7 @@ const UpdateRoom = () => {
       //   return;
       // }
       setFormSubmitLoading(true);
-      const res = await fetch(`/api/rooms/update/${params.id}`, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/rooms/update/${params.id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

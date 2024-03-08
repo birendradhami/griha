@@ -15,7 +15,7 @@ const DashboardOption = ({ user }) => {
 
   const handleLogOut = async () => {
     try {
-      const res = await fetch("/api/auth/signout");
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/auth/signout`);
       const data = await res.json();
       if (data.success === false) {
         dispatch(signoutFailed(data.message));

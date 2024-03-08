@@ -12,7 +12,7 @@ export const getUsers = async (dispatch, currentUser) => {
       return false;
     }
 
-    const response = await axios.get(`/api/users`, {
+    const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/users`, {
       headers: {
         "Content-Type": "application/json",
       },

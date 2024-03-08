@@ -13,7 +13,7 @@ const EmailVerify = () => {
   useEffect(() => {
     const verifyEmailUrl = async () => {
       try {
-        const url = `/api/auth/${param.id}/verify/${param.token}`;
+        const url = `${import.meta.env.VITE_SERVER_URL}/api/auth/${param.id}/verify/${param.token}`;
         const { data } = await axios.get(url);
         setValidUrl(true);
         toast.success("Email verified successfully");

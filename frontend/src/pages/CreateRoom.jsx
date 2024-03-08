@@ -304,7 +304,7 @@ const Createroom = () => {
 
       setFormSubmitLoading(true);
 
-      const res = await fetch("api/rooms/create", {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/rooms/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

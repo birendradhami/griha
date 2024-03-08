@@ -24,7 +24,7 @@ const Message = () => {
     (async () => {
       try {
         setConversationLoading(true);
-        const res = await fetch(`/api/conversation/${currentUser._id}`);
+        const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/conversation/${currentUser._id}`);
         const getConversations = await res.json();
 
         if (getConversations.success === false) {

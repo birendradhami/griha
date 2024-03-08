@@ -21,7 +21,7 @@ const OfferedListing = () => {
         (async () => {
             try {
                 setLoading(true)
-                const res = await fetch(`/api/rooms?type=all&offer=true`)
+                const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/rooms?type=all&offer=true`)
                 const json = await res.json()
                 if (json.success === false) {
                     setLoading(false)

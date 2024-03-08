@@ -68,7 +68,7 @@ const Approval = () => {
 
   const handleApprove = async (requestId, userRef) => {
     try {
-      await fetch(`/api/rooms/approve/${requestId}`, {
+      await fetch(`${import.meta.env.VITE_SERVER_URL}/api/rooms/approve/${requestId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

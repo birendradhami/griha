@@ -66,7 +66,7 @@ const Chat = ({ conversationInfo }) => {
       try {
         setMessageLoading(true);
         const res = await fetch(
-          `/api/message?sender=${trackConversation.sender}&receiver=${trackConversation.receiver}`
+          `${import.meta.env.VITE_SERVER_URL}/api/message?sender=${trackConversation.sender}&receiver=${trackConversation.receiver}`
         );
         const getMessages = await res.json();
 
@@ -130,7 +130,7 @@ const Chat = ({ conversationInfo }) => {
     sendMessageTOSocket();
 
     try {
-      const sendMsgToDB = await fetch("/api/message/create", {
+      const sendMsgToDB = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/message/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -158,7 +158,7 @@ const Chat = ({ conversationInfo }) => {
 
   const handleConversationDelete = async () => {
     try {
-      const deleteChat = await fetch(`/api/conversation/delete/${_id}`, {
+      const deleteChat = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/conversation/delete/${_id}`, {
         method: "DELETE",
       });
       if (deleteChat.ok) {

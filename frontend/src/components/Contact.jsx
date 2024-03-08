@@ -20,7 +20,7 @@ const Contact = ({ listing }) => {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const res = await fetch(`/api/users/${listing.userRef}`);
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/users/${listing.userRef}`);
       const json = await res.json();
       if (json.success === false) {
         setLoading(true);
@@ -50,7 +50,7 @@ const Contact = ({ listing }) => {
 
     try {
       setSending(true);
-      const res = await fetch("/api/conversation/create", {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/conversation/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(conversationApiData),
@@ -60,7 +60,7 @@ const Contact = ({ listing }) => {
         setResponseMsg("Message sending failed. Try again!");
         setSending(false);
       } else {
-        const resMsg = await fetch("/api/message/create", {
+        const resMsg = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/message/create`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

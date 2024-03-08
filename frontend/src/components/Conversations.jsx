@@ -41,7 +41,7 @@ const Conversations = ({ conversationInfo }) => {
     if (isNotifyExistDB) {
       try {
         const dltNotify = await fetch(
-          `/api/notification/delete/${notify_from}`,
+          `${import.meta.env.VITE_SERVER_URL}/api/notification/delete/${notify_from}`,
           {
             method: "DELETE",
           }
