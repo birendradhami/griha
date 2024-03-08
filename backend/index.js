@@ -97,6 +97,7 @@ export const io = new Server(expressServer, {
   cors: {
     origin: [
       "http://localhost:5173",
+      "https://grihabackend.onrender.com"
     ],
     credentials: true,
   },
