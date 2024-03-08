@@ -1,4 +1,4 @@
-import Conversation from "../models/conversation.js";
+import Conversation from "../models/Conversation.js";
 import { throwError } from "../utils/error.js";
 
 // Get Conversation controller

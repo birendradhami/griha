@@ -5,7 +5,7 @@ import { throwError } from "../utils/error.js";
 import jwt from "jsonwebtoken";
 import { passwordGenarator, usernameGenarator } from "../utils/helper.js";
 // import User from '../models/User'; 
-import Token from "../models/Token.js"; 
+import Token from "../models/token.js"; 
 import sendEmail from "../utils/sendEmail.js"; 
 
 // Handle Signup Verify
