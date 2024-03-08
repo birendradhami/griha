@@ -9,6 +9,7 @@ export default defineConfig({
         target: 'https://grihabackend.onrender.com',
         changeOrigin: true,
         secure: false,
+        rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },
