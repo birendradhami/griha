@@ -152,7 +152,7 @@ export const googleSignIn = async (req, res, next) => {
 
       const { password, ...rest } = user._doc;
       res
-        .cookie("access_token", token, { httpOnly: false, secure: false })
+        .cookie("access_token", token, { httpOnly: false, secure: true, sameSite: 'None' })
         .status(200)
         .json(rest);
     }
@@ -172,7 +172,7 @@ export const googleSignIn = async (req, res, next) => {
       });
       const { pass: password, ...rest } = user._doc;
       res
-        .cookie("access_token", token, { httpOnly: false, secure: false })
+        .cookie("access_token", token, { httpOnly: false, secure: true, sameSite: 'None' })
         .status(200)
         .json(rest);
     }
