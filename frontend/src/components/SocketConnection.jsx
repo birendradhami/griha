@@ -7,14 +7,10 @@ import {
 } from "../redux/notifications/notificationSlice";
 import { activeChatId } from "./Conversations";
 import { signal } from "@preact/signals-react";
+import { useCookies } from "react-cookie";
 
-//production
-//const Node_Env = "local"
-export const socket = io("https://thunder-scarlet-wizard.glitch.me/", {
-  headers: {
-    "user-agent": "chrome",
-  },
-});
+
+export let socket;
 
 export const notifySignal = signal({
   notifications: [],
@@ -23,15 +19,32 @@ export const notifySignal = signal({
 const SocketConnection = () => {
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [cookies] = useCookies(["access_token"]);
+  const accessToken = cookies["access_token"];
+
+
+  useEffect(() => {
+    socket = io(`${import.meta.env.VITE_SERVER_URL}`, {
+      auth: {
+        token: accessToken,
+      },
+      headers: {
+        "user-agent": "chrome",
+      },
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [accessToken]);
+
 
   // Get Notification From DB
   useEffect(() => {
     const loadPrevNotification = async () => {
       try {
         const unseenNotificaton = await fetch(
-          `${import.meta.env.VITE_SERVER_URL}/api/notification/${currentUser._id}`,{
-        credentials: "include",
-          }
+          `/api/notification/${currentUser._id}`
         );
         const res = await unseenNotificaton.json();
         if (res.success === false) {
@@ -50,9 +63,8 @@ const SocketConnection = () => {
   //Store notificaions to DB 
   const sendNotificationToDB = async (notificationData) => {
     try {
-      const sendNotification = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/notification/create`, {
+      const sendNotification = await fetch("/api/notification/create", {
         method: "POST",
-        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(notificationData),
       });
@@ -83,7 +95,7 @@ const SocketConnection = () => {
         }
       }
     });
-  });
+  },[socket]);
 
   return <></>;
 };
