@@ -7,14 +7,10 @@ import {
 } from "../redux/notifications/notificationSlice";
 import { activeChatId } from "./Conversations";
 import { signal } from "@preact/signals-react";
+import { useCookies } from "react-cookie";
 
-//production
-//const Node_Env = "local"
-export const socket = io("https://thunder-scarlet-wizard.glitch.me/", {
-  headers: {
-    "user-agent": "chrome",
-  },
-});
+
+export let socket;
 
 export const notifySignal = signal({
   notifications: [],
@@ -23,6 +19,25 @@ export const notifySignal = signal({
 const SocketConnection = () => {
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [cookies] = useCookies(["access_token"]);
+  const accessToken = cookies["access_token"];
+
+
+  useEffect(() => {
+    socket = io(`${import.meta.env.VITE_SERVER_URL}`, {
+      auth: {
+        token: accessToken,
+      },
+      headers: {
+        "user-agent": "chrome",
+      },
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [accessToken]);
+
 
   // Get Notification From DB
   useEffect(() => {
@@ -63,6 +78,7 @@ const SocketConnection = () => {
   };
 
   useEffect(() => {
+    console.log(socket)
     socket.on(`${currentUser?._id}`, (socketNotification) => {
       if (socketNotification.chatId !== activeChatId.value.chatId) {
         const isNotificationExist = notifySignal.value.notifications.some(
@@ -79,7 +95,7 @@ const SocketConnection = () => {
         }
       }
     });
-  });
+  },[socket]);
 
   return <></>;
 };
