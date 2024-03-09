@@ -19,7 +19,9 @@ export const getConversation = async (req, res, next) => {
 // Post Conversation controller
 
 export const createConversation = async (req, res, next) => {
-  if (req.user.id != req.body.creatorId)
+
+  console.log(req.user)
+  if (req.user._id != req.body.creatorId)
     return next(throwError(401, "user is not valid"));
 
   if (req.body.creatorId === req.body.perticipantId)
