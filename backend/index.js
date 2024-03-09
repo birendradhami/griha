@@ -25,35 +25,18 @@ app.use(cookieParser());
 const expressServer = http.createServer(app);
 
 //Handling CORS origin
-if (process.env.NODE_ENV === "localhost") {
+
   app.use(
     cors({
-      origin: "http://localhost:5173",
+      origin:[
+        process.env.NODE_ENV,
+        "http://localhost:5173",
+        "https://griha.onrender.com"
+      ] ,
       credentials: true,
     })
   );
-} else {
-  app.use(
-    cors({
-      origin: process.env.NODE_ENV,
-      credentials: true,
-    })
-  );
-}
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', process.env.NODE_ENV);
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-
-  // Handle preflight requests
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
-  }
-
-  next();
-});
 
 const PORT = process.env.PORT || 3000;
 
