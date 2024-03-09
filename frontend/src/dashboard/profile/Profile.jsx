@@ -147,8 +147,9 @@ const Profile = () => {
 
     try {
       dispatch(loddingStart());
-      const res = await fetch(`/api/users/update/${currentUser._id}`, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/users/update/${currentUser._id}`, {
         method: "POST",
+        credentials:  "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
@@ -178,8 +179,9 @@ const Profile = () => {
   const handleDelete = async () => {
     try {
       dispatch(loddingStart());
-      const res = await fetch(`/api/users/delete/${currentUser._id}`, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/users/delete/${currentUser._id}`, {
         method: "DELETE",
+        credentials: "include",
       });
       const resData = await res.json();
       if (resData.success === false) {

@@ -20,8 +20,6 @@ export const getConversation = async (req, res, next) => {
 
 export const createConversation = async (req, res, next) => {
 
-  console.log(req.user.id)
-  console.log(req.body.creatorId)
   if (req.user.id != req.body.creatorId)
     return next(throwError(401, "user is not valid"));
 

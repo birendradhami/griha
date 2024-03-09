@@ -78,7 +78,6 @@ export const io = new Server(expressServer, {
     origin: [
       "http://localhost:5173",
       "https://griha.onrender.com",
-      "https://grihabackend.onrender.com"
     ],
     credentials: true,
   },
