@@ -55,7 +55,6 @@ app.use("/api/conversation", conversationRoute);
 app.use("/api/notification", notificatonRoute);
 app.use("/api/forgotPassword", forgotPasswordRoute);
 
-
 app.get("/", (req, res) => {
   res.send("api listing");
 });
@@ -70,6 +69,7 @@ app.use((err, req, res, next) => {
   });
 });
 
+console.log(process.env.NODE_ENV);
 
 
 // Handling CORS origin
@@ -77,7 +77,7 @@ export const io = new Server(expressServer, {
   cors: {
     origin: [
       "http://localhost:5173",
-      process.env.CLIENT_URL,
+      "https://griha.onrender.com",
       "https://grihabackend.onrender.com"
     ],
     credentials: true,

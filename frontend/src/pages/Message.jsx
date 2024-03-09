@@ -34,7 +34,6 @@ const Message = () => {
             autoClose: 5000,
           });
           setError(true);
-          dispatch(signoutSuccess());
         } else {
           setConversationLoading(false);
           setConversation(getConversations);
