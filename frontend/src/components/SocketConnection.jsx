@@ -8,11 +8,11 @@ import {
 import { activeChatId } from "./Conversations";
 import { signal } from "@preact/signals-react";
 
-//production
 export const socket = io(`${import.meta.env.VITE_SERVER_URL}`, {
   headers: {
     "user-agent": "chrome",
   },
+  credentials: "include"
 });
 
 export const notifySignal = signal({

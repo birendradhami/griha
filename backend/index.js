@@ -78,6 +78,7 @@ export const io = new Server(expressServer, {
     origin: [
       "http://localhost:5173",
       "https://griha.onrender.com",
+      "https://grihabackend.onrender.com"
     ],
     credentials: true,
   },
@@ -89,7 +90,7 @@ io.on("connection", async (socket) => {
   async function getUserDataFromRequest(token) {
     try {
       if (token) {
-        const userData = await jwt.verify(token, process.env.JWT_SECRET);
+        const userData = jwt.verify(token, process.env.JWT_SECRET);
         return userData;
       } else {
         console.log("Not found token");
