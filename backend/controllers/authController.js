@@ -122,7 +122,7 @@ export const signin = async (req, res, next) => {
 
      
     res
-      .cookie("access_token", token, { httpOnly: false, secure: false,  })
+      .cookie("access_token", token, { httpOnly: false, secure: false, sameSite: 'None'  })
       .status(200)
       .json(response);
   } catch (error) {
