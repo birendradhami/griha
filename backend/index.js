@@ -82,8 +82,7 @@ app.use((err, req, res, next) => {
 export const io = new Server(expressServer, {
   cors: {
     origin: [
-      "http://griha.onrender.com",
-      "https://grihabackend.onrender.com"
+      'http://griha.onrender.com',
     ],
     credentials: true,
   },
