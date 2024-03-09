@@ -26,7 +26,7 @@ const expressServer = http.createServer(app);
 
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    origin:  process.env.NODE_ENV,
     credentials: true,
   })
 );
