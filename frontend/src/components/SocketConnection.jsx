@@ -8,9 +8,7 @@ import {
 import { activeChatId } from "./Conversations";
 import { signal } from "@preact/signals-react";
 
-//production
-//const Node_Env = "local"
-export const socket = io("https://thunder-scarlet-wizard.glitch.me/", {
+export const socket = io(`${import.meta.env.VITE_SERVER_URL}`, {
   headers: {
     "user-agent": "chrome",
   },

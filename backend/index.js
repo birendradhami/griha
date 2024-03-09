@@ -55,21 +55,9 @@ app.use("/api/conversation", conversationRoute);
 app.use("/api/notification", notificatonRoute);
 app.use("/api/forgotPassword", forgotPasswordRoute);
 
-// Deployment
-
-const __dirname = path.resolve();
-
-if (process.env.NODE_ENV === "production") {
-  const staticFilesPath = path.join(__dirname, "client", "dist");
-  app.use(express.static(staticFilesPath));
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(staticFilesPath, "index.html"));
-  });
-} else {
-}
 
 app.get("/", (req, res) => {
-  res.send("api listing...");
+  res.send("api listing");
 });
 // Handle middleware
 app.use((err, req, res, next) => {
@@ -89,6 +77,7 @@ export const io = new Server(expressServer, {
   cors: {
     origin: [
       "http://localhost:5173",
+      process.env.CLIENT_URL,
       "https://grihabackend.onrender.com"
     ],
     credentials: true,
