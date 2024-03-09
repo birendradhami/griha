@@ -230,7 +230,8 @@ const UpdateRoom = () => {
   useEffect(() => {
     const getRoomInfo = async () => {
       setDataLoading(true);
-      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/rooms/${params.id}`);
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/rooms/${params.id}`,{
+        credentials: "include",});
       const data = await res.json();
 
       if (data.success === false) {

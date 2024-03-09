@@ -16,6 +16,7 @@ export const getUsers = async (dispatch, currentUser) => {
       headers: {
         "Content-Type": "application/json",
       },
+      withCredentials: true,
     });
 
     if (response.status !== 200) {

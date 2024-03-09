@@ -52,6 +52,7 @@ const Contact = ({ listing }) => {
       setSending(true);
       const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/conversation/create`, {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(conversationApiData),
       });
@@ -62,6 +63,7 @@ const Contact = ({ listing }) => {
       } else {
         const resMsg = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/message/create`, {
           method: "POST",
+          credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             sender: currentUser._id,

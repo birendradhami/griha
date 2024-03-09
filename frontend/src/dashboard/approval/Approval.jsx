@@ -70,6 +70,7 @@ const Approval = () => {
     try {
       await fetch(`${import.meta.env.VITE_SERVER_URL}/api/rooms/approve/${requestId}`, {
         method: "PUT",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },

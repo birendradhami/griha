@@ -19,6 +19,7 @@ const OAuth = () => {
 
       const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/auth/google`, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
