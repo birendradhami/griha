@@ -24,23 +24,12 @@ app.use(cookieParser());
 
 const expressServer = http.createServer(app);
 
-//Handling CORS origin
-if (process.env.NODE_ENV === "local") {
-  app.use(
-    cors({
-      origin: "http://localhost:5173",
-      credentials: true,
-    })
-  );
-} else {
-  app.use(
-    cors({
-      origin: "https://grihabackend.onrender.com",
-      origin:"https://griha.onrender.com",
-      credentials: true,
-    })
-  );
-}
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+  })
+);
 
 const PORT = process.env.PORT || 3000;
 
