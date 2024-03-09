@@ -24,13 +24,22 @@ app.use(cookieParser());
 
 const expressServer = http.createServer(app);
 
-app.use(
-  cors({
-    origin:  process.env.NODE_ENV,
-    credentials: true,
-  })
-);
-
+//Handling CORS origin
+if (process.env.NODE_ENV === "localhost") {
+  app.use(
+    cors({
+      origin: "http://localhost:5173",
+      credentials: true,
+    })
+  );
+} else {
+  app.use(
+    cors({
+      origin: process.env.NODE_ENV,
+      credentials: true,
+    })
+  );
+}
 
 const PORT = process.env.PORT || 3000;
 
@@ -55,8 +64,21 @@ app.use("/api/conversation", conversationRoute);
 app.use("/api/notification", notificatonRoute);
 app.use("/api/forgotPassword", forgotPasswordRoute);
 
+// Deployment
+
+const __dirname = path.resolve();
+
+if (process.env.NODE_ENV === "production") {
+  const staticFilesPath = path.join(__dirname, "client", "dist");
+  app.use(express.static(staticFilesPath));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(staticFilesPath, "index.html"));
+  });
+} else {
+}
+
 app.get("/", (req, res) => {
-  res.send("api listing");
+  res.send("api listing...");
 });
 // Handle middleware
 app.use((err, req, res, next) => {
@@ -69,7 +91,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-console.log(process.env.NODE_ENV);
 
 
 // Handling CORS origin
@@ -77,7 +98,6 @@ export const io = new Server(expressServer, {
   cors: {
     origin: [
       "http://localhost:5173",
-      "https://griha.onrender.com",
       "https://grihabackend.onrender.com"
     ],
     credentials: true,
@@ -90,7 +110,7 @@ io.on("connection", async (socket) => {
   async function getUserDataFromRequest(token) {
     try {
       if (token) {
-        const userData = jwt.verify(token, process.env.JWT_SECRET);
+        const userData = await jwt.verify(token, process.env.JWT_SECRET);
         return userData;
       } else {
         console.log("Not found token");

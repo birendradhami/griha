@@ -8,11 +8,12 @@ import {
 import { activeChatId } from "./Conversations";
 import { signal } from "@preact/signals-react";
 
-export const socket = io(`${import.meta.env.VITE_SERVER_URL}`, {
+//production
+//const Node_Env = "local"
+export const socket = io("https://thunder-scarlet-wizard.glitch.me/", {
   headers: {
     "user-agent": "chrome",
   },
-  credentials: "include"
 });
 
 export const notifySignal = signal({
@@ -65,6 +66,7 @@ const SocketConnection = () => {
   };
 
   useEffect(() => {
+    console.log(socket)
     socket.on(`${currentUser?._id}`, (socketNotification) => {
       if (socketNotification.chatId !== activeChatId.value.chatId) {
         const isNotificationExist = notifySignal.value.notifications.some(
