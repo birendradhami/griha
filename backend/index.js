@@ -35,6 +35,8 @@ if (process.env.NODE_ENV === "local") {
 } else {
   app.use(
     cors({
+      origin: "https://grihabackend.onrender.com",
+      origin:"https://griha.onrender.com",
       credentials: true,
     })
   );
