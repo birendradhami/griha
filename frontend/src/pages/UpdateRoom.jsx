@@ -372,6 +372,7 @@ const UpdateRoom = () => {
       // }
       setFormSubmitLoading(true);
       const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/rooms/update/${params.id}`, {
+        credentials: "include",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
