@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import io from "socket.io-client";
 import { useCookies } from "react-cookie";
 import PropTypes from "prop-types"; // Import PropTypes
+import { socket } from "./SocketConnection";
+
 
 const SocketContext = createContext();
 
@@ -10,7 +11,6 @@ export const useSocket = () => {
 };
 
 export const SocketProvider = ({ children }) => {
-  const [socket, setSocket] = useState(null);
 
   const [cookies] = useCookies(["access_token"]);
   const accessToken = cookies["access_token"];
@@ -23,21 +23,6 @@ export const SocketProvider = ({ children }) => {
   const [colorRB, setColorRB] = useState(null);
   
 
-  useEffect(() => {
-    if (accessToken) {
-      const newSocket = io(`${import.meta.env.VITE_SERVER_URL}`, {
-        auth: {
-          token: accessToken,
-        },
-      });
-
-      setSocket(newSocket);
-
-      return () => {
-        newSocket.disconnect();
-      };
-    }
-  }, [accessToken]);
   useEffect(() => {
     const handleOnlineStatus = (data) => {
       // console.log(`User ${data.userID} is ${data.status}`);

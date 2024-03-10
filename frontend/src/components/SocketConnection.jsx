@@ -44,7 +44,9 @@ const SocketConnection = () => {
     const loadPrevNotification = async () => {
       try {
         const unseenNotificaton = await fetch(
-          `/api/notification/${currentUser._id}`
+          `${import.meta.env.VITE_SERVER_URL}/api/notification/${currentUser._id}`,{
+            credentials: "include"
+          }
         );
         const res = await unseenNotificaton.json();
         if (res.success === false) {
@@ -63,8 +65,9 @@ const SocketConnection = () => {
   //Store notificaions to DB 
   const sendNotificationToDB = async (notificationData) => {
     try {
-      const sendNotification = await fetch("/api/notification/create", {
+      const sendNotification = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/notification/create`, {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(notificationData),
       });
@@ -78,7 +81,6 @@ const SocketConnection = () => {
   };
 
   useEffect(() => {
-    console.log(socket)
     socket.on(`${currentUser?._id}`, (socketNotification) => {
       if (socketNotification.chatId !== activeChatId.value.chatId) {
         const isNotificationExist = notifySignal.value.notifications.some(

@@ -29,7 +29,7 @@ const Contact = ({ listing }) => {
         setLoading(false);
       }
     })();
-  }, [listing.userRef]);
+  }, [listing]);
 
   const handleChange = (e) => {
     setMessage(e.target.value);
